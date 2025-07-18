@@ -1,57 +1,45 @@
 package org.example.Classes;
 
-public class DoublyLinkedList<E> {
+import org.example.AbstracClasses.AbstractList;
+import org.example.Interfaces.List;
 
-    protected class Node{
-        Node prev;
-        Node next;
-        E value;
+public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
+    protected class DoublyLinkedNode extends Node{
+        DoublyLinkedNode next;
+        DoublyLinkedNode prev;
 
-        protected Node(E value){
-            this.value = value;
+        protected DoublyLinkedNode(T value){
+            super(value);
         }
-
-        protected Node (E value, Node prev, Node next){
-            this.value = value;
-            this.prev = prev;
+        protected DoublyLinkedNode(T value, DoublyLinkedNode next){
+            super(value);
             this.next = next;
+        }
+        protected DoublyLinkedNode(T value, DoublyLinkedNode next, DoublyLinkedNode prev){
+            super(value);
+            this.next = next;
+            this.prev = prev;
         }
     }
 
-    private  Node head;
+    /*-----Variables-----*/
+    DoublyLinkedNode head;
+    /*------------------*/
 
-    public void insert (E value){
-        if(this.IsEmpty())  head = new Node(value, null,null);
+    @Override
+    public void insert(T value) {
+        if(this.IsEmpty())  head = new DoublyLinkedNode(value, null,null);
         else{
-            Node current = head;
+            DoublyLinkedNode current = head;
             while(current.next != null){
                 current = current.next;
             }
-            current.next = new Node(value, current, null);
+            current.next = new DoublyLinkedNode(value, current, null);
         }
     }
 
-    public void insert (E value, int place){
-        if(head == null) {
-            System.out.println("List is empty");
-        }
-        else{
-            try {
-                int counter = 1;
-                Node current = head;
-                while (counter != place-1){
-                    current = current.next;
-                    counter++;
-                }
-                Node temp = new Node(value, current, current.next);
-                current.next.prev = temp;
-                current.next = temp;
-            } catch (NullPointerException e) {
-                System.out.println("No such element to insert");
-            }
-        }
-    }
-    public void delete (int place){
+    @Override
+    public void delete(int place) {
         if(this.IsEmpty()) System.out.println("List is empty");
         else{
             int counter = 1;
@@ -59,10 +47,11 @@ public class DoublyLinkedList<E> {
         }
     }
 
-    public void display(){
-        if(head == null) System.out.println("List is empty");
+    @Override
+    public void show() {
+        if(this.IsEmpty()) System.out.println("List is empty");
         else{
-            Node current = head;
+            DoublyLinkedNode current = head;
             while (current!= null){
                 System.out.print(current.value + "->");
                 current = current.next;
@@ -71,21 +60,8 @@ public class DoublyLinkedList<E> {
         }
     }
 
-    public boolean IsEmpty(){
-        return (head==null);
+    @Override
+    public boolean IsEmpty() {
+        return (head == null);
     }
-
-    public int length(){
-        int counter = 0;
-        if(this.head == null) System.out.println("List is empty");
-        else{
-            DoublyLinkedList.Node current = this.head;
-            while(current!= null){
-                current = current.next;
-                counter++;
-            }
-        }
-        return counter;
-    }
-
 }
