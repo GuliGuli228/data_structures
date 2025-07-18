@@ -1,10 +1,11 @@
-package org.example;
+package org.example.Classes;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         /*--------ОБЪЕКТЫ---------*/
+        GenericLinkedList<Integer> List = new GenericLinkedList<>();
         Linked_list linked_list = new Linked_list();
         DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
@@ -19,13 +20,25 @@ public class Main {
 //        linked_list.display();
 //        System.out.println(linked_list.length());
         /*----------------------------------------------*/
-        doublyLinkedList.insert(10);
-        doublyLinkedList.insert(20);
-        doublyLinkedList.insert(30);
-        doublyLinkedList.insert(40);
-        doublyLinkedList.insert(29,3);
-        doublyLinkedList.display();
+//        doublyLinkedList.insert(10);
+//        doublyLinkedList.insert(20);
+//        doublyLinkedList.insert(30);
+//        doublyLinkedList.insert(40);
+//        doublyLinkedList.insert(29,3);
+//        doublyLinkedList.display();
+        /*----------------------------------------------*/
 
+//        List.insert(1);
+//        List.insert(2);
+//        List.insert(3);
+//        List.insert(4);
+//        List.insert(5);
+//        List.insert(6);
+//        List.delete(1);
+//        List.delete(6);
+//        List.delete(3);
+//        List.display();
 
+        /*----------------------------------------------*/
     }
 }
