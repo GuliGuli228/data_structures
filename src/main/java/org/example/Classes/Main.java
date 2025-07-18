@@ -1,5 +1,7 @@
 package org.example.Classes;
 
+import org.example.Interfaces.List;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -8,6 +10,7 @@ public class Main {
         GenericLinkedList<Integer> List = new GenericLinkedList<>();
         Linked_list linked_list = new Linked_list();
         DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+
 
         /*--------МЕТОДЫ---------*/
 //        linked_list.insert(10);
