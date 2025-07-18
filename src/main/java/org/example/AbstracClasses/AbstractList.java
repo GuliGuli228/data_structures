@@ -1,7 +1,12 @@
 package org.example.AbstracClasses;
 
-public class AbstractList {
-    protected class Node<T>{
-        protected T value;
+public class AbstractList<T> {
+    protected class Node{
+        public T value;
+
+        protected Node (T value){
+            this.value = value;
+        }
+        protected Node(){};
     }
 }

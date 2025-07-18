@@ -56,7 +56,6 @@ public class DoublyLinkedList<E> {
         else{
             int counter = 1;
             Node current = head;
-            while()
         }
     }
 

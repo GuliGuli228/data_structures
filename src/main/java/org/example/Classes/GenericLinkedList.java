@@ -1,53 +1,46 @@
 package org.example.Classes;
 
-public class GenericLinkedList<T> {
-    private int length;
+import org.example.AbstracClasses.AbstractList;
+import org.example.Interfaces.List;
 
-    protected class Node{
-        protected Node next;
-        protected T value;
+public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
+    protected class LinkedNode extends Node{
+        LinkedNode next;
 
-        protected Node (T value, Node next){
-            this.value = value;
-            this.next = next;
+        protected LinkedNode(T value, LinkedNode node){
+            super(value);
+            this.next = node;
         }
-        protected Node (T value){
-            this.value = value;
+        protected LinkedNode(T value) {
+            super(value);
         }
-        protected Node (){};
+        protected LinkedNode(){};
     }
+        /*-----Variables-----*/
+    LinkedNode head;
+    int length = 0;
+        /*------------------*/
 
-    protected Node head;
-
-    public boolean IsEmpty(){
-        return (head == null);
-    }
-
-    public void insert (T value){
+    @Override
+    public void insert(T value) {
         if(this.IsEmpty()){
-            head = new Node(value);
+            head = new LinkedNode(value);
         }
         else{
-            Node current = head;
+            LinkedNode current = head;
             while (current.next != null) current = current.next;
-            current.next = new Node(value);
+            current.next = new LinkedNode(value);
         }
         length++;
     }
 
-    public void Length(){
-        System.out.println(this.length);
-    }
-
-    public int getLength(){
-        return this.length;
-    }
-    public void delete (int place){
+    @Override
+    public void delete(int place) {
         if (length < place) System.out.println("No such element to delete, List is shorter");
         else{
             try {
                 int counter = 0;
-                Node current = head;
+                LinkedNode current = head;
                 while (counter < place){
                     current = current.next;
                     counter++;
@@ -59,11 +52,14 @@ public class GenericLinkedList<T> {
                 System.out.println(e.getMessage());
             }
         }
+
     }
-    public void display(){
+
+    @Override
+    public void show() {
         if(this.IsEmpty()) System.out.println("List is empty");
         else{
-            Node current = head;
+            LinkedNode current = head;
             while (current!= null){
                 System.out.print(current.value + "->");
                 current = current.next;
@@ -72,4 +68,8 @@ public class GenericLinkedList<T> {
         }
     }
 
+    @Override
+    public boolean IsEmpty() {
+        return (head == null);
+    }
 }
