@@ -15,10 +15,12 @@ public class Stack<E>{
     }
 
     public E pop(){
-        return list.getValueAt(0);
+        E result = list.getValueAt(0);
+        list.removeAt(0);
+        return result;
     }
-    public void peek(){
-        System.out.println(list.getValueAt(0));
+    public E peek(){
+       return list.getValueAt(0);
     }
 
     public boolean isEmpty(){

@@ -24,6 +24,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
 
     /*-----Variables-----*/
     DoublyLinkedNode head;
+    int lenght = 0;
     /*------------------*/
 
     @Override
@@ -35,6 +36,16 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
                 current = current.next;
             }
             current.next = new DoublyLinkedNode(value, current, null);
+        }
+        lenght++;
+    }
+    public void insertAt(T value, int place){
+        if (this.IsEmpty() || lenght-1 > place) {
+            this.insertAt(value);
+            return;
+        }
+        else{
+            DoublyLinkedNode current = head;
         }
     }
 

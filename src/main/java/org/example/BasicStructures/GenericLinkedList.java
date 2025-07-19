@@ -33,32 +33,7 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
         }
         length++;
     }
-    public void insertAt(T value, int place){
-        if(this.IsEmpty()) head = new LinkedNode(value);
-        else{
-            LinkedNode current = head;
-            LinkedNode node = new LinkedNode(value);
-            if (place == 0) {
-                node.next = head;
-                head = node;
-                length ++;
-                return;
-            }
-            if (place == length-1){
-                tail.next = node;
-                tail = node;
-                length++;
-                return;
-            }
-            else{
-                for (int i = 0; i< place -1; i++){
-                    current = current.next;
-                }
-                node.next = current.next.next;
-                current.next = node;
-            }
-        }
-    }
+
 
     @Override
     public void removeAt(int place) {
@@ -128,5 +103,35 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
         return (head == null);
     }
 
+    public int getSize(){
+        return length;
+    }
+
+    public void insertAt(T value, int place){
+        if(this.IsEmpty()) head = new LinkedNode(value);
+        else{
+            LinkedNode current = head;
+            LinkedNode node = new LinkedNode(value);
+            if (place == 0) {
+                node.next = head;
+                head = node;
+                length ++;
+                return;
+            }
+            if (place == length-1){
+                tail.next = node;
+                tail = node;
+                length++;
+                return;
+            }
+            else{
+                for (int i = 0; i< place -1; i++){
+                    current = current.next;
+                }
+                node.next = current.next.next;
+                current.next = node;
+            }
+        }
+    }
 }
 
