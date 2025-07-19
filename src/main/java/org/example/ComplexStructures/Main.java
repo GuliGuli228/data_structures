@@ -1,6 +1,7 @@
-package org.example.Classes;
+package org.example.ComplexStructures;
 
-import org.example.Interfaces.List;
+import org.example.BasicStructures.DoublyLinkedList;
+import org.example.BasicStructures.GenericLinkedList;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -10,8 +11,19 @@ public class Main {
         GenericLinkedList<Integer> List = new GenericLinkedList<>();
         Linked_list linked_list = new Linked_list();
         DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
-
-
+        GenericLinkedList<Integer> list = new GenericLinkedList<>();
+        list.insertAt(1);
+        list.insertAt(2);
+        list.insertAt(3);
+        list.insertAt(5);
+        list.insertAt(22, 0);
+        list.insertAt(23, 4);
+        list.removeAt(3);
+//        List: 1 → 2 → 3 → 5
+//              0   1   2   3
+//              1   2   3   4
+        list.show();
+        System.out.println(list.getValueAt(4));
         /*--------МЕТОДЫ---------*/
 //        linked_list.insert(10);
 //        linked_list.insert(20);

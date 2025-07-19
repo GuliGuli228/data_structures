@@ -1,4 +1,4 @@
-package org.example.Classes;
+package org.example.BasicStructures;
 
 import org.example.AbstracClasses.AbstractList;
 import org.example.Interfaces.List;
@@ -27,7 +27,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
     /*------------------*/
 
     @Override
-    public void insert(T value) {
+    public void insertAt(T value) {
         if(this.IsEmpty())  head = new DoublyLinkedNode(value, null,null);
         else{
             DoublyLinkedNode current = head;
@@ -39,7 +39,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
     }
 
     @Override
-    public void delete(int place) {
+    public void removeAt(int place) {
         if(this.IsEmpty()) System.out.println("List is empty");
         else{
             int counter = 1;

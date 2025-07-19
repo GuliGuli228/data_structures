@@ -1,8 +1,8 @@
 package org.example.Interfaces;
 
 public interface List<T> {
-     void insert(T value);
-     void delete (int place);
+     void insertAt(T value);
+     void removeAt(int place);
      void show();
      boolean IsEmpty();
 }
