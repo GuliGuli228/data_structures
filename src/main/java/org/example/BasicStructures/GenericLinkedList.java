@@ -15,6 +15,15 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
             super(value);
         }
         protected LinkedNode(){};
+
+        @Override
+        protected T getValue(){
+            return super.getValue();
+        }
+        @Override
+        protected void setValue(T value){
+            super.setValue(value);
+        }
     }
         /*-----Variables-----*/
     protected LinkedNode head;
@@ -71,7 +80,7 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
             for (int i =0; i < place; i++){
                 current = current.next;
             }
-            return current.value;
+            return current.getValue();
         } catch (NullPointerException | IllegalArgumentException e) {
             System.out.println(e.getMessage());;
         }
@@ -86,7 +95,7 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
             LinkedNode current = head;
             StringBuilder output = new StringBuilder();
             while (current != null) {
-                output.append(current.value);
+                output.append(current.getValue());
                 if (current.next != null) {
                     output.append(" → ");
                 }
@@ -101,6 +110,19 @@ public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
     @Override
     public boolean IsEmpty() {
         return (head == null);
+    }
+
+    @Override
+    public void update(T value, int place) {
+        try {
+            LinkedNode current = head;
+            for(int i = 0; i< place; i++){
+                current = current.next;
+            }
+            current.setValue(value);
+        } catch (NullPointerException e) {
+            System.out.println("No such element to update +" + e.getMessage());;
+        }
     }
 
     public int getSize(){

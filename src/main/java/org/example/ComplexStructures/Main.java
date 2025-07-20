@@ -2,14 +2,12 @@ package org.example.ComplexStructures;
 
 import org.example.BasicStructures.DoublyLinkedList;
 import org.example.BasicStructures.GenericLinkedList;
-
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         /*--------ОБЪЕКТЫ---------*/
         GenericLinkedList<Integer> List = new GenericLinkedList<>();
-        Linked_list linked_list = new Linked_list();
         DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
         GenericLinkedList<Integer> list = new GenericLinkedList<>();
         list.insertAt(22, 0);

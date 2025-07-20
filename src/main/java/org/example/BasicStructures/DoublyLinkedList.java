@@ -20,6 +20,14 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
             this.next = next;
             this.prev = prev;
         }
+        @Override
+        protected T getValue(){
+            return super.getValue();
+        }
+        @Override
+        protected void setValue(T value){
+            super.setValue(value);
+        }
     }
 
     /*-----Variables-----*/
@@ -46,6 +54,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
         }
         else{
             DoublyLinkedNode current = head;
+            for(int i = 0; i < place; i++){
+                current = current.next;
+            }
+
         }
     }
 
@@ -64,7 +76,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
         else{
             DoublyLinkedNode current = head;
             while (current!= null){
-                System.out.print(current.value + "->");
+                System.out.print(current.getValue()+ "->");
                 current = current.next;
             }
             System.out.println();
@@ -74,5 +86,18 @@ public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
     @Override
     public boolean IsEmpty() {
         return (head == null);
+    }
+
+    @Override
+    public void update(T value, int place) {
+        try {
+            DoublyLinkedNode current = head;
+            for (int i = 0; i < place; i++){
+                current = current.next;
+            }
+            current.setValue(value);
+        } catch (NullPointerException e) {
+            System.out.println("No such element to update +" + e.getMessage());;
+        }
     }
 }

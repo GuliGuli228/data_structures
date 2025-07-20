@@ -5,4 +5,5 @@ public interface List<T> {
      void removeAt(int place);
      void show();
      boolean IsEmpty();
+     void update(T value, int place);
 }

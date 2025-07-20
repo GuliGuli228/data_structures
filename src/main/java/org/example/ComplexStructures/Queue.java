@@ -29,8 +29,4 @@ public class Queue<E> extends DoublyLinkedList<E> {
         return list.getSize();
     }
 
-
-
-
-
 }
