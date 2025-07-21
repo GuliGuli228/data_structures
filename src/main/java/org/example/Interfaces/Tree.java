@@ -1,8 +1,11 @@
 package org.example.Interfaces;
 
-public interface Tree<T> {
+public interface Tree<T, N> {
     void add (T value);
-    void deleteAt(int place);
+    void deleteByValue(T value);
     void show();
-    void update();
+    void update(T from, T to);
+    N BFS(T value);
+    N DPS(T value);
+    boolean IsEmpty();
 }
