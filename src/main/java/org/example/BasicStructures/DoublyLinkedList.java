@@ -3,8 +3,8 @@ package org.example.BasicStructures;
 import org.example.AbstracClasses.AbstractList;
 import org.example.Interfaces.List;
 
-public class DoublyLinkedList<T> extends AbstractList<T> implements List<T> {
-    protected class DoublyLinkedNode extends Node{
+public class DoublyLinkedList<T> extends AbstractList implements List<T> {
+    protected class DoublyLinkedNode extends Node<T>{
         DoublyLinkedNode next;
         DoublyLinkedNode prev;
 

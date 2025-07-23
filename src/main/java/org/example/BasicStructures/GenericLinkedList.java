@@ -3,8 +3,8 @@ package org.example.BasicStructures;
 import org.example.AbstracClasses.AbstractList;
 import org.example.Interfaces.List;
 
-public class GenericLinkedList<T> extends AbstractList<T> implements List<T> {
-    protected class LinkedNode extends Node{
+public class GenericLinkedList<T> extends AbstractList implements List<T> {
+    protected class LinkedNode extends Node<T>{
         LinkedNode next;
 
         protected LinkedNode(T value, LinkedNode node){

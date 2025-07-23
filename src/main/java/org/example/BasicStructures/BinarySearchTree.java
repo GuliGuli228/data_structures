@@ -13,34 +13,49 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         protected BinaryNode(T value){
             super(value);
         }
+//        TIP Override blocks make protected methods from InnerClass Node
+//        visible in BinaruSearchTree field
+
+        /*---Getters Overrides---*/
         @Override
         protected T getValue(){
             return super.getValue();
         }
         @Override
+        protected BinaryNode getLeft(){
+            return super.getLeft();
+        }
+        @Override
+        protected BinaryNode getRight(){
+            return super.getRight();
+        }
+        @Override
+        protected BinaryNode getParent(){
+            return super.getParent();
+        }
+        /*-----------------------*/
+
+        /*---Setters Overrides---*/
+        @Override
         protected void setValue(T value){
             super.setValue(value);
         }
-        protected void setLeft(BinaryNode left){
-            this.left = left;
+        @Override
+        protected void setLeft(BinarySearchTree.BinaryNode node){
+            super.setLeft(node);
         }
-        protected void setRight(BinaryNode right){
-            this.right = right;
+        @Override
+        protected void setRight(BinarySearchTree.BinaryNode node){
+            super.setRight(node);
         }
-        protected BinaryNode getLeft(){
-            return left;
+        @Override
+        protected void setParent(BinarySearchTree.BinaryNode node){
+            super.setParent(node);
         }
-        protected BinaryNode getRight(){
-            return right;
-        }
-        protected BinaryNode getParent(){
-            return parent;
-        }
-        protected void setParent(){
-            this.parent = parent;
-        }
-
+        /*-----------------------*/
     }
+
+    //TODO: maybe delete
     private class BinaryTreeComparator implements Comparator<BinaryNode>{
         @Override
         public int compare(BinaryNode node1, BinaryNode node2) {
@@ -48,6 +63,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
+    //FIXME: make ADD and DELETEBYVALUY methods same code blocks in outres method
     BinaryNode root;
     BinaryTreeComparator Compare = new BinaryTreeComparator();
     @Override
@@ -98,6 +114,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
+    //TODO
     @Override
     public void show() {
 
