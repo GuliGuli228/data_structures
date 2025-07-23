@@ -33,6 +33,12 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         protected BinaryNode getRight(){
             return right;
         }
+        protected BinaryNode getParent(){
+            return parent;
+        }
+        protected void setParent(){
+            this.parent = parent;
+        }
 
     }
     private class BinaryTreeComparator implements Comparator<BinaryNode>{
@@ -128,9 +134,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return current;
     }
 
-    public GenericLinkedList<BinaryNode> BFS(){
-        GenericLinkedList<BinaryNode> list = new GenericLinkedList<>();
-    }
 
     @Override
     public BinaryNode DPS(T value) {

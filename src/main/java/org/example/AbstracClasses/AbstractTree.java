@@ -7,6 +7,7 @@ public abstract class AbstractTree <T,N extends AbstractTree.Node> {
         protected T value;
         protected N left;
         protected N right;
+        protected N parent;
 
         protected Node(){};
         protected Node(T value){
