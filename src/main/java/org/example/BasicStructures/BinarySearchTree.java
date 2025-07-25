@@ -14,7 +14,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
             super(value);
         }
 //        TIP Override blocks make protected methods from InnerClass Node
-//        visible in BinaruSearchTree field
+//        visible in BinarySearchTree field
 
         /*---Getters Overrides---*/
         @Override
@@ -53,6 +53,13 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
             super.setParent(node);
         }
         /*-----------------------*/
+
+        /*---Methods---*/
+        protected int countChildren(){
+            if (this.left != null && this.right != null) return 2;
+            if(this.left == null && this.right == null) return 0;
+            else return 1;
+        }
     }
 
     //TODO: maybe delete
@@ -63,7 +70,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
-    //FIXME: make ADD and DELETEBYVALUY methods same code blocks in outres method
+    //TODO find a way to use method .getParent(), not variable BinaryNode parent;
     BinaryNode root;
     BinaryTreeComparator Compare = new BinaryTreeComparator();
     @Override
@@ -86,38 +93,67 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
             if(direction < 0) parent.setLeft(new BinaryNode(value));
         }
     }
+// TODO: add Nullpointerexeption try-catch or null "if statement", and ORDER cases (Краевые случаи)
 
     @Override
     public void deleteByValue(T value) {
-        BinaryNode current = root;
-        BinaryNode parent = null;
-        int direction = 0;
-        while(value.compareTo(current.getValue()) != 0){
-            parent = current;
-            direction = value.compareTo(current.getValue());
-            if (direction > 0) current = current.getRight();
-            if(direction < 0) current = current.getLeft();
-        }
-        BinaryNode left = current.getLeft();
-        BinaryNode right = current.getRight();
-        if(left == null && right == null){
-            if(direction > 0) parent.setRight(null);
-            if(direction < 0) parent.setLeft(null);
-        }
-        if(left == null && right != null){
-            if(direction > 0) parent.setRight(current.getRight());
-            if(direction < 0) parent.setLeft(current.getRight());
-        }
-        if(left != null && right == null){
-            if(direction > 0) parent.setRight(current.getLeft());
-            if(direction < 0) parent.setLeft(current.getLeft());
+        BinaryNode toDelete = BFS(value);
+
+        switch (toDelete.countChildren()){
+            case 0:
+                if(toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(null);
+                if(toDelete.getParent().getLeft() == toDelete) toDelete.getParent().setLeft(null);
+                return;
+            case 1:
+                BinaryNode child = toDelete.getLeft() == null ? toDelete.getRight(): toDelete.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
+
+                if(toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(child);
+                else toDelete.getParent().setLeft(child);
+                return;
+            case 2:
+                T min = toDelete.getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
+                BinaryNode searchNode = toDelete;
+                searchNode = searchNode.getRight();
+
+                while (searchNode.getLeft().getValue().compareTo(min) < 0){
+                    min = searchNode.getLeft().getValue();
+                    searchNode = searchNode.getLeft();
+                }
+                toDelete.setValue(min);
+
+                if (searchNode.countChildren()==1){
+                    if(searchNode.getParent().getRight() == toDelete) searchNode.getParent().setRight(null);
+                    if(searchNode.getParent().getLeft() == toDelete) searchNode.getParent().setLeft(null);
+                    return;
+                }
+                if (searchNode.countChildren()==2){
+                    BinaryNode child_search = searchNode.getLeft() == null ? searchNode.getRight(): searchNode.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
+
+                    if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(child_search);
+                    else searchNode.getParent().setLeft(child_search);
+
+                }
+
         }
     }
 
-    //TODO
+
+    //TODO разобраться до конца как все таки рабоатет симетричный обход
+    //TODO add ORDER cases
     @Override
     public void show() {
+        Stack<BinaryNode> stack = new Stack<>();
+        BinaryNode current = root;
 
+        while (current != null || !stack.isEmpty()) {
+            while (current != null) {
+                stack.push(current);
+                current = current.getLeft();
+            }
+            BinaryNode temp = stack.pop();
+            System.out.println(temp.getValue());
+            current = temp.getRight();
+        }
     }
 
     @Override
