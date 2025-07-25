@@ -7,12 +7,16 @@ public abstract class AbstractList{
             this.value = value;
         }
         protected Node(){};
-
+        /*---Getters---*/
         protected T getValue(){
             return this.value;
-        };
+        }
+        /*------------*/
+
+        /*---Setters---*/
         protected void setValue(T value){
             this.value = value;
         }
+        /*------------*/
     }
 }
