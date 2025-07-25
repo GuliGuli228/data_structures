@@ -14,8 +14,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         protected LinkedNode(T value) {
             super(value);
         }
-        protected LinkedNode(){};
-
+        /*---Getters & Setters Overrides---*/
         @Override
         protected T getValue(){
             return super.getValue();
@@ -24,6 +23,8 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         protected void setValue(T value){
             super.setValue(value);
         }
+        /*---------------------------------*/
+
     }
         /*-----Variables-----*/
     protected LinkedNode head;
@@ -144,7 +145,6 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
                 tail.next = node;
                 tail = node;
                 length++;
-                return;
             }
             else{
                 for (int i = 0; i< place -1; i++){
