@@ -7,49 +7,41 @@ import org.example.Interfaces.Tree;
 
 import java.util.Comparator;
 
-public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, BinarySearchTree.BinaryNode> implements Tree<T, BinarySearchTree.BinaryNode> {
+public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, BinarySearchTree<T>.BinaryNode> implements Tree<T, BinarySearchTree.BinaryNode> {
     protected class BinaryNode extends Node{
 
         protected BinaryNode(T value){
             super(value);
         }
-//        TIP Override blocks make protected methods from InnerClass Node
+//        TIP Overloads blocks make protected methods from InnerClass Node
 //        visible in BinarySearchTree field
 
-        /*---Getters Overrides---*/
-        @Override
+        /*---Getters Overloads---*/
         protected T getValue(){
-            return super.getValue();
+            return (T)super.getValue();
         }
-        @Override
         protected BinaryNode getLeft(){
-            return super.getLeft();
+            return (BinaryNode)super.getLeft();
         }
-        @Override
         protected BinaryNode getRight(){
-            return super.getRight();
+            return (BinaryNode) super.getRight();
         }
-        @Override
         protected BinaryNode getParent(){
-            return super.getParent();
+            return (BinaryNode) super.getParent();
         }
         /*-----------------------*/
 
-        /*---Setters Overrides---*/
-        @Override
+        /*---Setters Overloads---*/
         protected void setValue(T value){
             super.setValue(value);
         }
-        @Override
-        protected void setLeft(BinarySearchTree.BinaryNode node){
+        protected void setLeft(BinaryNode node){
             super.setLeft(node);
         }
-        @Override
-        protected void setRight(BinarySearchTree.BinaryNode node){
+        protected void setRight(BinaryNode node){
             super.setRight(node);
         }
-        @Override
-        protected void setParent(BinarySearchTree.BinaryNode node){
+        protected void setParent(BinaryNode node){
             super.setParent(node);
         }
         /*-----------------------*/
