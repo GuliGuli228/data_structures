@@ -4,7 +4,7 @@ import org.example.BasicStructures.BinarySearchTree;
 
 import java.util.Comparator;
 
-public abstract class AbstractTree <T,N extends AbstractTree.Node> {
+public abstract class AbstractTree <T ,N extends AbstractTree.Node> {
     protected abstract class Node  {
         protected T value;
         protected N left;
