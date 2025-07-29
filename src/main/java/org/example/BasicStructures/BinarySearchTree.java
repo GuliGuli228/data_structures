@@ -13,6 +13,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         protected BinaryNode(T value){
             super(value);
         }
+        protected BinaryNode(){};
 //        TIP Overloads blocks make protected methods from InnerClass Node
 //        visible in BinarySearchTree field
 
@@ -133,7 +134,8 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
     //TODO разобраться до конца как все таки рабоатет симетричный обход
     //TODO add ORDER cases
     @Override
-    public void show() {
+    public String show() {
+        StringBuilder str = new StringBuilder("[ ");
         Stack<BinaryNode> stack = new Stack<>();
         BinaryNode current = root;
 
@@ -143,9 +145,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
                 current = current.getLeft();
             }
             BinaryNode temp = stack.pop();
-            System.out.println(temp.getValue());
+            str.append(temp.getValue()).append(" ");
             current = temp.getRight();
         }
+        str.append("]");
+        return str.toString();
     }
 
     @Override
