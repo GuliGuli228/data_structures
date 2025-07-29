@@ -3,6 +3,8 @@ package org.example.BasicStructures;
 import org.example.AbstracClasses.AbstractList;
 import org.example.Interfaces.List;
 
+import java.util.NoSuchElementException;
+
 public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     protected class DoublyLinkedNode extends Node<T>{
         DoublyLinkedNode next;
@@ -71,15 +73,20 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     }
 
     @Override
-    public void show() {
-        if(this.IsEmpty()) System.out.println("List is empty");
+    public String show() {
+        if(this.IsEmpty()){
+            System.out.println("List is empty");
+            throw new NoSuchElementException();
+        }
         else{
+            StringBuilder str = new StringBuilder("[ ");
             DoublyLinkedNode current = head;
             while (current!= null){
-                System.out.print(current.getValue()+ "->");
+                str.append(current.getValue()).append("->");
                 current = current.next;
             }
-            System.out.println();
+            str.append("]");
+            return str.toString();
         }
     }
 
