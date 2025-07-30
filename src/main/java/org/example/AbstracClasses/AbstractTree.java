@@ -4,12 +4,12 @@ import org.example.BasicStructures.BinarySearchTree;
 
 import java.util.Comparator;
 
-public abstract class AbstractTree <T ,N extends AbstractTree.Node> {
+public abstract class AbstractTree <T ,N extends AbstractTree<T,N>.Node> {
     protected abstract class Node  {
         protected T value;
-        protected N left;
-        protected N right;
-        protected N parent;
+        protected N left =null;
+        protected N right= null;
+        protected N parent = null;
 
         protected Node(){};
         protected Node(T value){
