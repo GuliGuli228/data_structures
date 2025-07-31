@@ -453,10 +453,90 @@ class GenericLinkedListTest {
 
     }
 
+    @DisplayName("Wrong index update")
+    @Test
+    void updateAtWrongIndex(){
+        IntList.insertAt(1);
+        IntList.insertAt(2);
+        IntList.insertAt(3);
+
+        CharList.insertAt((char)1);
+        CharList.insertAt((char)2);
+        CharList.insertAt((char)3);
+
+        DoubleList.insertAt((double)1);
+        DoubleList.insertAt((double)2);
+        DoubleList.insertAt((double)3);
+
+        BoolList.insertAt(true);
+        BoolList.insertAt(true);
+        BoolList.insertAt(true);
+
+        assertThrows(IllegalArgumentException.class, ()-> {IntList.update(5,5);});
+        assertThrows(IllegalArgumentException.class, ()-> {DoubleList.update((double)5,5);});
+        assertThrows(IllegalArgumentException.class, ()-> {CharList.update((char)5,5);});
+        assertThrows(IllegalArgumentException.class, ()-> {BoolList.update(false,5);});
+    }
+
+
+    @DisplayName("Empty list getSize")
+    @Test
+    void getSizeAtEmptyList(){
+        assertEquals(0, IntList.getSize());
+        assertEquals(0, DoubleList.getSize());
+        assertEquals(0, CharList.getSize());
+        assertEquals(0, BoolList.getSize());
+    }
+
+    @DisplayName("get size after insertion")
+    @Test
+    void getSizeAfterInsertion(){
+        int IntSize = IntList.getSize();
+        int DoubleSize = DoubleList.getSize();
+        int CharSize = CharList.getSize();
+        int BoolSize = BoolList.getSize();
+
+
+        IntList.insertAt(1);
+        DoubleList.insertAt((double)1);
+        CharList.insertAt((char)1);
+        BoolList.insertAt(true);
+
+        assertTrue(IntSize < IntList.getSize());
+        assertTrue(DoubleSize < DoubleList.getSize());
+        assertTrue(CharSize < CharList.getSize());
+        assertTrue(BoolSize < BoolList.getSize());
+    }
+    @DisplayName("get size after delete")
+    @Test
+    void getSizeAfterDelete(){
+
+        IntList.insertAt(1);
+        DoubleList.insertAt((double)1);
+        CharList.insertAt((char)1);
+        BoolList.insertAt(true);
+
+        int IntSize = IntList.getSize();
+        int DoubleSize = DoubleList.getSize();
+        int CharSize = CharList.getSize();
+        int BoolSize = BoolList.getSize();
+
+        IntList.removeAt(0);
+        DoubleList.removeAt(0);
+        CharList.removeAt(0);
+        BoolList.removeAt(0);
+
+        assertTrue(IntSize > IntList.getSize());
+        assertTrue(DoubleSize > DoubleList.getSize());
+        assertTrue(CharSize > CharList.getSize());
+        assertTrue(BoolSize > BoolList.getSize());
+    }
+
 
     @Disabled
     @Test
     void show() {
+
     }
 
     @Disabled

@@ -45,12 +45,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         /*-----------------------*/
 
-        /*---Methods---*/
-        protected int countChildren(){
-            if (this.left != null && this.right != null) return 2;
-            if(this.left == null && this.right == null) return 0;
-            else return 1;
-        }
         protected int getHeight(){
             return this==null? -1: this.height;
         }

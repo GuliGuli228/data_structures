@@ -55,17 +55,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
-    //TODO: maybe delete
-    private class BinaryTreeComparator implements Comparator<BinaryNode>{
-        @Override
-        public int compare(BinaryNode node1, BinaryNode node2) {
-            return node1.getValue().compareTo(node2.getValue());
-        }
-    }
+
 
     //TODO find a way to use method .getParent(), not variable BinaryNode parent;
-    BinaryNode root;
-    BinaryTreeComparator Compare = new BinaryTreeComparator();
+    private BinaryNode root;
+
     @Override
     public void add(T value) {
         if(this.IsEmpty()){
@@ -82,8 +76,16 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
                 if(direction <0) current = current.getLeft();
                 if(direction == 0) return;
             }
-            if(direction > 0) parent.setRight(new BinaryNode(value));
-            if(direction < 0) parent.setLeft(new BinaryNode(value));
+            BinaryNode toAdd = new BinaryNode(value);
+            if(direction > 0){
+                parent.setRight(toAdd);
+                toAdd.setParent(parent);
+
+            }
+            if(direction < 0) {
+                parent.setLeft(toAdd);
+                toAdd.setParent(parent);
+            }
         }
     }
 // TODO: add Nullpointerexeption try-catch or null "if statement", and ORDER cases (Краевые случаи)
@@ -108,18 +110,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
                 BinaryNode searchNode = toDelete;
                 searchNode = searchNode.getRight();
 
-                while (searchNode.getLeft().getValue().compareTo(min) < 0){
+                while (searchNode.getLeft() != null){
                     min = searchNode.getLeft().getValue();
                     searchNode = searchNode.getLeft();
                 }
                 toDelete.setValue(min);
 
-                if (searchNode.countChildren()==1){
+                //FIXME: исправить логику удаление элемента, замена значений происходит корректно
+                if (searchNode.countChildren()==0){
                     if(searchNode.getParent().getRight() == toDelete) searchNode.getParent().setRight(null);
                     if(searchNode.getParent().getLeft() == toDelete) searchNode.getParent().setLeft(null);
                     return;
                 }
-                if (searchNode.countChildren()==2){
+                if (searchNode.countChildren()==1){
                     BinaryNode child_search = searchNode.getLeft() == null ? searchNode.getRight(): searchNode.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
 
                     if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(child_search);
@@ -129,7 +132,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
         }
     }
-
 
     //TODO разобраться до конца как все таки рабоатет симетричный обход
     //TODO add ORDER cases
@@ -169,7 +171,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         queue.enqueue(current);
 
         try {
-            while(!queue.IsEmpty()){
+            while(!queue.isEmpty()){
                 current = queue.dequeue();
                 if(value.compareTo(current.getValue())==0) return current;
                 else{

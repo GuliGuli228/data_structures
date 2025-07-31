@@ -143,8 +143,12 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     }
 
     public void insertAt(T value, int place){
+        if(this.IsEmpty()){
+            head = new LinkedNode(value);
+            length++;
+            return;
+        }
         if(place < 0 || place+1 > length) throw new IllegalArgumentException();
-        if(this.IsEmpty()) head = new LinkedNode(value);
         else{
             LinkedNode current = head;
             LinkedNode node = new LinkedNode(value);

@@ -5,7 +5,7 @@ import org.example.BasicStructures.GenericLinkedList;
 
 import java.sql.PreparedStatement;
 
-public class Queue<E> extends DoublyLinkedList<E> {
+public class Queue<E> {
     GenericLinkedList<E> list = new GenericLinkedList<>();
 
     public void enqueue(E element){
