@@ -3,6 +3,9 @@ package org.example.BasicStructures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BinarySearchTreeTest {
@@ -190,8 +193,7 @@ public class BinarySearchTreeTest {
         // Поиск несуществующего значения
         tree.add(10);
         BinarySearchTree<Integer>.BinaryNode node = tree.BFS(20);
-        assertNotNull(node, "BFS should return the last checked node");
-        assertNotEquals(20, node.getValue(), "Value 20 should not be found");
+        assertNull(node, "BFS DPS search for a non-existent value should return null");
     }
 
     // Тесты для метода DPS
