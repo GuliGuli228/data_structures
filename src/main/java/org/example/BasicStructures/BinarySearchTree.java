@@ -6,6 +6,8 @@ import org.example.ComplexStructures.Stack;
 import org.example.Interfaces.Tree;
 
 import java.util.Comparator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, BinarySearchTree<T>.BinaryNode> implements Tree<T, BinarySearchTree.BinaryNode> {
     protected class BinaryNode extends Node{
@@ -62,6 +64,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public void add(T value) {
+        Objects.requireNonNull(value, "Adding null should throw an exception");
         if(this.IsEmpty()){
             root = new BinaryNode(value);
         }
@@ -93,6 +96,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
     @Override
     public void deleteByValue(T value) {
         BinaryNode toDelete = BFS(value);
+        if(toDelete == null) return;
 
         switch (toDelete.countChildren()){
             case 0:
@@ -116,10 +120,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
                 }
                 toDelete.setValue(min);
 
-                //FIXME: исправить логику удаление элемента, замена значений происходит корректно
                 if (searchNode.countChildren()==0){
-                    if(searchNode.getParent().getRight() == toDelete) searchNode.getParent().setRight(null);
-                    if(searchNode.getParent().getLeft() == toDelete) searchNode.getParent().setLeft(null);
+                    if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(null);
+                    if(searchNode.getParent().getLeft() == searchNode) searchNode.getParent().setLeft(null);
                     return;
                 }
                 if (searchNode.countChildren()==1){
@@ -156,7 +159,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public void update(T from, T to) {
+        Objects.requireNonNull(to, "Update from should not be null");
         BinaryNode current = BFS(from);
+        if(current == null) return;
         current.setValue(to);
     }
 
@@ -170,19 +175,15 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         Queue<BinaryNode> queue = new Queue<>();
         queue.enqueue(current);
 
-        try {
-            while(!queue.isEmpty()){
-                current = queue.dequeue();
-                if(value.compareTo(current.getValue())==0) return current;
-                else{
-                    if(current.getLeft()!= null)queue.enqueue(current.getLeft());
-                    if(current.getRight()!=null) queue.enqueue(current.getRight());
-                }
+        while(!queue.isEmpty()){
+            current = queue.dequeue();
+            if(value.compareTo(current.getValue())==0) return current;
+            else{
+                if(current.getLeft()!= null)queue.enqueue(current.getLeft());
+                if(current.getRight()!=null) queue.enqueue(current.getRight());
             }
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());;
         }
-        return current;
+        return null;
     }
 
 
@@ -196,20 +197,15 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
             Stack<BinaryNode> stack = new Stack<>();
             stack.push(current);
 
-        try {
-            while (!stack.isEmpty()){
-                current = stack.pop();
-                if(value.compareTo(current.getValue()) == 0){
-                    return current;
-                }
-                else{
-                    if(current.getRight()!= null) stack.push(current.getRight());
-                    if(current.getLeft()!=null)   stack.push(current.getLeft());
-                }
+        while (!stack.isEmpty()){
+            current = stack.pop();
+            if(value.compareTo(current.getValue()) == 0){
+                return current;
             }
-            return current;
-        } catch (NullPointerException e) {
-            System.out.println("Tree is empty");;
+            else{
+                if(current.getRight()!= null) stack.push(current.getRight());
+                if(current.getLeft()!=null)   stack.push(current.getLeft());
+            }
         }
         return null;
     }
