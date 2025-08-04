@@ -1,5 +1,6 @@
 package org.example.BasicStructures;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -165,7 +166,7 @@ public class BinarySearchTreeTest {
     void testUpdateWithNull() {
         // Проверяем поведение при попытке обновления с null
         tree.add(10);
-        assertThrows(NullPointerException.class, () -> tree.update(null, 20), "Updating with null should throw an exception");
+        assertThrows(NullArgumentException.class, () -> tree.update(null, 20), "Updating with null should throw an exception");
     }
 
     // Тесты для метода BFS

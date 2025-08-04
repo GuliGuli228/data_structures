@@ -39,7 +39,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void insertAt(T value) {
-        if(this.IsEmpty())  head = new DoublyLinkedNode(value, null,null);
+        if(this.isEmpty())  head = new DoublyLinkedNode(value, null,null);
         else{
             DoublyLinkedNode current = head;
             while(current.next != null){
@@ -50,7 +50,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         lenght++;
     }
     public void insertAt(T value, int place){
-        if (this.IsEmpty() || lenght-1 > place) {
+        if (this.isEmpty() || lenght-1 > place) {
             this.insertAt(value);
             return;
         }
@@ -65,7 +65,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void removeAt(int place) {
-        if(this.IsEmpty()) System.out.println("List is empty");
+        if(this.isEmpty()) System.out.println("List is empty");
         else{
             int counter = 1;
             Node current = head;
@@ -74,7 +74,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public String show() {
-        if(this.IsEmpty()){
+        if(this.isEmpty()){
             System.out.println("List is empty");
             throw new NoSuchElementException();
         }
@@ -91,7 +91,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     }
 
     @Override
-    public boolean IsEmpty() {
+    public boolean isEmpty() {
         return (head == null);
     }
 

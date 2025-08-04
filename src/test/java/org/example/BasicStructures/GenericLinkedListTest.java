@@ -1,35 +1,31 @@
 package org.example.BasicStructures;
 
+import org.example.Exceptions.EmptyLinkedListException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
-class GenericLinkedListTest {
 
+class GenericLinkedListTest {
+    // TODO: Промотреть весь код, ТЕСТЫ НАПИСАНЫ НЕЙРОНКОЙ!!!
     GenericLinkedList<Integer> IntList;
     GenericLinkedList<Double> DoubleList;
     GenericLinkedList<Character> CharList;
     GenericLinkedList<Boolean> BoolList;
 
-    private static <T> GenericLinkedList<T>.LinkedNode getNode(GenericLinkedList<T> list,int place){
-        if(list.IsEmpty()) throw new NoSuchElementException();
-        if(place <0 || place > list.length-1) throw new IllegalArgumentException();
-
+    private static <T> GenericLinkedList<T>.LinkedNode getNode(GenericLinkedList<T> list, int place) {
+        if (list.isEmpty()) throw new NoSuchElementException();
+        if (place < 0 || place >= list.getSize()) throw new IllegalArgumentException();
         GenericLinkedList<T>.LinkedNode current = list.head;
-
-        for(int i = 0; i < place; i++){
+        for (int i = 0; i < place; i++) {
             current = current.next;
         }
         return current;
     }
 
     @BeforeEach
-    void setup(){
+    void setup() {
         IntList = new GenericLinkedList<>();
         DoubleList = new GenericLinkedList<>();
         CharList = new GenericLinkedList<>();
@@ -38,7 +34,7 @@ class GenericLinkedListTest {
 
     @DisplayName("Insert one at Head In Empty")
     @Test
-    void InsetAtHeadUsingInsert() {
+    void insertAtHeadUsingInsert() {
         IntList.insertAt(1);
         DoubleList.insertAt(1.0);
         CharList.insertAt('a');
@@ -60,16 +56,16 @@ class GenericLinkedListTest {
 
     @DisplayName("Insert multiple in tail")
     @Test
-    void InsetAtHeadUsingInsertAt(){
+    void insertAtTailUsingInsert() {
         int IntSize = IntList.getSize();
         int DoubleSize = DoubleList.getSize();
         int CharSize = CharList.getSize();
         int BoolSize = BoolList.getSize();
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             IntList.insertAt(i);
-            DoubleList.insertAt((double)i);
-            CharList.insertAt((char)i);
-            BoolList.insertAt(i >5);
+            DoubleList.insertAt((double) i);
+            CharList.insertAt((char) i);
+            BoolList.insertAt(i > 5);
         }
 
         assertTrue(IntSize < IntList.getSize());
@@ -78,13 +74,14 @@ class GenericLinkedListTest {
         assertTrue(BoolSize < BoolList.getSize());
         assertEquals(9, IntList.tail.getValue());
         assertEquals(9.0, DoubleList.tail.getValue());
-        assertEquals((char)9, CharList.tail.getValue());
+        assertEquals((char) 9, CharList.tail.getValue());
         assertEquals(true, BoolList.tail.getValue());
+        assertEquals(10, IntList.getSize());
     }
 
-    @DisplayName("tail.next is null ???")
+    @DisplayName("tail.next is null")
     @Test
-    void isTailNextNull(){
+    void isTailNextNull() {
         IntList.insertAt(1);
         DoubleList.insertAt(1.0);
         CharList.insertAt('a');
@@ -96,10 +93,9 @@ class GenericLinkedListTest {
         assertNull(BoolList.tail.next);
     }
 
-    @DisplayName("Insert In beg in not empty")
+    @DisplayName("Insert at beginning in non-empty list")
     @Test
-
-    void insertInBeginning(){
+    void insertInBeginning() {
         IntList.insertAt(0);
         DoubleList.insertAt(0.0);
         CharList.insertAt('a');
@@ -110,93 +106,103 @@ class GenericLinkedListTest {
         CharList.insertAt('b', 0);
         BoolList.insertAt(false, 0);
 
-        assertEquals(IntList.getValueAt(0), IntList.head.getValue());
-        assertEquals(DoubleList.getValueAt(0), DoubleList.head.getValue());
-        assertEquals(CharList.getValueAt(0), CharList.head.getValue());
-        assertEquals(BoolList.getValueAt(0), BoolList.head.getValue());
+        assertEquals(1, IntList.getValueAt(0));
+        assertEquals(1.0, DoubleList.getValueAt(0));
+        assertEquals('b', CharList.getValueAt(0));
+        assertEquals(false, BoolList.getValueAt(0));
     }
-    @DisplayName("Insert in end is tail")
+
+    @DisplayName("Insert at end is tail")
     @Test
-    void insertInEnd(){
+    void insertInEnd() {
         IntList.insertAt(0);
         DoubleList.insertAt(0.0);
         CharList.insertAt('a');
         BoolList.insertAt(true);
 
-        IntList.insertAt(1, IntList.getSize()-1);
-        DoubleList.insertAt(1.0, DoubleList.getSize()-1);
-        CharList.insertAt('b', CharList.getSize()-1);
-        BoolList.insertAt(false, BoolList.getSize()-1);
+        IntList.insertAt(1, IntList.getSize());
+        DoubleList.insertAt(1.0, DoubleList.getSize());
+        CharList.insertAt('b', CharList.getSize());
+        BoolList.insertAt(false, BoolList.getSize());
 
-        assertEquals(IntList.tail.getValue(), IntList.getValueAt(IntList.getSize()-1));
-        assertEquals(DoubleList.tail.getValue(), DoubleList.getValueAt(DoubleList.getSize()-1));
-        assertEquals(CharList.tail.getValue(), CharList.getValueAt(CharList.getSize()-1));
-        assertEquals(BoolList.tail.getValue(), BoolList.getValueAt(BoolList.getSize()-1));
+        assertEquals(1, IntList.tail.getValue());
+        assertEquals(1.0, DoubleList.tail.getValue());
+        assertEquals('b', CharList.tail.getValue());
+        assertEquals(false, BoolList.tail.getValue());
     }
+
     @DisplayName("Insert in middle")
     @Test
-    void insertInMiddle(){
-        for(int i = 1; i <= 5; i++){
-            if(i==3) continue;;
+    void insertInMiddle() {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) continue;
             IntList.insertAt(i);
             DoubleList.insertAt((double) i);
             CharList.insertAt((char) i);
             BoolList.insertAt(true);
         }
 
-        IntList.insertAt(3,2);
-        DoubleList.insertAt((double)3,2);
-        CharList.insertAt((char)3, 2);
+        IntList.insertAt(3, 2);
+        DoubleList.insertAt(3.0, 2);
+        CharList.insertAt((char) 3, 2);
         BoolList.insertAt(false, 2);
 
-        assertTrue(IntList.getSize()==5 && IntList.getValueAt(2)==3);
-        assertTrue(DoubleList.getSize()==5 && DoubleList.getValueAt(2)==(double)3);
-        assertTrue(CharList.getSize()==5 && CharList.getValueAt(2)==(char)3);
-        assertTrue(BoolList.getSize()==5 && BoolList.getValueAt(2) ==false);
+        assertEquals(5, IntList.getSize());
+        assertEquals(3, IntList.getValueAt(2));
+        assertEquals(5, DoubleList.getSize());
+        assertEquals(3.0, DoubleList.getValueAt(2));
+        assertEquals(5, CharList.getSize());
+        assertEquals((char) 3, CharList.getValueAt(2));
+        assertEquals(5, BoolList.getSize());
+        assertEquals(false, BoolList.getValueAt(2));
     }
 
     @DisplayName("Wrong index insertions")
     @Test
-    void insertInWrongPosition(){
-        assertThrows(IllegalArgumentException.class, () -> {IntList.insertAt(1, -1);});
-        assertThrows(IllegalArgumentException.class, () -> {IntList.insertAt(1, 5);});
-        assertThrows(IllegalArgumentException.class, () -> {DoubleList.insertAt((double)1, -1);});
-        assertThrows(IllegalArgumentException.class, () -> {DoubleList.insertAt((double)1,5);});
-        assertThrows(IllegalArgumentException.class, () -> {CharList.insertAt((char)1, -1);});
-        assertThrows(IllegalArgumentException.class, () -> {CharList.insertAt((char)1, 5);});
-        assertThrows(IllegalArgumentException.class, () -> {BoolList.insertAt(true, -1);});
-        assertThrows(IllegalArgumentException.class, () -> {BoolList.insertAt(true, -1);});
+    void insertInWrongPosition() {
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.insertAt(1, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.insertAt(1, 5));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.insertAt(1.0, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.insertAt(1.0, 5));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.insertAt('a', -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.insertAt('a', 5));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.insertAt(true, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.insertAt(true, 5));
     }
 
     @DisplayName("Wrong index remove")
     @Test
-    void removeAt() {
-        assertThrows(NoSuchElementException.class, ()->{IntList.removeAt(-1);});
-        assertThrows(NoSuchElementException.class, ()->{DoubleList.removeAt(-1);});
-        assertThrows(NoSuchElementException.class, ()->{CharList.removeAt(-1);});
-        assertThrows(NoSuchElementException.class, ()->{BoolList.removeAt(-1);});
+    void removeAtWrongIndex() {
+
+        IntList.insertAt(0);
+        DoubleList.insertAt(0.0);
+        CharList.insertAt('a');
+        BoolList.insertAt(true);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.removeAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.removeAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.removeAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.removeAt(-1));
     }
 
-    @DisplayName("Empty List remove")
+    @DisplayName("Empty list remove")
     @Test
-    void deleteInEmptyList(){
-        assertThrows(NoSuchElementException.class, ()->{IntList.removeAt(0);});
-        assertThrows(NoSuchElementException.class, ()->{DoubleList.removeAt(0);});
-        assertThrows(NoSuchElementException.class, ()->{CharList.removeAt(0);});
-        assertThrows(NoSuchElementException.class, ()->{BoolList.removeAt(0);});
+    void deleteInEmptyList() {
+        assertThrows(EmptyLinkedListException.class, () -> IntList.removeAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> DoubleList.removeAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> CharList.removeAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> BoolList.removeAt(0));
     }
+
     @DisplayName("Head remove")
     @Test
-    void HeadRemove(){
+    void headRemove() {
         IntList.insertAt(1);
         IntList.insertAt(2);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
 
@@ -205,301 +211,306 @@ class GenericLinkedListTest {
         CharList.removeAt(0);
         BoolList.removeAt(0);
 
-        assertEquals(IntList.head.getValue(), IntList.getValueAt(0));
-        assertEquals(DoubleList.head.getValue(), DoubleList.getValueAt(0));
-        assertEquals(CharList.head.getValue(), CharList.getValueAt(0));
-        assertEquals(BoolList.head.getValue(), BoolList.getValueAt(0));
+        assertEquals(2, IntList.getValueAt(0));
+        assertEquals(2.0, DoubleList.getValueAt(0));
+        assertEquals('b', CharList.getValueAt(0));
+        assertEquals(false, BoolList.getValueAt(0));
     }
 
     @DisplayName("Tail remove")
     @Test
-    void removeTail(){
+    void removeTail() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
-        BoolList.insertAt(false);
+        BoolList.insertAt(true);
 
+        IntList.removeAt(IntList.getSize() - 1);
+        DoubleList.removeAt(DoubleList.getSize() - 1);
+        CharList.removeAt(CharList.getSize() - 1);
+        BoolList.removeAt(BoolList.getSize() - 1);
 
-        IntList.removeAt(IntList.getSize()-1);
-        DoubleList.removeAt(DoubleList.getSize() -1);
-        CharList.removeAt(CharList.getSize()-1);
-        BoolList.removeAt(BoolList.getSize()-1);
-
-        assertEquals(IntList.tail.getValue(), IntList.getValueAt(IntList.getSize()-1));
-        assertEquals(DoubleList.tail.getValue(), DoubleList.getValueAt(DoubleList.getSize()-1));
-        assertEquals(CharList.tail.getValue(), CharList.getValueAt(CharList.getSize()-1));
-        assertEquals(BoolList.tail.getValue(), BoolList.getValueAt(BoolList.getSize()-1));
+        assertEquals(2, IntList.tail.getValue());
+        assertEquals(2.0, DoubleList.tail.getValue());
+        assertEquals('b', CharList.tail.getValue());
+        assertEquals(false, BoolList.tail.getValue());
     }
 
     @DisplayName("Middle remove")
     @Test
-    void removeAtMiddle(){
+    void removeAtMiddle() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
-        BoolList.insertAt(false);
+        BoolList.insertAt(true);
 
-        assertEquals(IntList.head.next, IntList.tail);
-        assertEquals(DoubleList.head.next, DoubleList.tail);
-        assertEquals(CharList.head.next, CharList.tail);
-        assertEquals(BoolList.head.next, BoolList.tail);
+        IntList.removeAt(1);
+        DoubleList.removeAt(1);
+        CharList.removeAt(1);
+        BoolList.removeAt(1);
+
+        assertEquals(3, IntList.getValueAt(1));
+        assertEquals(3.0, DoubleList.getValueAt(1));
+        assertEquals('c', CharList.getValueAt(1));
+        assertEquals(true, BoolList.getValueAt(1));
     }
-    @DisplayName("EmptyList getvalue")
+
+    @DisplayName("Remove single element")
+    @Test
+    void removeSingleElement() {
+        IntList.insertAt(1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
+        BoolList.insertAt(true);
+
+        IntList.removeAt(0);
+        DoubleList.removeAt(0);
+        CharList.removeAt(0);
+        BoolList.removeAt(0);
+
+        assertTrue(IntList.isEmpty());
+        assertTrue(DoubleList.isEmpty());
+        assertTrue(CharList.isEmpty());
+        assertTrue(BoolList.isEmpty());
+        assertNull(IntList.head);
+        assertNull(IntList.tail);
+        assertNull(DoubleList.head);
+        assertNull(DoubleList.tail);
+        assertNull(CharList.head);
+        assertNull(CharList.tail);
+        assertNull(BoolList.head);
+        assertNull(BoolList.tail);
+    }
+
+    @DisplayName("Empty list getValue")
     @Test
     void getValueAtEmpty() {
-        assertThrows(NullPointerException.class, ()->{IntList.getValueAt(0);});
-        assertThrows(NullPointerException.class, ()->{DoubleList.getValueAt(0);});
-        assertThrows(NullPointerException.class, ()->{CharList.getValueAt(0);});
-        assertThrows(NullPointerException.class, ()->{BoolList.getValueAt(0);});
+        assertThrows(EmptyLinkedListException.class, () -> IntList.getValueAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> DoubleList.getValueAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> CharList.getValueAt(0));
+        assertThrows(EmptyLinkedListException.class, () -> BoolList.getValueAt(0));
     }
 
     @DisplayName("First element getValue")
     @Test
-    void getValueAtFirst(){
+    void getValueAtFirst() {
         IntList.insertAt(1);
-        DoubleList.insertAt((double)1);
-        CharList.insertAt((char)1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
         BoolList.insertAt(true);
 
         assertEquals(1, IntList.getValueAt(0));
-        assertEquals((double) 1, DoubleList.getValueAt(0));
-        assertEquals((char)1, CharList.getValueAt(0));
+        assertEquals(1.0, DoubleList.getValueAt(0));
+        assertEquals('a', CharList.getValueAt(0));
         assertEquals(true, BoolList.getValueAt(0));
     }
 
     @DisplayName("Last element getValue")
     @Test
-    void getValueAtLast(){
-
+    void getValueAtLast() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
-        BoolList.insertAt(false);
+        BoolList.insertAt(true);
 
-        assertEquals(IntList.tail.getValue(), IntList.getValueAt(IntList.getSize()-1));
-        assertEquals(DoubleList.tail.getValue(), DoubleList.getValueAt(DoubleList.getSize()-1));
-        assertEquals(CharList.tail.getValue(), CharList.getValueAt(CharList.getSize()-1));
-        assertEquals(BoolList.tail.getValue(), BoolList.getValueAt(BoolList.getSize()-1));
+        assertEquals(3, IntList.getValueAt(IntList.getSize() - 1));
+        assertEquals(3.0, DoubleList.getValueAt(DoubleList.getSize() - 1));
+        assertEquals('c', CharList.getValueAt(CharList.getSize() - 1));
+        assertEquals(true, BoolList.getValueAt(BoolList.getSize() - 1));
     }
 
-    @DisplayName("getValue at middle")
+    @DisplayName("Middle getValue")
     @Test
-    void getValueAtMiddle(){
+    void getValueAtMiddle() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
-        BoolList.insertAt(false);
+        BoolList.insertAt(true);
 
-        assertEquals(2, IntList.getValueAt(IntList.getSize()/2));
-        assertEquals((double) 2, DoubleList.getValueAt(DoubleList.getSize()/2));
-        assertEquals((char) 2, CharList.getValueAt(CharList.getSize()/2));
-        assertEquals(false, BoolList.getValueAt(BoolList.getSize()/2));
+        assertEquals(2, IntList.getValueAt(1));
+        assertEquals(2.0, DoubleList.getValueAt(1));
+        assertEquals('b', CharList.getValueAt(1));
+        assertEquals(false, BoolList.getValueAt(1));
     }
 
     @DisplayName("Wrong index getValue")
     @Test
-    void getValueAtWrongIndex(){
+    void getValueAtWrongIndex() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(false);
-        BoolList.insertAt(false);
+        BoolList.insertAt(true);
 
-        assertThrows(IllegalArgumentException.class, ()->{IntList.getValueAt(-1);});
-        assertThrows(IllegalArgumentException.class, ()->{DoubleList.getValueAt(-1);});
-        assertThrows(IllegalArgumentException.class, ()->{CharList.getValueAt(-1);});
-        assertThrows(IllegalArgumentException.class, ()->{BoolList.getValueAt(-1);});
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.getValueAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.getValueAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.getValueAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.getValueAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.getValueAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.getValueAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.getValueAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.getValueAt(3));
     }
 
     @DisplayName("Update in empty list")
     @Test
-    void updateInEmptyList(){
-        assertThrows(NoSuchElementException.class, ()->{IntList.update(1,0);});
-        assertThrows(NoSuchElementException.class, ()->{DoubleList.update((double)1,0);});
-        assertThrows(NoSuchElementException.class, ()->{CharList.update((char)1,0);});
-        assertThrows(NoSuchElementException.class, ()->{BoolList.update(true,0);});
+    void updateInEmptyList() {
+        assertThrows(EmptyLinkedListException.class, () -> IntList.update(1, 0));
+        assertThrows(EmptyLinkedListException.class, () -> DoubleList.update(1.0, 0));
+        assertThrows(EmptyLinkedListException.class, () -> CharList.update('a', 0));
+        assertThrows(EmptyLinkedListException.class, () -> BoolList.update(true, 0));
     }
 
     @DisplayName("First element update")
     @Test
-    void updateFirstElement(){
+    void updateFirstElement() {
         IntList.insertAt(1);
-        DoubleList.insertAt((double)1);
-        CharList.insertAt((char)1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
         BoolList.insertAt(true);
 
         IntList.update(2, 0);
-        DoubleList.update((double)2, 0);
-        CharList.update((char)2, 0);
+        DoubleList.update(2.0, 0);
+        CharList.update('b', 0);
         BoolList.update(false, 0);
 
         assertEquals(2, IntList.getValueAt(0));
-        assertEquals((double)2, DoubleList.getValueAt(0));
-        assertEquals((char)2, CharList.getValueAt(0));
+        assertEquals(2.0, DoubleList.getValueAt(0));
+        assertEquals('b', CharList.getValueAt(0));
         assertEquals(false, BoolList.getValueAt(0));
     }
 
     @DisplayName("Last element update")
     @Test
-    void updateLastElement(){
+    void updateLastElement() {
         IntList.insertAt(1);
         IntList.insertAt(2);
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
         BoolList.insertAt(true);
         BoolList.insertAt(true);
 
-        IntList.update(3, IntList.getSize()-1);
-        DoubleList.update((double)3, DoubleList.getSize()-1);
-        CharList.update((char)3, CharList.getSize()-1);
-        BoolList.update(false, BoolList.getSize()-1);
+        IntList.update(3, IntList.getSize() - 1);
+        DoubleList.update(3.0, DoubleList.getSize() - 1);
+        CharList.update('c', CharList.getSize() - 1);
+        BoolList.update(false, BoolList.getSize() - 1);
 
-        assertEquals(3, IntList.getValueAt(IntList.getSize()-1));
-        assertEquals((double) 3, DoubleList.getValueAt(DoubleList.getSize()-1));
-        assertEquals((char) 3, CharList.getValueAt(CharList.getSize()-1));
-        assertEquals(false, BoolList.getValueAt(BoolList.getSize()-1));
+        assertEquals(3, IntList.getValueAt(IntList.getSize() - 1));
+        assertEquals(3.0, DoubleList.getValueAt(DoubleList.getSize() - 1));
+        assertEquals('c', CharList.getValueAt(CharList.getSize() - 1));
+        assertEquals(false, BoolList.getValueAt(BoolList.getSize() - 1));
     }
 
     @DisplayName("Middle update")
     @Test
-    void updateInMiddle(){
+    void updateInMiddle() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(true);
         BoolList.insertAt(true);
 
-        GenericLinkedList.LinkedNode IntMiddle = GenericLinkedListTest.getNode(IntList,IntList.getSize()/2);
-        GenericLinkedList.LinkedNode DoubleMiddle = GenericLinkedListTest.getNode(DoubleList,IntList.getSize()/2);
-        GenericLinkedList.LinkedNode CharMiddle = GenericLinkedListTest.getNode(CharList,IntList.getSize()/2);
-        GenericLinkedList.LinkedNode BoolMiddle = GenericLinkedListTest.getNode(BoolList,IntList.getSize()/2);
+        IntList.update(4, 1);
+        DoubleList.update(4.0, 1);
+        CharList.update('d', 1);
+        BoolList.update(false, 1);
 
-        //TODO Find out why update throws IllegalArgumentException
-        IntList.update(4, IntList.getSize()/2);
-        DoubleList.update((double)4, DoubleList.getSize()/2);
-        CharList.update((char)4, CharList.getSize()/2);
-        BoolList.update(false, BoolList.getSize()/2);
-
-        assertTrue(IntList.getValueAt(IntList.getSize()/2) == 4 && IntMiddle == GenericLinkedListTest.getNode(IntList,IntList.getSize()/2) );
-        assertTrue(DoubleList.getValueAt(DoubleList.getSize()/2) == (double)4 && DoubleMiddle == GenericLinkedListTest.getNode(DoubleList,DoubleList.getSize()/2) );
-        assertTrue(CharList.getValueAt(CharList.getSize()/2) == (char)4 && CharMiddle == GenericLinkedListTest.getNode(CharList,CharList.getSize()/2) );
-        assertTrue(BoolList.getValueAt(BoolList.getSize()/2) == false && BoolMiddle == GenericLinkedListTest.getNode(BoolList,BoolList.getSize()/2) );
-
+        assertEquals(4, IntList.getValueAt(1));
+        assertEquals(4.0, DoubleList.getValueAt(1));
+        assertEquals('d', CharList.getValueAt(1));
+        assertEquals(false, BoolList.getValueAt(1));
     }
 
     @DisplayName("Wrong index update")
     @Test
-    void updateAtWrongIndex(){
+    void updateAtWrongIndex() {
         IntList.insertAt(1);
         IntList.insertAt(2);
         IntList.insertAt(3);
-
-        CharList.insertAt((char)1);
-        CharList.insertAt((char)2);
-        CharList.insertAt((char)3);
-
-        DoubleList.insertAt((double)1);
-        DoubleList.insertAt((double)2);
-        DoubleList.insertAt((double)3);
-
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
         BoolList.insertAt(true);
         BoolList.insertAt(true);
         BoolList.insertAt(true);
 
-        assertThrows(IllegalArgumentException.class, ()-> {IntList.update(5,5);});
-        assertThrows(IllegalArgumentException.class, ()-> {DoubleList.update((double)5,5);});
-        assertThrows(IllegalArgumentException.class, ()-> {CharList.update((char)5,5);});
-        assertThrows(IllegalArgumentException.class, ()-> {BoolList.update(false,5);});
+        assertThrows(IndexOutOfBoundsException.class, () -> IntList.update(5, 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> DoubleList.update(5.0, 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> CharList.update('e', 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> BoolList.update(false, 3));
     }
-
 
     @DisplayName("Empty list getSize")
     @Test
-    void getSizeAtEmptyList(){
+    void getSizeAtEmptyList() {
         assertEquals(0, IntList.getSize());
         assertEquals(0, DoubleList.getSize());
         assertEquals(0, CharList.getSize());
         assertEquals(0, BoolList.getSize());
     }
 
-    @DisplayName("get size after insertion")
+    @DisplayName("Get size after insertion")
     @Test
-    void getSizeAfterInsertion(){
+    void getSizeAfterInsertion() {
         int IntSize = IntList.getSize();
         int DoubleSize = DoubleList.getSize();
         int CharSize = CharList.getSize();
         int BoolSize = BoolList.getSize();
 
-
         IntList.insertAt(1);
-        DoubleList.insertAt((double)1);
-        CharList.insertAt((char)1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
         BoolList.insertAt(true);
 
         assertTrue(IntSize < IntList.getSize());
@@ -507,13 +518,13 @@ class GenericLinkedListTest {
         assertTrue(CharSize < CharList.getSize());
         assertTrue(BoolSize < BoolList.getSize());
     }
-    @DisplayName("get size after delete")
-    @Test
-    void getSizeAfterDelete(){
 
+    @DisplayName("Get size after delete")
+    @Test
+    void getSizeAfterDelete() {
         IntList.insertAt(1);
-        DoubleList.insertAt((double)1);
-        CharList.insertAt((char)1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
         BoolList.insertAt(true);
 
         int IntSize = IntList.getSize();
@@ -532,30 +543,72 @@ class GenericLinkedListTest {
         assertTrue(BoolSize > BoolList.getSize());
     }
 
-
-    @Disabled
+    @DisplayName("Show empty list")
     @Test
-    void show() {
-
+    void showEmptyList() {
+        assertThrows(EmptyLinkedListException.class, () -> IntList.show());
+        assertThrows(EmptyLinkedListException.class, () -> DoubleList.show());
+        assertThrows(EmptyLinkedListException.class, () -> CharList.show());
+        assertThrows(EmptyLinkedListException.class, () -> BoolList.show());
     }
 
-    @Disabled
+    @DisplayName("Show single element list")
     @Test
-    void isEmpty() {
+    void showSingleElement() {
+        IntList.insertAt(1);
+        DoubleList.insertAt(1.0);
+        CharList.insertAt('a');
+        BoolList.insertAt(true);
+
+        assertEquals("List: 1", IntList.show());
+        assertEquals("List: 1.0", DoubleList.show());
+        assertEquals("List: a", CharList.show());
+        assertEquals("List: true", BoolList.show());
     }
 
-    @Disabled
+    @DisplayName("Show multiple elements")
     @Test
-    void update() {
+    void showMultipleElements() {
+        IntList.insertAt(1);
+        IntList.insertAt(2);
+        IntList.insertAt(3);
+        DoubleList.insertAt(1.0);
+        DoubleList.insertAt(2.0);
+        DoubleList.insertAt(3.0);
+        CharList.insertAt('a');
+        CharList.insertAt('b');
+        CharList.insertAt('c');
+        BoolList.insertAt(true);
+        BoolList.insertAt(false);
+        BoolList.insertAt(true);
+
+        assertEquals("List: 1 → 2 → 3", IntList.show());
+        assertEquals("List: 1.0 → 2.0 → 3.0", DoubleList.show());
+        assertEquals("List: a → b → c", CharList.show());
+        assertEquals("List: true → false → true", BoolList.show());
     }
 
-    @Disabled
+    @DisplayName("IsEmpty after operations")
     @Test
-    void getSize() {
+    void isEmptyAfterOperations() {
+        assertTrue(IntList.isEmpty());
+        IntList.insertAt(1);
+        assertFalse(IntList.isEmpty());
+        IntList.removeAt(0);
+        assertTrue(IntList.isEmpty());
     }
 
-    @Disabled
+    @DisplayName("Node connections after operations")
     @Test
-    void testInsertAt() {
+    void nodeConnections() {
+        IntList.insertAt(1);
+        IntList.insertAt(2);
+        IntList.insertAt(3, 1);
+
+        assertEquals(1, IntList.head.getValue());
+        assertEquals(3, IntList.head.next.getValue());
+        assertEquals(2, IntList.head.next.next.getValue());
+        assertEquals(2, IntList.tail.getValue());
+        assertNull(IntList.tail.next);
     }
 }

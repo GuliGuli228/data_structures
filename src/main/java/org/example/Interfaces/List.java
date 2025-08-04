@@ -4,6 +4,6 @@ public interface List<T> {
      void insertAt(T value);
      void removeAt(int place);
      String show();
-     boolean IsEmpty();
+     boolean isEmpty();
      void update(T value, int place);
 }

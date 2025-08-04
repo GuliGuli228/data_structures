@@ -1,9 +1,9 @@
 package org.example.BasicStructures;
 
 import org.example.AbstracClasses.AbstractList;
+import org.example.Exceptions.EmptyLinkedListException;
 import org.example.Interfaces.List;
 
-import java.util.NoSuchElementException;
 
 public class GenericLinkedList<T> extends AbstractList implements List<T> {
     protected class LinkedNode extends Node<T>{
@@ -36,13 +36,15 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void insertAt(T value) {
-        if(this.IsEmpty()) {
+        if(this.isEmpty()) {
             head = new LinkedNode(value);
             tail =head;
         }
         else{
             LinkedNode current = head;
-            while (current.next != null) current = current.next;
+            while (current.next != null) {
+                current = current.next;
+            }
             current.next = new LinkedNode(value);
             tail = current.next;
         }
@@ -52,19 +54,14 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void removeAt(int place) {
-        if(this.IsEmpty()){
-            System.out.println("List is empty, noting to delete");
-            throw new NoSuchElementException();
-        }
-        if (place > length || place < 0){
-            System.out.println("No such element to delete");
-            throw new NoSuchElementException();
-        }
+        if(this.isEmpty()) throw new EmptyLinkedListException();
+        if (place > length || place < 0) throw new IndexOutOfBoundsException();
         else {
             try {
                 LinkedNode current = head;
                 if(place == 0){
                     head = head.next;
+                    tail = head;
                     length--;
                     return;
                 }
@@ -85,11 +82,8 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
 
     // TODO rewrite method to not return null
     public T getValueAt(int place){
-        if (this.IsEmpty()){
-            System.out.println("List is empty");
-            throw new NullPointerException();
-        }
-        if(place < 0 ) throw new IllegalArgumentException();
+        if (this.isEmpty()) throw new EmptyLinkedListException();
+        if(place < 0 || place +1 > length) throw new IndexOutOfBoundsException();
         try {
             LinkedNode current = head;
             for (int i =0; i < place; i++){
@@ -104,10 +98,8 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public String show() {
-        if (this.IsEmpty()) {
-            System.out.println("List is empty");
-            throw new IllegalArgumentException();
-        } else {
+        if (this.isEmpty())throw new EmptyLinkedListException();
+        else {
             LinkedNode current = head;
             StringBuilder output = new StringBuilder("List: ");
             while (current != null) {
@@ -123,14 +115,14 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
 
 
     @Override
-    public boolean IsEmpty() {
+    public boolean isEmpty() {
         return (head == null);
     }
 
     @Override
     public void update(T value, int place) {
-        if (this.IsEmpty()) throw new NoSuchElementException();
-        if(place<0 || place <length-1) throw new IllegalArgumentException();
+        if (this.isEmpty()) throw new EmptyLinkedListException();
+        if(place<0 || place + 1 > length) throw new IndexOutOfBoundsException();
         LinkedNode current = head;
         for(int i = 0; i< place; i++){
             current = current.next;
@@ -143,12 +135,11 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     }
 
     public void insertAt(T value, int place){
-        if(this.IsEmpty()){
+        if(place < 0 || place > length) throw new IndexOutOfBoundsException();
+        if(this.isEmpty()){
             head = new LinkedNode(value);
             length++;
-            return;
         }
-        if(place < 0 || place+1 > length) throw new IllegalArgumentException();
         else{
             LinkedNode current = head;
             LinkedNode node = new LinkedNode(value);
@@ -158,7 +149,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
                 length ++;
                 return;
             }
-            if (place == length-1){
+            if (place == length){
                 tail.next = node;
                 tail = node;
                 length++;

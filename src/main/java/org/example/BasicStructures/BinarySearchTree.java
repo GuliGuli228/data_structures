@@ -1,5 +1,6 @@
 package org.example.BasicStructures;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.AbstractTree;
 import org.example.ComplexStructures.Queue;
 import org.example.ComplexStructures.Stack;
@@ -159,7 +160,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public void update(T from, T to) {
-        Objects.requireNonNull(to, "Update from should not be null");
+        if (from == null || to == null) throw new NullArgumentException("values");
         BinaryNode current = BFS(from);
         if(current == null) return;
         current.setValue(to);

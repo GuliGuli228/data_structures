@@ -38,6 +38,12 @@
             <artifactId>junit-jupiter-params</artifactId>
             <version>6.0.0-M2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>org-apache-commons-lang</artifactId>
+            <version>RELEASE113</version>
+        </dependency>
     </dependencies>
 
 </project>
