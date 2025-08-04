@@ -1,5 +1,6 @@
 package org.example.ComplexStructures;
 
+import org.example.BasicStructures.BinarySearchTree;
 import org.example.BasicStructures.DoublyLinkedList;
 import org.example.BasicStructures.GenericLinkedList;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -10,6 +11,7 @@ public class Main {
         GenericLinkedList<Integer> List = new GenericLinkedList<>();
         DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
         GenericLinkedList<Integer> list = new GenericLinkedList<>();
+        BinarySearchTree<String> binarySearchTree = new BinarySearchTree<>();
         list.insertAt(22, 0);
 //        List: 1 → 2 → 3 → 5
 //              0   1   2   3
