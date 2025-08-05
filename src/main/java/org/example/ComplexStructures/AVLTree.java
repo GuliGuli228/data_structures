@@ -1,5 +1,6 @@
 package org.example.ComplexStructures;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.example.BasicStructures.BinarySearchTree;
 import org.example.Interfaces.Tree;
 
@@ -45,12 +46,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         /*-----------------------*/
 
-        protected int getHeight(){
-            return this==null? -1: this.height;
-        }
 
         protected void updateHeight(){
-            this.height = Math.max(this.getLeft().height, this.getRight().height) + 1;
+            int LeftHeight = this.getLeft() == null ? -1 : this.getLeft().height;
+            int RightHeight = this.getRight() == null ? -1 : this.getRight().height;
+            this.height = Math.max(LeftHeight, RightHeight) + 1;
         }
 
         protected void swapValueTo(AVLNode node){
@@ -59,50 +59,62 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             node.value = value_a;
         }
         protected int getBalance(){
-            return (this == null) ? 0 : this.getRight().getHeight()- this.getLeft().getHeight();
+            return (this == null) ? 0 : this.getRight().height- this.getLeft().height;
         }
     }
+    /*---Variables---*/
 
-    private AVLNode root;
+    /*---------------*/
+
     @Override
     public void add(T value) {
-        if(this.IsEmpty()) root = new AVLNode(value);
-        else{
-            AVLNode current = root;
-            AVLNode parent = null;
-            Stack<AVLNode> NodeStack = new Stack<>();
-            int direction = 0;
-            while (current != null){
-                parent = current;
-                NodeStack.push(current);
-                direction = value.compareTo(current.getValue());
-                if(direction>0) current = current.getRight();
-                if(direction <0) current = current.getLeft();
-                if(direction == 0) return;
+        if(value == null) throw new NullArgumentException("value is null");
+
+        if(this.IsEmpty()){
+            root = new AVLNode(value);
+            return;
+        }
+
+        AVLNode current = (AVLNode) root;
+        AVLNode parent = null;
+        Stack<AVLNode> NodeStack = new Stack<>();
+        Stack<AVLNode> NodeStackToUpdateHeights = new Stack<>(); // Stack to update heights in proper order, caused by iterative, not recursive approach
+        int direction = 0;
+        while (current != null){
+            parent = current;
+            NodeStack.push(current);
+            NodeStackToUpdateHeights.push(current);
+            direction = value.compareTo(current.getValue());
+            if(direction>0) current = current.getRight();
+            if(direction <0) current = current.getLeft();
+            if(direction == 0) return;
+        }
+        AVLNode NodeToAdd = new AVLNode(value);
+        if(direction > 0) parent.setRight(NodeToAdd);
+        if(direction < 0) parent.setLeft(NodeToAdd);
+
+        while (!NodeStack.isEmpty()){
+            current = NodeStack.pop();
+            current.updateHeight();
+        }
+
+        while(!NodeStack.isEmpty()){
+            AVLNode node = NodeStack.pop();
+            int balance = node.getBalance();
+            //TODO: вынести этот код в отдельный метод балансировки
+            if(balance == -2){
+                if(node.getLeft().getBalance()==1) this.LeftTurn(node.getLeft());
+                this.RightTurn(node);
+                return;
             }
-            AVLNode NodeToAdd = new AVLNode(value);
-            NodeStack.push(NodeToAdd);
-            if(direction > 0) parent.setRight(NodeToAdd);
-            if(direction < 0) parent.setLeft(NodeToAdd);
-
-            while(!NodeStack.isEmpty()){
-                AVLNode node = NodeStack.pop();
-                int balance = node.getBalance();
-
-                if(balance < 0){
-                    this.LeftTurn(node);
-                    return;
-                }
-                if(balance > 0) {
-                    this.RightTurn(node);
-                    return;
-                }
+            if(balance == 2) {
+                if(node.getRight().getBalance()==1) this.RightTurn(node.getRight());
+                this.LeftTurn(node);
+                return;
             }
         }
     }
-    private void LeftTurn(AVLNode node){
 
-    }
 
     private void RightTurn(AVLNode node){
         this.swapValues(node, node.getLeft());
@@ -115,11 +127,43 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         node.updateHeight();
     }
 
+    private void LeftTurn(AVLNode node){
+        this.swapValues(node,node.getRight());
+        AVLNode temp = node.getLeft();
+        node.setLeft(node.getRight());
+        node.setRight(node.getLeft().getRight());
+        node.getRight().setLeft(node.getRight().getRight());
+        node.getLeft().setLeft(temp);
+        node.getLeft().updateHeight();
+        node.updateHeight();
+
+    }
+
     private void swapValues(AVLNode node1, AVLNode node2){
         T value1 = node1.getValue();
         T value2 = node2.getValue();
         node1.setValue(value2);
         node2.setValue(value1);
     }
+    @Override
+    public AVLNode BFS(T value){
+        return (AVLNode) super.BFS(value);
+    }
+    @Override
+    public AVLNode DPS (T value){
+        return (AVLNode) super.DPS(value);
+    }
+    @Override
+    public boolean IsEmpty(){
+        return super.IsEmpty();
+    }
+    private Stack<AVLNode> findPathToValue(AVLNode node){
+        Stack<AVLNode> path = new Stack<>();
 
+        while(node!=null){
+            path.push(node.getParent());
+            node = node.getParent();
+        }
+        return path;
+    };
 }
