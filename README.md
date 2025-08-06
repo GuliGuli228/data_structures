@@ -22,7 +22,7 @@
 | **BinaryTree**         | ✅ Завершено       | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
 | **LinkedQueue**        | ✅ Завершено       | `enqueue`, `dequeue`, `peek`, `isEmpty`                                 |
 | **BinaryTree**         | ✅ Завершено       | `insert`,  `delete`, `update`, `show (inoreder)`, `BFS`, `DFS`          |
-| **AVLTree**            | 🚧 В работе [30%] | `insert`,`delete`, `update`, `show (inoreder)`, `BFS`, `DFS`            |
+| **AVLTree**            |🔧 Тестируется       | `insert`,`delete`, `update`, `show (inoreder)`, `BFS`, `DFS`            |
 | **ReadBlackTree**      | 🚧 В работе [10%] | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
 | **Heap**              | 🔍 Планируется    | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
 | **HashMap**            | 🔍 Планируется    | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
