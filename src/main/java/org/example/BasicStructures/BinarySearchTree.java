@@ -4,6 +4,7 @@ import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.AbstractTree;
 import org.example.ComplexStructures.Queue;
 import org.example.ComplexStructures.Stack;
+import org.example.Exceptions.EmptyBinaryTreeException;
 import org.example.Interfaces.Tree;
 
 import java.util.Comparator;
@@ -61,11 +62,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
 
     //TODO find a way to use method .getParent(), not variable BinaryNode parent;
-    private BinaryNode root;
+    protected BinaryNode root;
 
     @Override
     public void add(T value) {
-        Objects.requireNonNull(value, "Adding null should throw an exception");
+        if(value == null ) throw new NullArgumentException("value is null");
         if(this.IsEmpty()){
             root = new BinaryNode(value);
         }
@@ -92,7 +93,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
             }
         }
     }
-// TODO: add Nullpointerexeption try-catch or null "if statement", and ORDER cases (Краевые случаи)
+
 
     @Override
     public void deleteByValue(T value) {
@@ -160,7 +161,8 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public void update(T from, T to) {
-        if (from == null || to == null) throw new NullArgumentException("values");
+        if (this.IsEmpty()) return;
+        if(from == null || to == null) throw new NullArgumentException("from and to can't be null");
         BinaryNode current = BFS(from);
         if(current == null) return;
         current.setValue(to);
@@ -168,10 +170,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public BinaryNode BFS(T value) {
-        if(this.IsEmpty()){
-            System.out.println("Tree is Empty");
-            return null;
-        }
+        if(this.IsEmpty()) throw new EmptyBinaryTreeException();
         BinaryNode current = root;
         Queue<BinaryNode> queue = new Queue<>();
         queue.enqueue(current);
@@ -190,13 +189,10 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
     @Override
     public BinaryNode DPS(T value) {
-        if(this.IsEmpty()){
-            System.out.println("Tree is Empty");
-            return null;
-        }
-            BinaryNode current = root;
-            Stack<BinaryNode> stack = new Stack<>();
-            stack.push(current);
+        if(this.IsEmpty()) throw new EmptyBinaryTreeException();
+        BinaryNode current = root;
+        Stack<BinaryNode> stack = new Stack<>();
+        stack.push(current);
 
         while (!stack.isEmpty()){
             current = stack.pop();

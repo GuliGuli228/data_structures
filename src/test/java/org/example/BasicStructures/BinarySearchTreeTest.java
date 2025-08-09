@@ -1,6 +1,7 @@
 package org.example.BasicStructures;
 
 import org.apache.commons.lang.NullArgumentException;
+import org.example.Exceptions.EmptyBinaryTreeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class BinarySearchTreeTest {
     @DisplayName("Test throwing exception when adding null")
     void testAddNullValue() {
         // Проверяем поведение при попытке добавить null
-        assertThrows(NullPointerException.class, () -> tree.add(null), "Adding null should throw an exception");
+        assertThrows(NullArgumentException.class, () -> tree.add(null), "Adding null should throw an exception");
     }
 
     // Тесты для метода deleteByValue
@@ -173,8 +174,7 @@ public class BinarySearchTreeTest {
     @Test
     @DisplayName("Test BFS search in an empty tree")
     void testBFSOnEmptyTree() {
-        // Поиск в пустом дереве
-        assertNull(tree.BFS(10), "BFS search in an empty tree should return null");
+        assertThrows(EmptyBinaryTreeException.class, ()->{tree.BFS(10);}, "BFS in empty tree should throw an exception");
     }
 
     @Test
@@ -201,8 +201,7 @@ public class BinarySearchTreeTest {
     @Test
     @DisplayName("Test DPS search in an empty tree")
     void testDPSOnEmptyTree() {
-        // Поиск в пустом дереве
-        assertNull(tree.DPS(10), "DPS search in an empty tree should return null");
+        assertThrows(EmptyBinaryTreeException.class, ()->{tree.DPS(10);}, "DPS in empty tree should throw an exception");
     }
 
     @Test

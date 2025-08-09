@@ -13,6 +13,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         DoublyLinkedNode next;
         DoublyLinkedNode prev;
 
+        protected DoublyLinkedNode(){};
         protected DoublyLinkedNode(T value){
             super(value);
         }
@@ -36,9 +37,9 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     }
 
     /*-----Variables-----*/
-    DoublyLinkedNode head;
-    DoublyLinkedNode tail;
-    int length = 0;
+    protected DoublyLinkedNode head;
+    protected DoublyLinkedNode tail;
+    protected int length = 0;
     /*------------------*/
 
     @Override
@@ -91,14 +92,15 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void removeAt(int place) {
-        if (place < 0 || place+1 > length) throw new IndexOutOfBoundsException("place is out of bounds");
         if (this.isEmpty()) throw new EmptyDoublyLinkedListException();
+        if (place < 0 || place+1 > length) throw new IndexOutOfBoundsException("place is out of bounds");
 
         if(place == 0){
             DoublyLinkedNode current = head.next;
-            head.next = null;
             current.prev = null;
             head = current;
+            length--;
+            return;
         }
         if(place == length-1){
             DoublyLinkedNode current = tail.prev;
@@ -144,9 +146,9 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
 
     @Override
     public void update(T value, int place) {
+        if (this.isEmpty()) throw new EmptyDoublyLinkedListException();
         if (place < 0 || place + 1 > length) throw new IndexOutOfBoundsException("place is out of bounds");
         if (value == null) throw new NullArgumentException("value");
-        if (this.isEmpty()) throw new EmptyDoublyLinkedListException();
 
         if (place == 0) head.setValue(value);
         if (place == length-1) tail.setValue(value);

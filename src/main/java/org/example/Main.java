@@ -1,22 +1,42 @@
 package org.example;
 
+import com.sun.source.tree.Tree;
 import org.example.BasicStructures.BinarySearchTree;
 import org.example.BasicStructures.DoublyLinkedList;
 import org.example.BasicStructures.GenericLinkedList;
+import org.example.ComplexStructures.AVLTree;
+import org.w3c.dom.Node;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         /*--------ОБЪЕКТЫ---------*/
         GenericLinkedList<Integer> List = new GenericLinkedList<>();
-        DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
         GenericLinkedList<Integer> list = new GenericLinkedList<>();
         BinarySearchTree<String> binarySearchTree = new BinarySearchTree<>();
-        list.insertAt(22, 0);
+
+        AVLTree<String> avlTree = new AVLTree<>();
+        avlTree.add("1");
+        avlTree.add("2");
+        avlTree.add("3");
+        avlTree.add("4");
+        avlTree.add("5");
+        avlTree.deleteByValue("3");
+
+        binarySearchTree.add("1");
+        binarySearchTree.add("2");
+        binarySearchTree.add("3");
+        binarySearchTree.add("4");
+        binarySearchTree.add("5");
+
+        System.out.println(binarySearchTree.show());
+        System.out.println(avlTree.BFS("3")==null);
+        System.out.println(avlTree.show());
 //        List: 1 → 2 → 3 → 5
 //              0   1   2   3
 //              1   2   3   4
-        list.show();
+
         /*--------МЕТОДЫ---------*/
 //        linked_list.insert(10);
 //        linked_list.insert(20);

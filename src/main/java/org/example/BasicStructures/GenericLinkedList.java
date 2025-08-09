@@ -1,5 +1,6 @@
 package org.example.BasicStructures;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.AbstractList;
 import org.example.Exceptions.EmptyLinkedListException;
 import org.example.Interfaces.List;
@@ -31,6 +32,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         /*-----Variables-----*/
     protected LinkedNode head;
     protected LinkedNode tail;
+
     int length = 0;
         /*------------------*/
 
@@ -101,14 +103,13 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         if (this.isEmpty())throw new EmptyLinkedListException();
         else {
             LinkedNode current = head;
-            StringBuilder output = new StringBuilder("List: ");
+            StringBuilder output = new StringBuilder("List: [ ");
             while (current != null) {
                 output.append(current.getValue());
-                if (current.next != null) {
-                    output.append(" → ");
-                }
+                if (current.next != null) output.append(" , ");
                 current = current.next;
             }
+            output.append(" ]");
             return output.toString();
         }
     }
@@ -123,6 +124,8 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     public void update(T value, int place) {
         if (this.isEmpty()) throw new EmptyLinkedListException();
         if(place<0 || place + 1 > length) throw new IndexOutOfBoundsException();
+        if (value == null) throw new NullArgumentException("value");
+
         LinkedNode current = head;
         for(int i = 0; i< place; i++){
             current = current.next;
@@ -146,6 +149,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
             if (place == 0) {
                 node.next = head;
                 head = node;
+                tail = head;
                 length ++;
                 return;
             }

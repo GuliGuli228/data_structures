@@ -59,13 +59,15 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             node.value = value_a;
         }
         protected int getBalance(){
-            return (this == null) ? 0 : this.getRight().height- this.getLeft().height;
+            int LeftHeight = this.getLeft() == null ? -1 : this.getLeft().height;
+            int RightHeight = this.getRight() == null ? -1 : this.getRight().height;
+            return RightHeight - LeftHeight;
         }
     }
     /*---Variables---*/
 
     /*---------------*/
-
+    //TODO: добавить обновление root
     @Override
     public void add(T value) {
         if(value == null) throw new NullArgumentException("value is null");
@@ -90,32 +92,77 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if(direction == 0) return;
         }
         AVLNode NodeToAdd = new AVLNode(value);
-        if(direction > 0) parent.setRight(NodeToAdd);
-        if(direction < 0) parent.setLeft(NodeToAdd);
+        if(direction > 0) {
+            parent.setRight(NodeToAdd);
+            NodeToAdd.setParent(parent);
+        }
+        if(direction < 0) {
+            parent.setLeft(NodeToAdd);
+            NodeToAdd.setParent(parent);
+        }
 
-        while (!NodeStack.isEmpty()){
-            current = NodeStack.pop();
+        while (!NodeStackToUpdateHeights.isEmpty()){
+            current = NodeStackToUpdateHeights.pop();
             current.updateHeight();
         }
 
         while(!NodeStack.isEmpty()){
             AVLNode node = NodeStack.pop();
-            int balance = node.getBalance();
-            //TODO: вынести этот код в отдельный метод балансировки
-            if(balance == -2){
-                if(node.getLeft().getBalance()==1) this.LeftTurn(node.getLeft());
-                this.RightTurn(node);
-                return;
-            }
-            if(balance == 2) {
-                if(node.getRight().getBalance()==1) this.RightTurn(node.getRight());
-                this.LeftTurn(node);
-                return;
-            }
+            this.balance(node);
         }
+        AVLNode RootNode = (AVLNode) root;
+        while(RootNode.getParent() != null){
+            RootNode = RootNode.getParent();
+        }
+        root = RootNode;
+    }
+    //TODO: добавить обновление root
+    @Override
+    public void deleteByValue(T value) {
+        if(value == null) throw new NullArgumentException("value is null");
+        Stack<AVLNode> NodeStackToUpUpdateHeights = this.findPathToValue(BFS(value));
+        super.deleteByValue(value);
+
+        Stack<AVLNode> NodeStackToDeleteHeights = NodeStackToUpUpdateHeights;
+        while(!NodeStackToDeleteHeights.isEmpty()){
+            AVLNode temp = NodeStackToDeleteHeights.pop();
+            temp.updateHeight();
+        }
+        AVLNode current = (AVLNode) root;
+        while(!NodeStackToUpUpdateHeights.isEmpty()){
+            AVLNode node = NodeStackToUpUpdateHeights.pop();
+            this.balance(node);
+        }
+        while (current.getParent() != null){
+            current=current.getParent();
+        }
+        root = current;
+
+    }
+    @Override
+    public AVLNode BFS(T value){
+        return (AVLNode) super.BFS(value);
+    }
+    @Override
+    public AVLNode DPS (T value){
+        return (AVLNode) super.DPS(value);
+    }
+    @Override
+    public boolean IsEmpty(){
+        return (root == null);
     }
 
+    @Override
+    public String show(){
+        return super.show();
+    }
 
+    @Override
+    public void update(T from, T to){
+        super.update(from,to);
+    }
+
+    /*---private methods---*/
     private void RightTurn(AVLNode node){
         this.swapValues(node, node.getLeft());
         AVLNode temp = node.getRight();
@@ -132,7 +179,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         AVLNode temp = node.getLeft();
         node.setLeft(node.getRight());
         node.setRight(node.getLeft().getRight());
-        node.getRight().setLeft(node.getRight().getRight());
+        node.getLeft().setRight(node.getLeft().getLeft());
         node.getLeft().setLeft(temp);
         node.getLeft().updateHeight();
         node.updateHeight();
@@ -145,25 +192,27 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         node1.setValue(value2);
         node2.setValue(value1);
     }
-    @Override
-    public AVLNode BFS(T value){
-        return (AVLNode) super.BFS(value);
-    }
-    @Override
-    public AVLNode DPS (T value){
-        return (AVLNode) super.DPS(value);
-    }
-    @Override
-    public boolean IsEmpty(){
-        return super.IsEmpty();
-    }
+
     private Stack<AVLNode> findPathToValue(AVLNode node){
         Stack<AVLNode> path = new Stack<>();
 
         while(node!=null){
-            path.push(node.getParent());
+            path.push(node);
             node = node.getParent();
         }
         return path;
-    };
+    }
+
+    private void balance(AVLNode node){
+        int balance = node.getBalance();
+        if(balance == -2){
+            if(node.getLeft().getBalance()==1) this.LeftTurn(node.getLeft());
+            this.RightTurn(node);
+            return;
+        }
+        if(balance == 2) {
+            if(node.getRight().getBalance()==-1) this.RightTurn(node.getRight());
+            this.LeftTurn(node);
+        }
+    }
 }
