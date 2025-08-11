@@ -7,10 +7,6 @@ import org.example.ComplexStructures.Stack;
 import org.example.Exceptions.EmptyBinaryTreeException;
 import org.example.Interfaces.Tree;
 
-import java.util.Comparator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-
 public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, BinarySearchTree<T>.BinaryNode> implements Tree<T, BinarySearchTree.BinaryNode> {
     protected class BinaryNode extends Node{
 
@@ -112,15 +108,8 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
                 else toDelete.getParent().setLeft(child);
                 return;
             case 2:
-                T min = toDelete.getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
-                BinaryNode searchNode = toDelete;
-                searchNode = searchNode.getRight();
-
-                while (searchNode.getLeft() != null){
-                    min = searchNode.getLeft().getValue();
-                    searchNode = searchNode.getLeft();
-                }
-                toDelete.setValue(min);
+                toDelete.setValue(this.findMin(toDelete,null).getValue());
+                BinaryNode searchNode =  this.findMin(toDelete,null);
 
                 if (searchNode.countChildren()==0){
                     if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(null);
@@ -210,5 +199,16 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
     @Override
     public boolean IsEmpty() {
         return (root == null);
+    }
+
+    protected BinaryNode findMin (BinaryNode toDelete, BinaryNode toCompare) {
+        toDelete.getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
+        BinaryNode searchNode = toDelete;
+        searchNode = searchNode.getRight();
+
+        while (searchNode.getLeft() != toCompare){
+            searchNode = searchNode.getLeft();
+        }
+        return searchNode;
     }
 }
