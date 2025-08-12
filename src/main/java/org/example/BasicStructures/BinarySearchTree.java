@@ -98,30 +98,21 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
 
         switch (toDelete.countChildren()){
             case 0:
-                if(toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(null);
-                if(toDelete.getParent().getLeft() == toDelete) toDelete.getParent().setLeft(null);
+                this.deleteNodeWithZeroChildren(toDelete);
                 return;
             case 1:
-                BinaryNode child = toDelete.getLeft() == null ? toDelete.getRight(): toDelete.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
-
-                if(toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(child);
-                else toDelete.getParent().setLeft(child);
+                this.deleteNodeWithOneChild(toDelete);
                 return;
             case 2:
-                toDelete.setValue(this.findMin(toDelete,null).getValue());
-                BinaryNode searchNode =  this.findMin(toDelete,null);
+                BinaryNode searchNode =  (BinaryNode) this.findMin(toDelete);
+                toDelete.setValue(searchNode.getValue());
 
                 if (searchNode.countChildren()==0){
-                    if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(null);
-                    if(searchNode.getParent().getLeft() == searchNode) searchNode.getParent().setLeft(null);
+                    this.deleteNodeWithZeroChildren(searchNode);
                     return;
                 }
                 if (searchNode.countChildren()==1){
-                    BinaryNode child_search = searchNode.getLeft() == null ? searchNode.getRight(): searchNode.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
-
-                    if(searchNode.getParent().getRight() == searchNode) searchNode.getParent().setRight(child_search);
-                    else searchNode.getParent().setLeft(child_search);
-
+                    this.deleteNodeWithOneChild(searchNode);
                 }
 
         }
@@ -201,14 +192,28 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return (root == null);
     }
 
-    protected BinaryNode findMin (BinaryNode toDelete, BinaryNode toCompare) {
-        toDelete.getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
-        BinaryNode searchNode = toDelete;
+    protected Node findMin (Node toDelete) {
+        ((BinaryNode)toDelete).getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
+        BinaryNode searchNode = (BinaryNode)toDelete;
         searchNode = searchNode.getRight();
 
-        while (searchNode.getLeft() != toCompare){
+        while (searchNode.getLeft() != null){
             searchNode = searchNode.getLeft();
         }
         return searchNode;
+    }
+
+    protected void deleteNodeWithZeroChildren(Node toDelete) {
+        BinaryNode toDeleteNode = (BinaryNode)toDelete;
+        if(toDeleteNode.getParent().getRight() == toDelete) toDeleteNode.getParent().setRight(null);
+        if(toDeleteNode.getParent().getLeft() == toDelete) toDeleteNode.getParent().setLeft(null);
+    }
+    protected void deleteNodeWithOneChild(Node toDelete) {
+        BinaryNode toDeleteNode = (BinaryNode)toDelete;
+        BinaryNode child = toDeleteNode.getLeft() == null ? toDeleteNode.getRight(): toDeleteNode.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child
+        child.setParent(toDeleteNode.getParent());
+
+        if(toDeleteNode.getParent().getRight() == toDelete) toDeleteNode.getParent().setRight(child);
+        else toDeleteNode.getParent().setLeft(child);
     }
 }
