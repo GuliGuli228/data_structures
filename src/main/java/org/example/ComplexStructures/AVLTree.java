@@ -64,10 +64,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             return RightHeight - LeftHeight;
         }
     }
-    /*---Variables---*/
 
-    /*---------------*/
-    //TODO: добавить обновление root
     @Override
     public void add(T value) {
         if(value == null) throw new NullArgumentException("value is null");
@@ -123,9 +120,8 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         Stack<AVLNode> NodeStackToUpUpdateHeights = this.findPathToValue(BFS(value));
         super.deleteByValue(value);
 
-        Stack<AVLNode> NodeStackToDeleteHeights = NodeStackToUpUpdateHeights;
-        while(!NodeStackToDeleteHeights.isEmpty()){
-            AVLNode temp = NodeStackToDeleteHeights.pop();
+        while(!NodeStackToUpUpdateHeights.isEmpty()){
+            AVLNode temp = NodeStackToUpUpdateHeights.pop();
             temp.updateHeight();
         }
         AVLNode current = (AVLNode) root;
@@ -146,10 +142,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public AVLNode DPS (T value){
         return (AVLNode) super.DPS(value);
-    }
-    @Override
-    public boolean IsEmpty(){
-        return (root == null);
     }
 
     @Override
