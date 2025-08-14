@@ -1,5 +1,5 @@
 package org.example.AbstracClasses;
 
-public enum RedBlackTreeColors {
+public enum RBTColors {
     RED,BLACK;
 }
