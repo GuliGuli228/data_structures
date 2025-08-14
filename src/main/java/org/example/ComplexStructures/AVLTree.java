@@ -2,14 +2,21 @@ package org.example.ComplexStructures;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.example.BasicStructures.BinarySearchTree;
-import org.example.Interfaces.Tree;
+
+/**
+ * An AVL tree implementation that extends BinarySearchTree and maintains balance
+ * through rotations after insertions and deletions.
+ * @param <T> the type of elements in the tree, must implement Comparable
+ * @see BinarySearchTree
+ */
 
 public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected class AVLNode extends BinaryNode {
         protected int height = 0;
 
-//        TIP Overloads blocks make protected methods from InnerClass Node
-//        visible in BinarySearchTree field
+        /**
+         * Overloading makes protected fields from InnerClass BinaryNode accessible in OuterClass AVLTree<T>
+         */
 
         protected AVLNode (T value){
             this.value= value;
@@ -46,24 +53,39 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         /*-----------------------*/
 
+        /**
+         * Updates the height of this node based on children's heights..
+         * Leaf nodes have height 0 (declared in height field).
+         */
 
         protected void updateHeight(){
             int LeftHeight = this.getLeft() == null ? -1 : this.getLeft().height;
             int RightHeight = this.getRight() == null ? -1 : this.getRight().height;
             this.height = Math.max(LeftHeight, RightHeight) + 1;
         }
+        /**
+         * Calculates the balance factor of this node.
+         * Balance factor is difference between right and left subtree heights.
+         * @return positive if right-heavy, negative if left-heavy, 0 if balanced
+         */
 
-        protected void swapValueTo(AVLNode node){
-            T value_a = (T)this.value;
-            this.value = node.value;
-            node.value = value_a;
-        }
         protected int getBalance(){
             int LeftHeight = this.getLeft() == null ? -1 : this.getLeft().height;
             int RightHeight = this.getRight() == null ? -1 : this.getRight().height;
             return RightHeight - LeftHeight;
         }
     }
+
+    /**
+     * Adds a value to the tree and rebalances if necessary.<br>
+     * The method:<br>
+     * 1. Finds the insertion point while tracking visited nodes<br>
+     * 2. Inserts the new node<br>
+     * 3. Updates heights of affected nodes<br>
+     * 4. Performs rotations to restore balance if needed<br>
+     * @param value the value to add
+     * @throws NullArgumentException if the value is null
+     */
 
     @Override
     public void add(T value) {
@@ -113,7 +135,18 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         root = RootNode;
     }
-    //TODO: добавить обновление root
+
+    /**
+     * Deletes a value from the tree and rebalances if necessary.<br>
+     * The method:<br>
+     * 1. Finds the node to delete and tracks its ancestors<br>
+     * 2. Deletes the node using parent class implementation<br>
+     * 3. Updates heights of affected nodes<br>
+     * 4. Performs rotations to restore balance if needed<br>
+     * @param value the value to delete
+     * @throws NullArgumentException if the value is null
+     */
+
     @Override
     public void deleteByValue(T value) {
         if(value == null) throw new NullArgumentException("value is null");
@@ -135,19 +168,44 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         root = current;
 
     }
+
+    /**
+     * Performs breadth-first search for a value in the tree.
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     */
+
     @Override
     public AVLNode BFS(T value){
         return (AVLNode) super.BFS(value);
     }
+
+    /**
+     * Performs depth-first search for a value in the tree.
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     */
+
     @Override
     public AVLNode DPS (T value){
         return (AVLNode) super.DPS(value);
     }
 
+    /**
+     * Returns string representation of the tree using in-order traversal.
+     * @return string containing all elements of the tree in order
+     */
+
     @Override
     public String show(){
         return super.show();
     }
+
+    /**
+     * Updates a value in the tree by replacing it with a new value.
+     * @param from the value to be replaced
+     * @param to the new value
+     */
 
     @Override
     public void update(T from, T to){
@@ -155,6 +213,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     /*---private methods---*/
+
+    /**
+     * Performs a right rotation around the specified node.
+     * Used when left subtree is taller (left-left or left-right case).
+     * @param node the node to rotate around
+     */
+
     private void RightTurn(AVLNode node){
         this.swapValues(node, node.getLeft());
         AVLNode temp = node.getRight();
@@ -165,6 +230,12 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         node.getRight().updateHeight();
         node.updateHeight();
     }
+
+    /**
+     * Performs a left rotation around the specified node.
+     * Used when right subtree is taller (right-right or right-left case).
+     * @param node the node to rotate around
+     */
 
     private void LeftTurn(AVLNode node){
         this.swapValues(node,node.getRight());
@@ -178,12 +249,24 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     }
 
+    /**
+     * Swaps values between two nodes.
+     * @param node1 the first node
+     * @param node2 the second node
+     */
+
     private void swapValues(AVLNode node1, AVLNode node2){
         T value1 = node1.getValue();
         T value2 = node2.getValue();
         node1.setValue(value2);
         node2.setValue(value1);
     }
+
+    /**
+     * Finds and returns the path from a node to the root as a stack.
+     * @param node the starting node
+     * @return stack containing the path from node to root
+     */
 
     private Stack<AVLNode> findPathToValue(AVLNode node){
         Stack<AVLNode> path = new Stack<>();
@@ -194,6 +277,15 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         return path;
     }
+
+    /**
+     * Balances the tree at the specified node if needed.<br>
+     * Performs rotations based on balance factor:<br>
+     * - Right rotation for left-heavy (balance -2)<br>
+     * - Left rotation for right-heavy (balance +2)<br>
+     * - Double rotations when inner subtrees are heavier<br>
+     * @param node the node to balance
+     */
 
     private void balance(AVLNode node){
         int balance = node.getBalance();

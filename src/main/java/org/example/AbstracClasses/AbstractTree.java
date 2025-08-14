@@ -1,10 +1,26 @@
 package org.example.AbstracClasses;
 
-import org.example.BasicStructures.BinarySearchTree;
-
-import java.util.Comparator;
-
+/**
+ * An abstract base class for tree data structures.
+ * Provides common node structure and basic tree operations for derived classes.
+ *
+ * @param <T> the type of elements stored in the tree
+ * @param <N> the type of nodes used in the tree, must extend {@link Node}
+ *
+ * @see org.example.BasicStructures.BinarySearchTree
+ * @see org.example.ComplexStructures.AVLTree
+ * @see org.example.ComplexStructures.RedBlackTree
+ */
 public abstract class AbstractTree <T ,N extends AbstractTree.Node> {
+
+    /**
+     * A protected abstract inner class representing a node in the tree.
+     * Contains basic tree node structure with value, left/right children, and parent references.
+     *
+     * <p>This serves as the base node type for all concrete tree implementations.
+     * Subclasses should extend this node with additional functionality as needed.
+     */
+
     protected abstract class Node  {
         protected T value;
         protected N left =null;

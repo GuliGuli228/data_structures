@@ -5,8 +5,24 @@ import org.example.AbstracClasses.AbstractList;
 import org.example.Exceptions.EmptyLinkedListException;
 import org.example.Interfaces.List;
 
+/**
+ * A singly linked list implementation that supports adding, removing, and accessing elements.
+ * Inherits from AbstractList and implements the List interface.
+ * @param <T> the type of elements in the list
+ * @see AbstractList
+ * @see List
+ * @see EmptyLinkedListException
+ */
+
 
 public class GenericLinkedList<T> extends AbstractList implements List<T> {
+
+    /**
+     * A node in the singly linked list, containing a value and a reference to the next node.
+     * Extends the abstract Node class from AbstractList.
+     * @see AbstractList.Node
+     */
+
     protected class LinkedNode extends Node<T>{
         LinkedNode next;
 
@@ -36,6 +52,11 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     int length = 0;
         /*------------------*/
 
+    /**
+     * Adds an element to the end of the linked list.
+     * @param value the element to add
+     * @throws NullArgumentException if the element is null
+     */
     @Override
     public void insertAt(T value) {
         if(this.isEmpty()) {
@@ -53,7 +74,12 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         length++;
     }
 
-
+    /**
+     * Removes the element at the specified position in the list.
+     * @param place the index of the element to remove
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws EmptyLinkedListException if list is empty
+     */
     @Override
     public void removeAt(int place) {
         if(this.isEmpty()) throw new EmptyLinkedListException();
@@ -82,7 +108,13 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         }
     }
 
-    // TODO rewrite method to not return null
+    /**
+     * Returns the element at the specified position in the list.
+     * @param place the index of the element to return
+     * @return the element at the specified position
+     * @throws IndexOutOfBoundsException if the index is out of range
+     * @throws EmptyLinkedListException if list is empty
+     */
     public T getValueAt(int place){
         if (this.isEmpty()) throw new EmptyLinkedListException();
         if(place < 0 || place +1 > length) throw new IndexOutOfBoundsException();
@@ -98,6 +130,11 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         return null;
     }
 
+    /**
+     * Returns a string representation of the list.
+     * @return a string containing all elements of the list
+     * @throws EmptyLinkedListException if list is empty
+     */
     @Override
     public String show() {
         if (this.isEmpty())throw new EmptyLinkedListException();
@@ -114,12 +151,23 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         }
     }
 
-
+    /**
+     * Checks if the list is empty.
+     * @return true if the list contains no elements, false otherwise
+     */
     @Override
     public boolean isEmpty() {
         return (head == null);
     }
 
+    /**
+     * Updates the value of the element at the specified position.
+     * @param value the new value
+     * @param place the index of the element to update
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws NullArgumentException if the new value is null
+     * @throws EmptyLinkedListException if list is empty
+     */
     @Override
     public void update(T value, int place) {
         if (this.isEmpty()) throw new EmptyLinkedListException();
@@ -133,10 +181,22 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         current.setValue(value);
     }
 
+    /**
+     * Returns the number of elements in the list.
+     * @return the number of elements in the list
+     */
     public int getSize(){
         return length;
     }
 
+    /**
+     * Inserts an element at the specified index in the list.
+     * @param value the element to insert
+     * @param place the index at which to insert the element
+     * @throws IndexOutOfBoundsException if the index is out of range
+     * @throws NullArgumentException if the element is null
+     * @throws EmptyLinkedListException if list is empty
+     */
     public void insertAt(T value, int place){
         if(place < 0 || place > length) throw new IndexOutOfBoundsException();
         if(this.isEmpty()){

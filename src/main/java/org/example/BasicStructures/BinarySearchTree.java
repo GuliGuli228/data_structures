@@ -7,15 +7,32 @@ import org.example.ComplexStructures.Stack;
 import org.example.Exceptions.EmptyBinaryTreeException;
 import org.example.Interfaces.Tree;
 
+/**
+ * A binary search tree implementation that supports adding, removing, and searching elements.
+ * Inherits from AbstractTree and implements the Tree interface.
+ * @param <T> the type of elements in the tree, must implement Comparable
+ * @see AbstractTree
+ * @see Tree
+ * @see EmptyBinaryTreeException
+ */
+
 public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, BinarySearchTree<T>.BinaryNode> implements Tree<T, BinarySearchTree.BinaryNode> {
     protected class BinaryNode extends Node{
+
+        /**
+         * A node in the binary search tree, containing a value and references to left, right, and parent nodes.
+         * Extends the abstract Node class from AbstractTree.
+         * @see AbstractTree.Node
+         */
 
         protected BinaryNode(T value){
             super(value);
         }
         protected BinaryNode(){};
-//        TIP Overloads blocks make protected methods from InnerClass Node
-//        visible in BinarySearchTree field
+
+        /**
+         * Overloading makes protected fields from InnerClass Node accessible in OuterClass BinarySearchTree<T>
+         */
 
         /*---Getters Overloads---*/
         protected T getValue(){
@@ -47,18 +64,30 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
         /*-----------------------*/
 
+        /**
+         * Counts the number of children this node has.
+         * @return 0 if no children, 1 if one child, 2 if two children
+         */
+
         /*---Methods---*/
         protected int countChildren(){
             if (this.left != null && this.right != null) return 2;
             if(this.left == null && this.right == null) return 0;
             else return 1;
         }
+        /*------------*/
     }
 
 
-
-    //TODO find a way to use method .getParent(), not variable BinaryNode parent;
+    /*---Variables---*/
     protected BinaryNode root;
+    /*---------------*/
+
+    /**
+     * Adds a new value to the tree.
+     * @param value the value to add
+     * @throws NullArgumentException if the value is null
+     */
 
     @Override
     public void add(T value) {
@@ -90,6 +119,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
+    /**
+     * Deletes the node containing the specified value from the tree. Uses BFS to find node to delete by value
+     * @param value the value to delete
+     * @see #BFS(Comparable) 
+     */
 
     @Override
     public void deleteByValue(T value) {
@@ -118,8 +152,12 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         }
     }
 
-    //TODO разобраться до конца как все таки рабоатет симетричный обход
-    //TODO add ORDER cases
+    /**
+     * Returns a string representation of the tree. Realize iterative in-order traversal using Stack
+     * @return a string containing all elements of the tree in order
+     * @see Stack
+     */
+
     @Override
     public String show() {
         StringBuilder str = new StringBuilder("[ ");
@@ -139,6 +177,13 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return str.toString();
     }
 
+    /**
+     * Updates a value in the tree by replacing it with a new value.
+     * @param from the value to be replaced
+     * @param to the new value
+     * @throws NullArgumentException if either parameter is null
+     */
+
     @Override
     public void update(T from, T to) {
         if (this.IsEmpty()) return;
@@ -147,6 +192,14 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         if(current == null) return;
         current.setValue(to);
     }
+
+    /**
+     * Searches for a value in the tree using breadth-first search. Uses Queue for iterative search
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     * @throws EmptyBinaryTreeException if the tree is empty
+     * @see Queue
+     */
 
     @Override
     public BinaryNode BFS(T value) {
@@ -166,6 +219,14 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return null;
     }
 
+
+    /**
+     * Searches for a value in the tree using depth-first search. Uses Stack for iterative search
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     * @throws EmptyBinaryTreeException if the tree is empty
+     * @see Stack
+     */
 
     @Override
     public BinaryNode DPS(T value) {
@@ -187,10 +248,20 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return null;
     }
 
+    /**
+     * Checks if the tree is empty.
+     * @return true if the tree is empty, false otherwise
+     */
     @Override
     public boolean IsEmpty() {
         return (root == null);
     }
+
+    /**
+     * Finds the minimum value in the subtree rooted at the specified node.
+     * @param toDelete the root of the subtree to search
+     * @return the node containing the minimum value
+     */
 
     protected Node findMin (Node toDelete) {
         ((BinaryNode)toDelete).getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
@@ -203,11 +274,22 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
         return searchNode;
     }
 
+    /**
+     * Deletes a node with no children from the tree.
+     * @param toDelete the node to delete
+     */
+
     protected void deleteNodeWithZeroChildren(Node toDelete) {
         BinaryNode toDeleteNode = (BinaryNode)toDelete;
         if(toDeleteNode.getParent().getRight() == toDelete) toDeleteNode.getParent().setRight(null);
         if(toDeleteNode.getParent().getLeft() == toDelete) toDeleteNode.getParent().setLeft(null);
     }
+
+    /**
+     * Deletes a node with one child from the tree.
+     * @param toDelete the node to delete
+     */
+
     protected void deleteNodeWithOneChild(Node toDelete) {
         BinaryNode toDeleteNode = (BinaryNode)toDelete;
         BinaryNode child = toDeleteNode.getLeft() == null ? toDeleteNode.getRight(): toDeleteNode.getLeft(); // if left child is null, we'll use right child, otherwise we'll use right child

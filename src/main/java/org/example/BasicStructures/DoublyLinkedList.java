@@ -13,6 +13,9 @@ import java.util.NoSuchElementException;
  * Inherits from AbstractList and implements the List interface.
  * @param <T> the type of elements in the list
  * @author GuliGuli228
+ * @see AbstractList
+ * @see List
+ * @see EmptyDoublyLinkedListException
  */
 
 public class DoublyLinkedList<T> extends AbstractList implements List<T> {
@@ -113,6 +116,12 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         length++;
     }
 
+    /**
+     * Removes the first occurrence of the specified element from the list.
+     * @param place the place from where element should be removed
+     * @throws IndexOutOfBoundsException if the element is out of bounds
+     * @throws EmptyDoublyLinkedListException if list is empty
+     */
     @Override
     public void removeAt(int place) {
         if (this.isEmpty()) throw new EmptyDoublyLinkedListException();
@@ -145,6 +154,11 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         length--;
     }
 
+    /**
+     * Returns all list elements as String
+     * @return String - elements as string
+     * @throws EmptyDoublyLinkedListException if list is empty
+     */
     @Override
     public String show() {
         if (this.isEmpty())throw new EmptyDoublyLinkedListException();
@@ -162,10 +176,20 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         }
     }
 
+    /**
+     * Cheks if list is empty
+     * @return true id list is empty, false otherwise
+     * */
+
     @Override
     public boolean isEmpty() {
         return (head == null);
     }
+
+    /**
+     * Update value of element at index
+     * @param value  new value
+     * @param place  index of element, which should be updated*/
 
     @Override
     public void update(T value, int place) {

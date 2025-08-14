@@ -1,19 +1,34 @@
 package org.example.ComplexStructures;
 
-import net.jpountz.xxhash.XXHash32;
-import net.jpountz.xxhash.XXHashFactory;
 import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.RBTColors;
 import org.example.BasicStructures.BinarySearchTree;
 import org.example.Exceptions.EmptyBinaryTreeException;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-
+/**
+ * A Red-Black tree implementation that extends BinarySearchTree.
+ * Maintains balance through color properties and rotations after insertions and deletions.
+ * @param <T> the type of elements in the tree, must implement Comparable
+ * @see BinarySearchTree
+ */
 
 public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+
+    /**
+     * A node in the Red-Black tree that extends BinaryNode and adds color tracking.
+     * Contains methods for tree navigation and color management.
+     */
+
     protected class RBTNode extends BinaryNode{
         protected RBTColors color;
+
+        /**
+         * Constructs an RBT node with specified value and color.
+         * Automatically creates NIL children nodes.
+         * @param value the value to store in this node
+         * @param color the initial color of this node
+         */
+
         protected RBTNode (T value, RBTColors color){
             NILNode leftNil = new NILNode();
             NILNode rightNil = new NILNode();
@@ -63,13 +78,29 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         /*-----------------------*/
 
         /*---Methods---*/
+
+        /**
+         * Checks if this node is a NIL node.
+         * @return true if this is a NIL node, false otherwise
+         */
+
         protected boolean IsNIL(){
             return this instanceof NILNode;
         }
 
+        /**
+         * Gets the grandparent of this node.
+         * @return the grandparent node, or null if doesn't exist
+         */
+
         protected RBTNode getGrandDad(){
             return this.getParent().getParent();
         }
+
+        /**
+         * Gets the uncle of this node (parent's sibling).
+         * @return the uncle node, or null if doesn't exist
+         */
 
         protected RBTNode getUncle(){
             RBTNode gDad = this.getGrandDad();
@@ -77,21 +108,37 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (gDad.getRight() == this.getParent()) return gDad.getLeft();
             return null;
         }
+        /**
+         * Gets the sibling of this node.
+         * @return the sibling node
+         */
+
         protected RBTNode getBrother(){
             if(this.getParent().getRight() == this) return this.getParent().getLeft();
             return this.getParent().getRight();
         }
+
+        /**
+         * Counts the number of non-NIL children this node has.
+         * @return 0 if no children, 1 if one child, 2 if two children
+         */
+
         @Override
         protected int countChildren() {
             if (!this.getLeft().IsNIL()&& !this.getRight().IsNIL()) return 2;
             if(this.getLeft().IsNIL()&& this.getRight().IsNIL()) return 0;
             else return 1;
         }
-
         /*------------*/
 
-
     }
+
+
+    /**
+     * Represents a NIL (leaf) node in the Red-Black tree.
+     * All NIL nodes are black and have no children.
+     */
+
     protected class NILNode extends RBTNode{
         protected NILNode (){
             this.value = null;
@@ -101,8 +148,16 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
+    /**
+     * Adds a value to the tree and rebalances if necessary.<br>
+     * The method:<br>
+     * 1. Finds the insertion point while maintaining tree structure<br>
+     * 2. Inserts new node as red<br>
+     * 3. Performs recoloring and rotations to restore Red-Black properties<br>
+     * @param value the value to add
+     * @throws NullArgumentException if the value is null
+     */
 
-    //TODO: реализовать полиморфизм в super методе, чтобы не повторять код вставки
     @Override
     public void add(T value){
         if(value == null) throw new NullArgumentException("value is null");
@@ -113,6 +168,8 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         RBTNode current = (RBTNode)root;
+        RBTNode toAdd = new RBTNode(value, RBTColors.RED);
+
         RBTNode parent = null;
         int direction = 0;
 
@@ -123,7 +180,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if(direction <0) current = current.getLeft();
             if(direction == 0) return;
         }
-        RBTNode toAdd = new RBTNode(value, RBTColors.RED);
+
         if(direction > 0){
             parent.setRight(toAdd);
             toAdd.setParent(parent);
@@ -133,13 +190,21 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             parent.setLeft(toAdd);
             toAdd.setParent(parent);
         }
-        this.insertBalance(toAdd);
+        this.insertBalance(toAdd); // Fix any Red-Black violations
 
         RBTNode RootNode = toAdd;
         while (RootNode.getParent() != null) RootNode = RootNode.getParent();
         root = RootNode;
         ((RBTNode) root).setColor(RBTColors.BLACK);
     }
+
+    /**
+     * Deletes a value from the tree and rebalances if necessary.
+     * Handles different cases based on node color and number of children.
+     * @param value the value to delete
+     * @throws NullArgumentException if the value is null
+     * @throws EmptyBinaryTreeException if tree is empty
+     */
 
     @Override
     public void deleteByValue(T value){
@@ -169,8 +234,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             RootNode = RootNode.getParent();
         }
         root = RootNode;
-
     }
+
+    /**
+     * Finds the minimum value in the subtree rooted at the specified node.
+     * @param toDelete the root of the subtree to search
+     * @return the node containing the minimum value
+     */
+
     @Override
     protected Node findMin(Node toDelete){
         ((RBTNode)toDelete).getRight().getValue(); // Going to right branch to search min, another way - going left to search for max
@@ -182,6 +253,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         return searchNode;
     }
+
+    /**
+     * Performs breadth-first search for a value in the tree. Uses queue to realize iterative search
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     * @throws EmptyBinaryTreeException if tree is empty
+     * @see Queue
+     */
 
 
     @Override
@@ -201,6 +280,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         return null;
     }
+
+    /**
+     * Performs depth-first search for a value in the tree. Uses stack to realize iterative search
+     * @param value the value to search for
+     * @return the node containing the value, or null if not found
+     * @throws EmptyBinaryTreeException if tree is empty
+     * @see Stack
+     */
+
     @Override
     public RBTNode DPS(T value){
         if(this.IsEmpty()) throw new EmptyBinaryTreeException();
@@ -220,6 +308,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         return null;
     }
+
+    /**
+     * Returns string representation of the tree using in-order traversal. Uses stack for in-order traversal
+     * @return string containing all elements of the tree in order, or "null" if empty
+     * @see Stack
+     */
 
     @Override
     public String show(){
@@ -244,6 +338,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return str.toString();
     }
     /*---private methods ---*/
+
+    //TODO: переписать все комментарии на английский
+    /**
+     * Balances the tree after insertion to maintain Red-Black properties.
+     * Handles different cases based on uncle's color and node position.
+     * @param node the newly inserted node to balance around
+     */
+
     private void insertBalance(RBTNode node){
 
         if (node.getParent().color == RBTColors.RED){ // Нарушение балансировки
@@ -277,8 +379,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
-
-
+    //TODO: Проверить левый и правый поворот в AVL дереве
+    /**
+     * Performs a left rotation around the specified node.
+     * Used to balance the tree during insertions and deletions.
+     * @param node the node to rotate around
+     */
 
     private void LeftTurn(RBTNode node) {
         if (node == null || node.getRight() == null) return;
@@ -297,6 +403,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         if (temp != null) temp.setParent(node);
     }
+
+    /**
+     * Performs a right rotation around the specified node.
+     * Used to balance the tree during insertions and deletions.
+     * @param node the node to rotate around
+     */
 
     private void RightTurn(RBTNode node) {
         RBTNode leftChild = node.getLeft();
@@ -321,7 +433,10 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
-
+    /**
+     * Handles deletion of a node with two children by replacing it with its successor.
+     * @param toDelete the node to delete
+     */
 
     private void deleteAnyNodeWithTwoChildren(RBTNode toDelete){
 
@@ -337,6 +452,11 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
+    /**
+     * Deletes a red node from the tree (simple case with no balance violations).
+     * @param toDelete the red node to delete
+     */
+
     private void deleteRedNode(RBTNode toDelete){
         NILNode nodeNil = new NILNode();
         nodeNil.setParent(toDelete.getParent());
@@ -345,8 +465,13 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         else toDelete.getParent().setLeft(nodeNil);
     }
 
-    private void deleteBlackNodeWithZeroChildren (RBTNode toDelete){
+    /**
+     * Deletes a black node with no children, handling possible balance violations.
+     * Implements Red-Black tree deletion cases 1-4.
+     * @param toDelete the black node to delete
+     */
 
+    private void deleteBlackNodeWithZeroChildren (RBTNode toDelete){
 
         NILNode nodeNil = new NILNode();
         if (toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(nodeNil);
@@ -418,6 +543,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         current.setColor(RBTColors.BLACK);
     }
+
+    /**
+     * Deletes a black node with one child (which must be red by Red-Black properties).
+     * @param toDelete the black node to delete
+     */
+
     private void deleteBlackNodeWithOneChildren(RBTNode toDelete){
         RBTNode children = toDelete.getRight().IsNIL()? toDelete.getLeft() : toDelete.getRight();
         toDelete.setValue(children.getValue());
