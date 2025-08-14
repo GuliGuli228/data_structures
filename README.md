@@ -13,19 +13,17 @@
 
 ## 🧱 Реализованные структуры
 
-| Структура              | Статус            | Основные методы                                                         |
-|------------------------|-------------------|-------------------------------------------------------------------------|
-| **SinglyLinkedList**   | ✅ Завершено       | `add`, `remove`, `insertAt`, `show`                                     |
-| **DoublyLinkedList**   | ✅ Завершено       | `add`, `remove`, `insertAt`, `show`                                     |
-| **CircularLinkedList** | 🚧 В работе [20%] | Планируется: `add`, `remove`, `insertAt`, `show`                     |
-| **Stack**              | ✅ Завершено       | `push`, `pop`, `peek`, `isEmpty`                                        |
+| Структура              | Статус            | Основные методы                                                      |
+|------------------------|-------------------|----------------------------------------------------------------------|
+| **SinglyLinkedList**   | ✅ Завершено       | `insert`,`insertAt`, `removeAt`, `show`                              |
+| **DoublyLinkedList**   | ✅ Завершено       | `insert`,`insertAt`, `removeAt`, `show`                             |
+| **Stack**              | ✅ Завершено       | `push`, `pop`, `peek`, `isEmpty`                                     |
 | **BinaryTree**         | ✅ Завершено       | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
-| **LinkedQueue**        | ✅ Завершено       | `enqueue`, `dequeue`, `peek`, `isEmpty`                                 |
-| **BinaryTree**         | ✅ Завершено       | `insert`,  `delete`, `update`, `show (inoreder)`, `BFS`, `DFS`          |
-| **AVLTree**            |🔧 Тестируется       | `insert`,`delete`, `update`, `show (inoreder)`, `BFS`, `DFS`            |
-| **ReadBlackTree**      | 🚧 В работе [10%] | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
+| **LinkedQueue**        | ✅ Завершено       | `enqueue`, `dequeue`, `peek`, `isEmpty`                              |
+| **AVLTree**            |✅ Завершено      | `insert`,`delete`, `update`, `show (inoreder)`, `BFS`, `DFS`         |
+| **ReadBlackTree**      | ✅ Завершено] | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
 | **Heap**              | 🔍 Планируется    | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
-| **HashMap**            | 🔍 Планируется    | `insert`, `search`, `delete`, `update`, `show (inoreder)`, `BFS`, `DFS` |
+| **HashMap**            | ✅ Завершено   | `add`, `remove`, `containss`                                         |
 
 
 ### ✅ Списки
@@ -76,7 +74,7 @@
 **Семейство списков**
 ![Image](https://github.com/user-attachments/assets/e73a26ce-4bb3-4173-aee7-4177a1c2f93a)
 **Семейство деревьев**
-![Image](https://github.com/user-attachments/assets/580f6e3c-a432-42c3-bc3e-4a6719deeb31)
+<img width="827" height="1169" alt="Image" src="https://github.com/user-attachments/assets/5bd77ddf-8167-48c0-9f3c-5b8c17a8389e" />
 ## 📋 Как начать
 1. Склонируйте репозиторий:  
    ```bash
