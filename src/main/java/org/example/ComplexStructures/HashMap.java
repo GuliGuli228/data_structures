@@ -87,6 +87,12 @@ public class HashMap <K extends Comparable<K>, V>{
             if(hashMapBuckets[i] != null)  System.out.println("Bucket: " + i + " [ "+ hashMapBuckets[i].show() + " ]");
         }
     }
-    
+    public boolean contains (K key){
+        Node dummyNode = new Node(key, null);
+        if (hashMapBuckets[getBucketIndex(key)] == null) return false;
+        if (hashMapBuckets[getBucketIndex(key)].BFS(dummyNode) == null) return false;
+        return true;
+    }
+
 
 }
