@@ -1,15 +1,19 @@
 package org.example.ComplexStructures;
 
+import net.jpountz.xxhash.XXHash32;
+import net.jpountz.xxhash.XXHashFactory;
 import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.RBTColors;
 import org.example.BasicStructures.BinarySearchTree;
 import org.example.Exceptions.EmptyBinaryTreeException;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 
 public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected class RBTNode extends BinaryNode{
         protected RBTColors color;
-
         protected RBTNode (T value, RBTColors color){
             NILNode leftNil = new NILNode();
             NILNode rightNil = new NILNode();
@@ -23,7 +27,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         protected RBTNode (){}
 
         /*---Getters Overloads---*/
-        protected T getValue(){
+        public T getValue(){
             return (T)super.getValue();
         }
         protected RBTNode getLeft(){
@@ -140,10 +144,22 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public void deleteByValue(T value){
         if(value == null) throw new NullArgumentException("value is null");
+        if (this.IsEmpty()) throw new EmptyBinaryTreeException();
         RBTNode toDelete = BFS(value);
 
-        if (toDelete.countChildren() == 2) this.deleteAnyNodeWithTwoChildren(toDelete);
-        if (toDelete.countChildren() == 1) this.deleteBlackNodeWithOneChildren(toDelete);
+        if (toDelete == root) {
+            root = null;
+            return;
+        }
+
+        if (toDelete.countChildren() == 2){
+            this.deleteAnyNodeWithTwoChildren(toDelete);
+            return;
+        }
+        if (toDelete.countChildren() == 1) {
+            this.deleteBlackNodeWithOneChildren(toDelete);
+            return;
+        }
         if (toDelete.countChildren() == 0){
             if(toDelete.getColor() == RBTColors.RED) this.deleteRedNode(toDelete);
             if (toDelete.getColor() == RBTColors.BLACK) this.deleteBlackNodeWithZeroChildren(toDelete);
@@ -210,6 +226,9 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         StringBuilder str = new StringBuilder("[ ");
         Stack<RBTNode> stack = new Stack<>();
         RBTNode current = (RBTNode) root;
+        if (this.IsEmpty()) {
+            return "null";
+        }
 
         while ( !current.IsNIL() || !stack.isEmpty()) {
             while (!current.IsNIL()) {
@@ -218,7 +237,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
             RBTNode temp = stack.pop();
             if (temp.IsNIL()) continue;
-            str.append(temp.getValue()).append(",");
+            str.append(temp.getValue()).append(" ");
             current = temp.getRight();
         }
         str.append("]");
@@ -226,13 +245,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
     /*---private methods ---*/
     private void insertBalance(RBTNode node){
-        /*
-        Случай 1: вставка красного(К) узла в корень дерева -> автоматически добавляется черный (Ч) при проверке IsEmpty
-        * Случай 2 (дед не корень, дядя красный): вставка К узла после К узла -> перекрашиваем родителя и дядю в Ч, деда в К
-        * Случай 3 (дед корень, дядя красный): если дед - корень -> все то же самое, только не трогаем деда
-        * Случай 4 (дед корень, дядя черный при этом зиг заг, если шли по левой ветке, а вставка справа): если зиг заг вправо, выполняем левый поворот относительно родителя, если влево - то правый, переход в пятый случай
-        * Случай 5 (все то же самое, только теперь не зиг-заг, а прямая линия): перекрашиваем родителя в Ч, перекрашиваем деда в К и делаем поворот в зависимости от направления
-        **/
 
         if (node.getParent().color == RBTColors.RED){ // Нарушение балансировки
             if(node.getUncle().color == RBTColors.RED){ // Если дядя красный
@@ -242,7 +254,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
             if (node.getUncle().color == RBTColors.BLACK){ // если дядя черный
                 // Сначала обработка левых случаев (лево-левый, лево-правый), затем обработка правых случаев
-                if(node.getGrandDad().getLeft() == node.getParent()){
+                if(node.getGrandDad() != null && node.getGrandDad().getLeft() == node.getParent()){
                     if (node.getParent().getRight() == node){ //если новый узел правый ребенок родителя (лево-правый случай и переход в лево-левый)
                         this.LeftTurn(node.getParent());
                         node = node.getLeft();
@@ -252,7 +264,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     this.RightTurn(node.getGrandDad());
                 }
                 //Обработка правых случаев
-                if(node.getGrandDad().getRight() == node.getParent()){
+                if(node.getGrandDad() !=null && node.getGrandDad().getRight() == node.getParent()){
                     if(node.getParent().getLeft() == node){ // Новый узел левый ребенок родителя
                         this.RightTurn(node.getParent());
                         node = node.getRight();
@@ -334,6 +346,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     private void deleteBlackNodeWithZeroChildren (RBTNode toDelete){
+
 
         NILNode nodeNil = new NILNode();
         if (toDelete.getParent().getRight() == toDelete) toDelete.getParent().setRight(nodeNil);

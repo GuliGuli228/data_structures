@@ -8,6 +8,13 @@ import org.example.Interfaces.List;
 
 import java.util.NoSuchElementException;
 
+/**
+ * A doubly linked list implementation that supports adding, removing, and accessing elements.
+ * Inherits from AbstractList and implements the List interface.
+ * @param <T> the type of elements in the list
+ * @author GuliGuli228
+ */
+
 public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     protected class DoublyLinkedNode extends Node<T>{
         DoublyLinkedNode next;
@@ -42,6 +49,13 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     protected int length = 0;
     /*------------------*/
 
+
+    /**
+     * Adds an element to the end of the doubly linked list.
+     * @param value the element to add
+     * @throws NullArgumentException if the element is null
+     */
+
     @Override
     public void insertAt(T value) {
         if(value == null) throw new NullArgumentException("value");
@@ -59,6 +73,15 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         }
         length++;
     }
+
+    /**
+     * Inserts an element at the specified index in the list.
+     * @param place the place to insert the element
+     * @param value the element to insert
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index > size())
+     * @throws NullArgumentException if the element is null
+     * @throws EmptyDoublyLinkedListException if list is empty
+     */
 
     public void insertAt(T value, int place){
         if(value == null) throw new NullArgumentException("value");

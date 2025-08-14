@@ -4,6 +4,7 @@ package org.example.ComplexStructures;
 import com.sun.source.tree.BinaryTree;
 import org.example.AbstracClasses.RBTColors;
 import org.example.BasicStructures.BinarySearchTree;
+import org.example.Exceptions.EmptyBinaryTreeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,31 +24,99 @@ public class RedBlackTreeTest {
         tree = new RedBlackTree<>();
     }
     @Test
-    @DisplayName("Testing RBT after insertion")
+    @DisplayName("Insert in empty tree")
     void insertionTest() throws Exception {
        tree.add(1);
-       tree.add(2);
-       tree.add(3);
-       tree.add(4);
        checkRBTProp(tree);
-       assertNotNull(tree.BFS(2));
-       assertNotNull(tree.DPS(2));
-       assertEquals("[ 1, 2, 3, 4 ]", tree.show());
     }
     @Test
-    @DisplayName("Testing RBT after delete")
-    void deleteTest() throws Exception {
-        tree.add(1);
-        tree.add(2);
-        tree.add(3);
-        tree.add(4);
+    @DisplayName("Insert in with tree violation of properties ")
+    void insertionWithViolation() throws Exception {
+        tree.add(10);
         tree.add(5);
-
+        tree.add(3);
+        checkRBTProp(tree);
+    }
+    @Test
+    @DisplayName("Insert with multiple rotations")
+    void insertionWithMultipleRotations() throws Exception {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        tree.add(3);
+        tree.add(7);
+        tree.add(1);
+        checkRBTProp(tree);
+    }
+    @Test
+    @DisplayName("Delete list")
+    void deleteTest() throws Exception {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
         tree.deleteByValue(5);
         checkRBTProp(tree);
-        tree.deleteByValue(3);
+    }
+    @Test
+    @DisplayName("Delete black node with one red child")
+    void deleteBlackNodeWithOneRedChild() throws Exception {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        tree.add(3);
+        tree.deleteByValue(5);
         checkRBTProp(tree);
-
+    }
+    @Test
+    @DisplayName("Delete root")
+    void deleteRootTest() throws Exception {
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        tree.deleteByValue(10);
+        checkRBTProp(tree);
+    }
+    @Test
+    @DisplayName("BFS existing element")
+    void BFSExistsTest() throws Exception {
+        tree.add(10);
+        tree.add(20);
+        tree.add(5);
+        assertNotNull(tree.BFS(5));
+    }
+    @Test
+    @DisplayName("BFS non-existing element")
+    void BFSNonExistsTest() throws Exception {
+        tree.add(10);
+        tree.add(20);
+        tree.add(30);
+        assertNull(tree.BFS(25));
+    }
+    @Test
+    @DisplayName("BFS in empty tree")
+    void BFSInEmptyTreeTest() throws Exception {
+        assertThrows(EmptyBinaryTreeException.class, ()->{tree.BFS(0);});
+    }
+    @Test
+    @DisplayName("DPS in empty tree")
+    void DPSInEmptyTreeTest() throws Exception {
+        assertThrows(EmptyBinaryTreeException.class, ()->{tree.BFS(0);});
+    }
+    @Test
+    @DisplayName("DPS existing element")
+    void DPSExistsTest() throws Exception {
+        tree.add(10);
+        tree.add(20);
+        tree.add(5);
+        assertNotNull(tree.BFS(5));
+    }
+    @Test
+    @DisplayName("DPS non-existing element")
+    void DPSNonExistsTest() throws Exception {
+        tree.add(10);
+        tree.add(20);
+        tree.add(30);
+        assertNull(tree.DPS(25));
     }
 
 

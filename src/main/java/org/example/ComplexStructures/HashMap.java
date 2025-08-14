@@ -2,6 +2,7 @@ package org.example.ComplexStructures;
 
 import net.jpountz.xxhash.XXHash32;
 import net.jpountz.xxhash.XXHashFactory;
+import org.example.Exceptions.EmptyBinaryTreeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.ByteBuffer;
@@ -47,7 +48,7 @@ public class HashMap <K extends Comparable<K>, V>{
     final int SEED = 0xDEADBEEF;
     XXHash32 factory = XXHashFactory.fastestInstance().hash32();
 
-    //TODO: Реализовать расширение массива, проверки на null и isEmpty, сделать вывод таблицы
+    //TODO: Реализовать расширение массива
 
     private RedBlackTree<Node> [] hashMapBuckets = new RedBlackTree[8] ;
     private int amountOfElements = 0;
@@ -74,11 +75,13 @@ public class HashMap <K extends Comparable<K>, V>{
     }
     public void remove(K key){
         Node dummyNode = new Node(key, null);
+        if (hashMapBuckets[getBucketIndex(key)] == null ||hashMapBuckets[getBucketIndex(key)].BFS(dummyNode)==null ) return;
         hashMapBuckets[getBucketIndex(key)].deleteByValue(dummyNode);
     }
     public V get(K key){
         RedBlackTree<Node> toSearch = hashMapBuckets[getBucketIndex(key)];
         Node dummyNode = new Node(key, null);
+        if (toSearch == null || toSearch.BFS(dummyNode)==null ) return null;
         return toSearch.BFS(dummyNode).getValue().getValue();
     }
 
@@ -88,9 +91,13 @@ public class HashMap <K extends Comparable<K>, V>{
         }
     }
     public boolean contains (K key){
-        Node dummyNode = new Node(key, null);
-        if (hashMapBuckets[getBucketIndex(key)] == null) return false;
-        if (hashMapBuckets[getBucketIndex(key)].BFS(dummyNode) == null) return false;
+        try {
+            Node dummyNode = new Node(key, null);
+            if (hashMapBuckets[getBucketIndex(key)] == null) return false;
+            if (hashMapBuckets[getBucketIndex(key)].BFS(dummyNode) == null) return false;
+        } catch (EmptyBinaryTreeException e) {
+            return false;
+        }
         return true;
     }
 
