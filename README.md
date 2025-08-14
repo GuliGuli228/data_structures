@@ -72,7 +72,7 @@
 
 ## Архитектура проекта
 **Семейство списков**
-![Image](https://github.com/user-attachments/assets/e73a26ce-4bb3-4173-aee7-4177a1c2f93a)
+<img width="827" height="1169" alt="Image" src="https://github.com/user-attachments/assets/a8c4bf5a-7959-4294-a5be-c934f811a6a3" />
 **Семейство деревьев**
 <img width="827" height="1169" alt="Image" src="https://github.com/user-attachments/assets/5bd77ddf-8167-48c0-9f3c-5b8c17a8389e" />
 ## 📋 Как начать
