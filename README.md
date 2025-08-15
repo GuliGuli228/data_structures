@@ -82,7 +82,43 @@
    ```
 2. Убедитесь, что установлена Java (JDK 11+).
 3. Откройте проект в IDE (IntelliJ IDEA, Eclipse) и запустите примеры из папки `src`.
+## Или используйте Maven или Gradle
+### Для Maven
+1. Добавьте в pom.xml
+```maven
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+2. Добавьте в зависимости
+```maven
+	<dependency>
+	    <groupId>com.github.GuliGuli228</groupId>
+	    <artifactId>data_structures</artifactId>
+	    <version>Tag</version>
+	</dependency>
+```
 
+### Для Gradle
+1. Добавьте в корневую папку `settings.gradle` в конец репозиториев
+```gradle
+	dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+2. Добавьте зависимость
+```gradle
+	dependencies {
+	        implementation 'com.github.GuliGuli228:data_structures:Tag'
+	}
+```
 ## 🤝 Как внести вклад
 Хотите помочь? Форкните репозиторий, добавьте свои улучшения и отправьте Pull Request! 😊
 
