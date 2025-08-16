@@ -3,10 +3,7 @@ package org.example.BasicStructures;
 import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.AbstractList;
 import org.example.Exceptions.EmptyDoublyLinkedListException;
-import org.example.Exceptions.EmptyLinkedListException;
 import org.example.Interfaces.List;
-
-import java.util.NoSuchElementException;
 
 /**
  * A doubly linked list implementation that supports adding, removing, and accessing elements.
@@ -20,8 +17,9 @@ import java.util.NoSuchElementException;
 
 public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     protected class DoublyLinkedNode extends Node<T>{
-        DoublyLinkedNode next;
-        DoublyLinkedNode prev;
+        //Experimental decision- making next and prev fields public
+        public DoublyLinkedNode next;
+        public DoublyLinkedNode prev;
 
         protected DoublyLinkedNode(){};
         protected DoublyLinkedNode(T value){
@@ -44,6 +42,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         protected void setValue(T value){
             super.setValue(value);
         }
+
     }
 
     /*-----Variables-----*/
@@ -60,7 +59,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
      */
 
     @Override
-    public void insertAt(T value) {
+    public void add(T value) {
         if(value == null) throw new NullArgumentException("value");
         if(this.isEmpty()) {
             head = new DoublyLinkedNode(value);
@@ -68,7 +67,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         }
         else{
             DoublyLinkedNode current = head;
-            while(current.next != null){
+            for (int i =0; i< length-1; i++){
                 current = current.next;
             }
             current.next = new DoublyLinkedNode(value, current, null);
@@ -86,7 +85,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
      * @throws EmptyDoublyLinkedListException if list is empty
      */
 
-    public void insertAt(T value, int place){
+    public void add(T value, int place){
         if(value == null) throw new NullArgumentException("value");
         if(place < 0 || place > length) throw new IndexOutOfBoundsException("place is out of bounds");
         if(this.isEmpty()) throw new EmptyDoublyLinkedListException();
@@ -162,16 +161,21 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     @Override
     public String show() {
         if (this.isEmpty())throw new EmptyDoublyLinkedListException();
+        if (this.length == 1){
+            return "List: [ " + head.getValue() + " ]";
+        }
         else {
             DoublyLinkedNode current = head;
             StringBuilder output = new StringBuilder("List: [ ");
 
-            while (current != null) {
-                output.append(current.getValue());
-                if (current.next != null) output.append(" , ");
+            for (int i =0 ; i < length; i++){
+                assert current != null;
+                output.append(current.getValue()).append(" ");
+                if (i != length-1) output.append(", ");
                 current = current.next;
             }
-            output.append(" ]");
+
+            output.append("]");
             return output.toString();
         }
     }
@@ -206,5 +210,21 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
             }
             current.setValue(value);
         }
+    }
+
+    @Override
+    public int size() {
+        return length;
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object[] array = new Object[length];
+        DoublyLinkedNode current = head;
+        for (int i = 0; i < length; i++){
+            array[i] = current.getValue();
+            current = current.next;
+        }
+        return array;
     }
 }
