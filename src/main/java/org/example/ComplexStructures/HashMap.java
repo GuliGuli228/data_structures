@@ -2,7 +2,9 @@ package org.example.ComplexStructures;
 
 import net.jpountz.xxhash.XXHash32;
 import net.jpountz.xxhash.XXHashFactory;
+import org.example.BasicStructures.GenericLinkedList;
 import org.example.Exceptions.EmptyBinaryTreeException;
+import org.example.Interfaces.Map;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.ByteBuffer;
@@ -17,7 +19,7 @@ import java.nio.charset.StandardCharsets;
  * @see RedBlackTree
  */
 
-public class HashMap <K extends Comparable<K>, V>{
+public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
 
     /**
      * A node representing key-value pair in the hash map.
@@ -51,8 +53,12 @@ public class HashMap <K extends Comparable<K>, V>{
         public String toString() {
             return "K: " + key + "; V: " + value;
         }
+
         public V getValue(){
             return value;
+        }
+        public K getKey(){
+            return key;
         }
     }
 
@@ -76,10 +82,11 @@ public class HashMap <K extends Comparable<K>, V>{
     final int SEED = 0xDEADBEEF;
     XXHash32 factory = XXHashFactory.fastestInstance().hash32();
 
-    private final RedBlackTree<Node> [] hashMapBuckets = new RedBlackTree[8] ;
-    //TODO: реализовать расширение массива при loadFactor >= 0.75
-    /*
+    private RedBlackTree<Node> [] hashMapBuckets = new RedBlackTree[8] ;
     private int amountOfElements = 0;
+    //TODO: реализовать расширение массива при loadFactor >= 0.75
+    ;
+    /*
     private double loadFactor = amountOfElements/ hashMapBuckets.length;
     */
 
@@ -111,15 +118,20 @@ public class HashMap <K extends Comparable<K>, V>{
      * @param value value to be associated with the specified key
      */
 
+    @Override
     public void add(K key, V value){
+        if (this.containsKey(key)) return ;
         Node nodeToAdd = new Node(key, value);
         RedBlackTree<Node> targetTree = hashMapBuckets[getBucketIndex(nodeToAdd)];
         if (targetTree == null) {
             hashMapBuckets[getBucketIndex(nodeToAdd)] = new RedBlackTree();
             hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
-            return;
+            amountOfElements++;
         }
-        hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
+        else {
+            hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
+            amountOfElements++;
+        }
     }
 
     /**
@@ -127,10 +139,12 @@ public class HashMap <K extends Comparable<K>, V>{
      * @param key key whose mapping is to be removed from the map
      */
 
+    @Override
     public void remove(K key){
         Node dummyNode = new Node(key, null);
         if (hashMapBuckets[getBucketIndex(key)] == null ||hashMapBuckets[getBucketIndex(key)].BFS(dummyNode)==null ) return;
         hashMapBuckets[getBucketIndex(key)].deleteByValue(dummyNode);
+        amountOfElements--;
     }
 
     /**
@@ -139,6 +153,7 @@ public class HashMap <K extends Comparable<K>, V>{
      * @return the value to which the specified key is mapped, or null if no mapping exists
      */
 
+    @Override
     public V get(K key){
         RedBlackTree<Node> toSearch = hashMapBuckets[getBucketIndex(key)];
         Node dummyNode = new Node(key, null);
@@ -147,14 +162,49 @@ public class HashMap <K extends Comparable<K>, V>{
     }
 
     /**
+     * Removes all of the mappings from this map. The map will be empty after this call returns.
+     */
+
+    @Override
+    public void clear() {
+        hashMapBuckets = new RedBlackTree[8];
+        amountOfElements = 0;
+    }
+
+    /**
      * Prints the contents of the hash map to standard output.
      * Shows each bucket and its contents in order.
      */
 
+    @Override
     public void show(){
-        for(int i = 0; i < hashMapBuckets.length; i++){
-            if(hashMapBuckets[i] != null)  System.out.println("Bucket: " + i + " [ "+ hashMapBuckets[i].show() + " ]");
+        System.out.println(this);
+    }
+
+    /**
+     * Returns a string representation of the hash map.
+     * The string displays each bucket and its contents in order.
+     * @return a string representation of the hash map
+     */
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hashMapBuckets.length; i++) {
+            if (hashMapBuckets[i] != null) {
+                sb.append("Bucket").append(i).append(": ").append("[ ");
+                Object[] nodes = hashMapBuckets[i].toArray();
+                for (int j = 0; j < nodes.length; j++) {
+                    Node node = (Node) nodes[j];
+                    sb.append("[ K: ").append(node.getKey()).append(", V: ").append(node.getValue()).append(" ]");
+                    if (j < nodes.length - 1) {
+                        sb.append(" , ");
+                    }
+                }
+                sb.append(" ]\n");
+            }
         }
+        return sb.toString();
     }
 
     /**
@@ -163,7 +213,9 @@ public class HashMap <K extends Comparable<K>, V>{
      * @return true if this map contains a mapping for the specified key
      */
 
-    public boolean contains (K key){
+    @Override
+    public boolean containsKey (K key){
+        if (amountOfElements == 0) return false;
         try {
             Node dummyNode = new Node(key, null);
             if (hashMapBuckets[getBucketIndex(key)] == null) return false;
@@ -174,5 +226,68 @@ public class HashMap <K extends Comparable<K>, V>{
         return true;
     }
 
+    /**
+     * Returns true if this map contains a mapping for the specified value.
+     * @param value the key whose presence in this map is to be tested
+     * @return true if this map contains a mapping for the specified value
+     */
+
+
+
+    @Override
+    public boolean containsValue (V value){
+        if (amountOfElements == 0) return false;
+        for(int i = 0; i < hashMapBuckets.length; i++){
+            if (hashMapBuckets[i] == null) continue;
+            Node[] Bucket = (Node[])hashMapBuckets[i].toArray();
+            for (int j = 0; j < Bucket.length; j++) {
+                if (value == null){
+                    if (Bucket[j].getValue() == null) return true;
+                }
+                else if (Bucket[j].getValue().equals(value)) return true;
+            }
+        }
+        return  false;
+    }
+
+    /**
+     * Returns true if this map contains no key-value mappings.
+     * @return true if this map contains no key-value mappings
+     */
+
+    @Override
+    public boolean isEmpty() {
+        return amountOfElements == 0;
+    }
+
+    /**
+     * Returns the number of key-value mappings in this map.
+     * @return the number of key-value mappings in this map
+     */
+
+    @Override
+    public int size() {
+        return amountOfElements;
+    }
+
+    /**
+     * Returns a list of all keys contained in this map.
+     * The order of keys is not specified.
+     * @return a GenericLinkedList containing all keys in this map
+     */
+
+
+    public GenericLinkedList<K> getKeys() {
+        GenericLinkedList<K> keys = new GenericLinkedList<>();
+        for(int i = 0; i < hashMapBuckets.length; i++){
+            if(hashMapBuckets[i] == null) continue;
+            Object[]Bucket = hashMapBuckets[i].toArray();
+            for (int j = 0; j < Bucket.length; j++) {
+                Node temp= (Node)Bucket[j];
+                keys.add(temp.getKey());
+            }
+        }
+        return keys;
+    }
 
 }
