@@ -136,19 +136,8 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
      * @throws EmptyLinkedListException if list is empty
      */
     @Override
-    public String show() {
-        if (this.isEmpty())throw new EmptyLinkedListException();
-        else {
-            LinkedNode current = head;
-            StringBuilder output = new StringBuilder("List: [ ");
-            while (current != null) {
-                output.append(current.getValue());
-                if (current.next != null) output.append(" , ");
-                current = current.next;
-            }
-            output.append(" ]");
-            return output.toString();
-        }
+    public void show() {
+        System.out.println(this);
     }
 
     @Override
