@@ -22,33 +22,36 @@ public class Queue<E> {
      * Adds an element to the end of the queue.
      * @param element the element to add
      * @throws NullArgumentException if the element is null
+     * @implNote Time complexity: O(1)
      */
 
     public void enqueue(E element){
         if(element==null) throw new NullArgumentException("element");
-        list.insertAt(element, 0);
+        list.add(element, 0);
     }
     /**
      * Removes and returns the element from the front of the queue.
      * @return the element at the front of the queue
      * @throws EmptyQueueException if the queue is empty
+     * @implNote Time complexity: O(1)
      */
 
     public E dequeue(){
         if(list.isEmpty()) throw new EmptyQueueException();
-        E result = list.getValueAt(list.getSize()-1);
-        list.removeAt(list.getSize()-1);
+        E result = list.getValueAt(list.size()-1);
+        list.removeAt(list.size()-1);
         return result;
     }
     /**
      * Returns the element at the front of the queue without removing it.
      * @return the element at the front of the queue
      * @throws EmptyQueueException if the queue is empty
+     * @implNote Time complexity: O(1)
      */
 
     public E peek(){
         if(this.isEmpty()) throw new EmptyQueueException();
-        return list.getValueAt(list.getSize()-1);
+        return list.getValueAt(list.size()-1);
     }
 
     /**
@@ -66,7 +69,8 @@ public class Queue<E> {
      */
 
     public int size(){
-        return list.getSize();
+        return list.size();
     }
+
 
 }

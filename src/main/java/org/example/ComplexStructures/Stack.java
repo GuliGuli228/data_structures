@@ -28,13 +28,14 @@ public class Stack<E>{
 
     public void push (E value){
         if (value == null) throw new NullArgumentException("value");
-        list.insertAt(value, 0);
+        list.add(value, 0);
     }
 
     /**
      * Removes and returns the element at the top of the stack.
      * @return the element at the top of the stack
      * @throws EmptyStackException if the stack is empty
+     * @implNote Time complexity: O(1)
      */
 
     public E pop(){
@@ -47,6 +48,7 @@ public class Stack<E>{
      * Returns the element at the top of the stack without removing it.
      * @return the element at the top of the stack
      * @throws EmptyStackException if the stack is empty
+     * @implNote Time complexity: O(1)
      */
 
     public E peek(){
@@ -61,4 +63,14 @@ public class Stack<E>{
     public boolean isEmpty(){
         return list.isEmpty();
     }
+
+    /**
+     * Returns size of stack.
+     * @return number of elements in stack
+     */
+
+    public int size(){
+        return list.size();
+    }
+
 }
