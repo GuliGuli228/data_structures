@@ -19,7 +19,7 @@ public class DoublyLinkedListTest {
     class InsertAtEndTests {
         @Test
         void insertIntoEmptyList() {
-            list.insertAt("A");
+            list.add("A");
             assertEquals(1, list.length);
             assertEquals("List: [ A ]", list.show());
             assertEquals("A", list.head.getValue());
@@ -28,8 +28,8 @@ public class DoublyLinkedListTest {
 
         @Test
         void insertIntoNonEmptyList() {
-            list.insertAt("A");
-            list.insertAt("B");
+            list.add("A");
+            list.add("B");
             assertEquals(2, list.length);
             assertEquals("List: [ A , B ]", list.show());
             assertEquals("A", list.head.getValue());
@@ -38,9 +38,9 @@ public class DoublyLinkedListTest {
 
         @Test
         void insertMultipleValues() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C");
+            list.add("A");
+            list.add("B");
+            list.add("C");
             assertEquals(3, list.length);
             assertEquals("List: [ A , B , C ]", list.show());
             assertEquals("C", list.tail.getValue());
@@ -48,7 +48,7 @@ public class DoublyLinkedListTest {
 
         @Test
         void insertNullValueThrowsException() {
-            assertThrows(NullArgumentException.class, () -> list.insertAt(null));
+            assertThrows(NullArgumentException.class, () -> list.add(null));
         }
     }
 
@@ -56,13 +56,13 @@ public class DoublyLinkedListTest {
     class InsertAtIndexTests {
         @Test
         void insertAtIndexZeroInEmptyListThrowsException() {
-            assertThrows(EmptyDoublyLinkedListException.class, () -> list.insertAt("A", 0));
+            assertThrows(EmptyDoublyLinkedListException.class, () -> list.add("A", 0));
         }
 
         @Test
         void insertAtIndexZeroInNonEmptyList() {
-            list.insertAt("B");
-            list.insertAt("A", 0);
+            list.add("B");
+            list.add("A", 0);
             assertEquals(2, list.length);
             assertEquals("List: [ A , B ]", list.show());
             assertEquals("A", list.head.getValue());
@@ -70,8 +70,8 @@ public class DoublyLinkedListTest {
 
         @Test
         void insertAtLastIndex() {
-            list.insertAt("A");
-            list.insertAt("B", 1);
+            list.add("A");
+            list.add("B", 1);
             assertEquals(2, list.length);
             assertEquals("List: [ A , B ]", list.show());
             assertEquals("B", list.tail.getValue());
@@ -79,29 +79,29 @@ public class DoublyLinkedListTest {
 
         @Test
         void insertInMiddle() {
-            list.insertAt("A");
-            list.insertAt("C");
-            list.insertAt("B", 1);
+            list.add("A");
+            list.add("C");
+            list.add("B", 1);
             assertEquals(3, list.length);
             assertEquals("List: [ A , B , C ]", list.show());
         }
 
         @Test
         void insertWithNegativeIndexThrowsException() {
-            list.insertAt("A");
-            assertThrows(IndexOutOfBoundsException.class, () -> list.insertAt("B", -1));
+            list.add("A");
+            assertThrows(IndexOutOfBoundsException.class, () -> list.add("B", -1));
         }
 
         @Test
         void insertWithIndexGreaterThanLengthThrowsException() {
-            list.insertAt("A");
-            assertThrows(IndexOutOfBoundsException.class, () -> list.insertAt("B", 2));
+            list.add("A");
+            assertThrows(IndexOutOfBoundsException.class, () -> list.add("B", 2));
         }
 
         @Test
         void insertNullValueThrowsException() {
-            list.insertAt("A");
-            assertThrows(NullArgumentException.class, () -> list.insertAt(null, 1));
+            list.add("A");
+            assertThrows(NullArgumentException.class, () -> list.add(null, 1));
         }
     }
 
@@ -111,11 +111,14 @@ public class DoublyLinkedListTest {
         void removeFromEmptyListThrowsException() {
             assertThrows(EmptyDoublyLinkedListException.class, () -> list.removeAt(0));
         }
+        @Test
+        void smt(){
+        }
 
         @Test
         void removeAtIndexZero() {
-            list.insertAt("A");
-            list.insertAt("B");
+            list.add("A");
+            list.add("B");
             list.removeAt(0);
             assertEquals(1, list.length);
             assertEquals("List: [ B ]", list.show());
@@ -124,8 +127,8 @@ public class DoublyLinkedListTest {
 
         @Test
         void removeAtLastIndex() {
-            list.insertAt("A");
-            list.insertAt("B");
+            list.add("A");
+            list.add("B");
             list.removeAt(1);
             assertEquals(1, list.length);
             assertEquals("List: [ A ]", list.show());
@@ -134,9 +137,9 @@ public class DoublyLinkedListTest {
 
         @Test
         void removeInMiddle() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C");
+            list.add("A");
+            list.add("B");
+            list.add("C");
             list.removeAt(1);
             assertEquals(2, list.length);
             assertEquals("List: [ A , C ]", list.show());
@@ -144,13 +147,13 @@ public class DoublyLinkedListTest {
 
         @Test
         void removeWithNegativeIndexThrowsException() {
-            list.insertAt("A");
+            list.add("A");
             assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(-1));
         }
 
         @Test
         void removeWithIndexGreaterThanOrEqualToLengthThrowsException() {
-            list.insertAt("A");
+            list.add("A");
             assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(1));
         }
     }
@@ -164,15 +167,15 @@ public class DoublyLinkedListTest {
 
         @Test
         void showSingleElementList() {
-            list.insertAt("A");
+            list.add("A");
             assertEquals("List: [ A ]", list.show());
         }
 
         @Test
         void showMultiElementList() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C");
+            list.add("A");
+            list.add("B");
+            list.add("C");
             assertEquals("List: [ A , B , C ]", list.show());
         }
     }
@@ -186,7 +189,7 @@ public class DoublyLinkedListTest {
 
         @Test
         void isEmptyOnNonEmptyList() {
-            list.insertAt("A");
+            list.add("A");
             assertFalse(list.isEmpty());
         }
     }
@@ -200,7 +203,7 @@ public class DoublyLinkedListTest {
 
         @Test
         void updateAtIndexZero() {
-            list.insertAt("A");
+            list.add("A");
             list.update("B", 0);
             assertEquals("List: [ B ]", list.show());
             assertEquals("B", list.head.getValue());
@@ -208,8 +211,8 @@ public class DoublyLinkedListTest {
 
         @Test
         void updateAtLastIndex() {
-            list.insertAt("A");
-            list.insertAt("B");
+            list.add("A");
+            list.add("B");
             list.update("C", 1);
             assertEquals("List: [ A , C ]", list.show());
             assertEquals("C", list.tail.getValue());
@@ -217,28 +220,28 @@ public class DoublyLinkedListTest {
 
         @Test
         void updateInMiddle() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C");
+            list.add("A");
+            list.add("B");
+            list.add("C");
             list.update("D", 1);
             assertEquals("List: [ A , D , C ]", list.show());
         }
 
         @Test
         void updateWithNegativeIndexThrowsException() {
-            list.insertAt("A");
+            list.add("A");
             assertThrows(IndexOutOfBoundsException.class, () -> list.update("B", -1));
         }
 
         @Test
         void updateWithIndexGreaterThanOrEqualToLengthThrowsException() {
-            list.insertAt("A");
+            list.add("A");
             assertThrows(IndexOutOfBoundsException.class, () -> list.update("B", 1));
         }
 
         @Test
         void updateWithNullValueThrowsException() {
-            list.insertAt("A");
+            list.add("A");
             assertThrows(NullArgumentException.class, () -> list.update(null, 0));
         }
     }
@@ -247,9 +250,9 @@ public class DoublyLinkedListTest {
     class StructuralIntegrityTests {
         @Test
         void verifyLinksAfterInsertions() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C", 1);
+            list.add("A");
+            list.add("B");
+            list.add("C", 1);
             assertEquals("A", list.head.getValue());
             assertEquals("C", list.head.next.getValue());
             assertEquals("B", list.tail.getValue());
@@ -260,9 +263,9 @@ public class DoublyLinkedListTest {
 
         @Test
         void verifyLinksAfterRemovals() {
-            list.insertAt("A");
-            list.insertAt("B");
-            list.insertAt("C");
+            list.add("A");
+            list.add("B");
+            list.add("C");
             list.removeAt(1);
             assertEquals("A", list.head.getValue());
             assertEquals("C", list.head.next.getValue());
@@ -274,7 +277,7 @@ public class DoublyLinkedListTest {
         @Test
         void largeListOperations() {
             for (int i = 0; i < 1000; i++) {
-                list.insertAt("X" + i);
+                list.add("X" + i);
             }
             assertEquals(1000, list.length);
             list.removeAt(500);
@@ -285,13 +288,21 @@ public class DoublyLinkedListTest {
 
         @Test
         void alternatingInsertionsAndDeletions() {
-            list.insertAt("A");
-            list.insertAt("B", 0);
+            list.add("A");
+            list.add("B", 0);
             list.removeAt(1);
-            list.insertAt("C", 1);
+            list.add("C", 1);
             list.removeAt(0);
             assertEquals("List: [ C ]", list.show());
             assertEquals(1, list.length);
+        }
+        @Test
+        void toArrayTest(){
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            Object[] expected = { "A", "B", "C" };
+            assertArrayEquals(expected, list.toArray());
         }
     }
 }
