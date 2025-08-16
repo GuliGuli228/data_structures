@@ -14,7 +14,7 @@ package org.example.Interfaces;
 public interface List<T> {
      void add(T value);
      void removeAt(int place);
-     String show();
+     void show();
      boolean isEmpty();
      void update(T value, int place);
      int size();
