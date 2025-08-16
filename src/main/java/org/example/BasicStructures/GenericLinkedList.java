@@ -58,7 +58,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
      * @throws NullArgumentException if the element is null
      */
     @Override
-    public void insertAt(T value) {
+    public void add(T value) {
         if(this.isEmpty()) {
             head = new LinkedNode(value);
             tail =head;
@@ -217,10 +217,11 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
      * @throws NullArgumentException if the element is null
      * @throws EmptyLinkedListException if list is empty
      */
-    public void insertAt(T value, int place){
+    public void add(T value, int place){
         if(place < 0 || place > length) throw new IndexOutOfBoundsException();
         if(this.isEmpty()){
             head = new LinkedNode(value);
+            tail = head;
             length++;
         }
         else{
@@ -229,7 +230,6 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
             if (place == 0) {
                 node.next = head;
                 head = node;
-                tail = head;
                 length ++;
                 return;
             }
