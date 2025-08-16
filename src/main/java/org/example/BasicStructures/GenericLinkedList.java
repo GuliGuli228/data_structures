@@ -190,6 +190,24 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     }
 
     /**
+     * Returns array implementation of list
+     * @return Object[] array
+     */
+    @Override
+    public Object[] toArray() {
+        if (this.isEmpty()) throw new EmptyLinkedListException();
+        Object[] array = new Object[length];
+        LinkedNode current = head;
+        for (int i = 0; i < length; i++){
+            array[i] = current.getValue();
+            current = current.next;
+        }
+        return array;
+    }
+
+
+
+    /**
      * Inserts an element at the specified index in the list.
      * @param value the element to insert
      * @param place the index at which to insert the element
