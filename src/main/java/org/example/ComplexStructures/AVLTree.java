@@ -193,13 +193,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     /**
      * Returns string representation of the tree using in-order traversal.
-     * @return string containing all elements of the tree in order
      */
 
     @Override
-    public String show(){
-        return super.show();
+    public void show(){
+        super.show();
     }
+
 
     /**
      * Updates a value in the tree by replacing it with a new value.
