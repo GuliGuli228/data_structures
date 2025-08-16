@@ -153,9 +153,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
     }
 
     /**
-     * Returns a string representation of the tree. Realize iterative in-order traversal using Stack
-     * @return a string containing all elements of the tree in order
-     * @see Stack
+     * Shows a string representation of tree
      */
 
     @Override
