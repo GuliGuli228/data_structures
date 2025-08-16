@@ -131,14 +131,19 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     }
 
     /**
-     * Returns a string representation of the list.
-     * @return a string containing all elements of the list
+     * Shows a string representation of lsit
      * @throws EmptyLinkedListException if list is empty
      */
     @Override
     public void show() {
         System.out.println(this);
     }
+
+    /**
+     * Returns a string representation of the list.
+     *
+     * @throws EmptyLinkedListException if list is empty
+     */
 
     @Override
     public String toString(){
