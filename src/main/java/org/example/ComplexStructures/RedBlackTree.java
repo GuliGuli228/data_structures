@@ -3,6 +3,7 @@ package org.example.ComplexStructures;
 import org.apache.commons.lang.NullArgumentException;
 import org.example.AbstracClasses.RBTColors;
 import org.example.BasicStructures.BinarySearchTree;
+import org.example.BasicStructures.GenericLinkedList;
 import org.example.Exceptions.EmptyBinaryTreeException;
 
 /**
@@ -311,12 +312,16 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     /**
      * Returns string representation of the tree using in-order traversal. Uses stack for in-order traversal
-     * @return string containing all elements of the tree in order, or "null" if empty
+     *
      * @see Stack
      */
 
     @Override
-    public String show(){
+    public void show(){
+        System.out.println(this);
+    }
+    @Override
+    public String toString(){
         StringBuilder str = new StringBuilder("[ ");
         Stack<RBTNode> stack = new Stack<>();
         RBTNode current = (RBTNode) root;
@@ -336,6 +341,24 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         str.append("]");
         return str.toString();
+    }
+
+    public Object[] toArray(){
+        GenericLinkedList<T> list = new GenericLinkedList<>();
+        Stack<RBTNode> stack = new Stack<>();
+        RBTNode current = (RBTNode) root;
+        if (this.IsEmpty()) return null;
+        while ( !current.IsNIL() || !stack.isEmpty()) {
+            while (!current.IsNIL()) {
+                stack.push(current);
+                current = current.getLeft();
+            }
+            RBTNode temp = stack.pop();
+            list.add(temp.getValue());
+            if (temp.IsNIL()) continue;
+            current = temp.getRight();
+        }
+        return list.toArray();
     }
     /*---private methods ---*/
 
