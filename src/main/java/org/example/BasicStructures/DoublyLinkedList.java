@@ -154,12 +154,22 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     }
 
     /**
-     * Returns all list elements as String
-     * @return String - elements as string
+     *Shows a string representation of list
+     *
      * @throws EmptyDoublyLinkedListException if list is empty
      */
     @Override
-    public String show() {
+    public void show() {
+        System.out.println(this);
+    }
+
+    /**
+     * Returns all list elements as String
+     *
+     * @throws EmptyDoublyLinkedListException if list is empty
+     */
+    @Override
+    public String toString(){
         if (this.isEmpty())throw new EmptyDoublyLinkedListException();
         if (this.length == 1){
             return "List: [ " + head.getValue() + " ]";
