@@ -27,13 +27,13 @@ class HashMapTest {
         map.add("key", 123);
         map.add("key2", 456);
         map.remove("key");
-        assertFalse(map.contains("key"));
+        assertFalse(map.containsKey("key"));
     }
 
     @Test
     void contains_shouldReturnFalseForEmptyMap() {
         HashMap<String, Integer> map = new HashMap<>();
-        assertFalse(map.contains("test"));
+        assertFalse(map.containsKey("test"));
     }
 
     @Test

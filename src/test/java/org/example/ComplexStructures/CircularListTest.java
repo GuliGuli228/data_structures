@@ -22,7 +22,7 @@ class CircularListTest{
         circularList.add(3);
         circularList.add(4);
 
-        assertEquals("List: [ 1 , 2 , 3 , 4 ]", circularList.show());
+        assertEquals("List: [ 1 , 2 , 3 , 4 ]", circularList.toString());
     }
 
     @Test
@@ -32,7 +32,7 @@ class CircularListTest{
         circularList.add(2);
         circularList.add(3);
         circularList.add(4, 1);
-        assertEquals("List: [ 1 , 4 , 2 , 3 ]", circularList.show());
+        assertEquals("List: [ 1 , 4 , 2 , 3 ]", circularList.toString());
     }
     @Test
     @DisplayName("Insert at head")
@@ -41,7 +41,7 @@ class CircularListTest{
         circularList.add(2);
         circularList.add(3);
         circularList.add(4,0);
-        assertEquals("List: [ 4 , 1 , 2 , 3 ]", circularList.show());
+        assertEquals("List: [ 4 , 1 , 2 , 3 ]", circularList.toString());
     }
 
 
@@ -53,7 +53,7 @@ class CircularListTest{
         circularList.add(3);
         circularList.add(4);
         circularList.removeAt(2);
-        assertEquals("List: [ 1 , 2 , 4 ]", circularList.show());
+        assertEquals("List: [ 1 , 2 , 4 ]", circularList.toString());
         assertEquals(3, circularList.size());
     }
 
@@ -65,7 +65,7 @@ class CircularListTest{
         circularList.add(3);
         circularList.add(4);
         circularList.removeAt(0);
-        assertEquals("List: [ 2 , 3 , 4 ]", circularList.show());
+        assertEquals("List: [ 2 , 3 , 4 ]", circularList.toString());
         assertEquals(3, circularList.size());
     }
 
@@ -77,7 +77,7 @@ class CircularListTest{
         circularList.add(3);
         circularList.add(4);
         circularList.removeAt(circularList.size()-1);
-        assertEquals("List: [ 1 , 2 , 3 ]", circularList.show());
+        assertEquals("List: [ 1 , 2 , 3 ]", circularList.toString());
         assertEquals(3, circularList.size());
     }
 

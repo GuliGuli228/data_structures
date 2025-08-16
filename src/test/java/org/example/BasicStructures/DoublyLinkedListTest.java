@@ -21,7 +21,7 @@ public class DoublyLinkedListTest {
         void insertIntoEmptyList() {
             list.add("A");
             assertEquals(1, list.length);
-            assertEquals("List: [ A ]", list.show());
+            assertEquals("List: [ A ]", list.toString());
             assertEquals("A", list.head.getValue());
             assertEquals("A", list.tail.getValue());
         }
@@ -31,7 +31,7 @@ public class DoublyLinkedListTest {
             list.add("A");
             list.add("B");
             assertEquals(2, list.length);
-            assertEquals("List: [ A , B ]", list.show());
+            assertEquals("List: [ A , B ]", list.toString());
             assertEquals("A", list.head.getValue());
             assertEquals("B", list.tail.getValue());
         }
@@ -42,7 +42,7 @@ public class DoublyLinkedListTest {
             list.add("B");
             list.add("C");
             assertEquals(3, list.length);
-            assertEquals("List: [ A , B , C ]", list.show());
+            assertEquals("List: [ A , B , C ]", list.toString());
             assertEquals("C", list.tail.getValue());
         }
 
@@ -64,7 +64,7 @@ public class DoublyLinkedListTest {
             list.add("B");
             list.add("A", 0);
             assertEquals(2, list.length);
-            assertEquals("List: [ A , B ]", list.show());
+            assertEquals("List: [ A , B ]", list.toString());
             assertEquals("A", list.head.getValue());
         }
 
@@ -73,7 +73,7 @@ public class DoublyLinkedListTest {
             list.add("A");
             list.add("B", 1);
             assertEquals(2, list.length);
-            assertEquals("List: [ A , B ]", list.show());
+            assertEquals("List: [ A , B ]", list.toString());
             assertEquals("B", list.tail.getValue());
         }
 
@@ -83,7 +83,7 @@ public class DoublyLinkedListTest {
             list.add("C");
             list.add("B", 1);
             assertEquals(3, list.length);
-            assertEquals("List: [ A , B , C ]", list.show());
+            assertEquals("List: [ A , B , C ]", list.toString());
         }
 
         @Test
@@ -121,7 +121,7 @@ public class DoublyLinkedListTest {
             list.add("B");
             list.removeAt(0);
             assertEquals(1, list.length);
-            assertEquals("List: [ B ]", list.show());
+            assertEquals("List: [ B ]", list.toString());
             assertEquals("B", list.head.getValue());
         }
 
@@ -131,7 +131,7 @@ public class DoublyLinkedListTest {
             list.add("B");
             list.removeAt(1);
             assertEquals(1, list.length);
-            assertEquals("List: [ A ]", list.show());
+            assertEquals("List: [ A ]", list.toString());
             assertEquals("A", list.tail.getValue());
         }
 
@@ -142,7 +142,7 @@ public class DoublyLinkedListTest {
             list.add("C");
             list.removeAt(1);
             assertEquals(2, list.length);
-            assertEquals("List: [ A , C ]", list.show());
+            assertEquals("List: [ A , C ]", list.toString());
         }
 
         @Test
@@ -168,7 +168,7 @@ public class DoublyLinkedListTest {
         @Test
         void showSingleElementList() {
             list.add("A");
-            assertEquals("List: [ A ]", list.show());
+            assertEquals("List: [ A ]", list.toString());
         }
 
         @Test
@@ -176,7 +176,7 @@ public class DoublyLinkedListTest {
             list.add("A");
             list.add("B");
             list.add("C");
-            assertEquals("List: [ A , B , C ]", list.show());
+            assertEquals("List: [ A , B , C ]", list.toString());
         }
     }
 
@@ -205,7 +205,7 @@ public class DoublyLinkedListTest {
         void updateAtIndexZero() {
             list.add("A");
             list.update("B", 0);
-            assertEquals("List: [ B ]", list.show());
+            assertEquals("List: [ B ]", list.toString());
             assertEquals("B", list.head.getValue());
         }
 
@@ -214,7 +214,7 @@ public class DoublyLinkedListTest {
             list.add("A");
             list.add("B");
             list.update("C", 1);
-            assertEquals("List: [ A , C ]", list.show());
+            assertEquals("List: [ A , C ]", list.toString());
             assertEquals("C", list.tail.getValue());
         }
 
@@ -224,7 +224,7 @@ public class DoublyLinkedListTest {
             list.add("B");
             list.add("C");
             list.update("D", 1);
-            assertEquals("List: [ A , D , C ]", list.show());
+            assertEquals("List: [ A , D , C ]", list.toString());
         }
 
         @Test
@@ -283,7 +283,7 @@ public class DoublyLinkedListTest {
             list.removeAt(500);
             assertEquals(999, list.length);
             list.update("Y", 499);
-            assertTrue(list.show().contains("Y"));
+            assertTrue(list.toString().contains("Y"));
         }
 
         @Test
@@ -293,7 +293,7 @@ public class DoublyLinkedListTest {
             list.removeAt(1);
             list.add("C", 1);
             list.removeAt(0);
-            assertEquals("List: [ C ]", list.show());
+            assertEquals("List: [ C ]", list.toString());
             assertEquals(1, list.length);
         }
         @Test

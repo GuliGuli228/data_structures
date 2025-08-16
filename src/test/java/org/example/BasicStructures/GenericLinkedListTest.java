@@ -560,10 +560,10 @@ class GenericLinkedListTest {
         CharList.add('a');
         BoolList.add(true);
 
-        assertEquals("List: [ 1 ]", IntList.show());
-        assertEquals("List: [ 1.0 ]", DoubleList.show());
-        assertEquals("List: [ a ]", CharList.show());
-        assertEquals("List: [ true ]", BoolList.show());
+        assertEquals("[ 1 ]", IntList.toString());
+        assertEquals("[ 1.0 ]", DoubleList.toString());
+        assertEquals("[ a ]", CharList.toString());
+        assertEquals("[ true ]", BoolList.toString());
     }
 
     @DisplayName("Show multiple elements")
@@ -582,10 +582,10 @@ class GenericLinkedListTest {
         BoolList.add(false);
         BoolList.add(true);
 
-        assertEquals("List: [ 1 , 2 , 3 ]", IntList.show());
-        assertEquals("List: [ 1.0 , 2.0 , 3.0 ]", DoubleList.show());
-        assertEquals("List: [ a , b , c ]", CharList.show());
-        assertEquals("List: [ true , false , true ]", BoolList.show());
+        assertEquals("[ 1 , 2 , 3 ]", IntList.toString());
+        assertEquals("[ 1.0 , 2.0 , 3.0 ]", DoubleList.toString());
+        assertEquals("[ a , b , c ]", CharList.toString());
+        assertEquals("[ true , false , true ]", BoolList.toString());
     }
 
     @DisplayName("IsEmpty after operations")

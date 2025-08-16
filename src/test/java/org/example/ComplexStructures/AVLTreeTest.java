@@ -49,7 +49,7 @@ public class AVLTreeTest {
 
     // Вспомогательный метод для проверки структуры дерева
     private void assertTreeStructure(AVLTree<Integer> tree, String expectedShowOutput) {
-        String actual = tree.show();
+        String actual = tree.toString();
         assertEquals(expectedShowOutput, actual, "Tree structure mismatch");
     }
 
@@ -255,7 +255,7 @@ public class AVLTreeTest {
         tree.add(5);
         tree.add(3);
         tree.add(7);
-        String output = tree.show();
+        String output = tree.toString();
         assertNotNull(output);
         // Точная проверка зависит от реализации show(), но можно проверить наличие ключевых значений
         assertTrue(output.contains("5"));

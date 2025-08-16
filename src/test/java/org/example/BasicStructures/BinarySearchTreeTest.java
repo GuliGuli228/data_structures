@@ -44,7 +44,7 @@ public class BinarySearchTreeTest {
         // Добавляем узел в пустое дерево
         tree.add(10);
         assertFalse(tree.IsEmpty(), "Tree should not be empty after adding a node");
-        assertEquals("[ 10 ]", tree.show(), "Root should be 10");
+        assertEquals("[ 10 ]", tree.toString(), "Root should be 10");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class BinarySearchTreeTest {
         tree.add(10);
         tree.add(5);
         tree.add(15);
-        assertEquals("[ 5 10 15 ]", tree.show(), "Nodes should be in order: 5, 10, 15");
+        assertEquals("[ 5 10 15 ]", tree.toString(), "Nodes should be in order: 5, 10, 15");
     }
 
     @Test
@@ -63,7 +63,7 @@ public class BinarySearchTreeTest {
         // Добавляем одно и то же значение дважды
         tree.add(10);
         tree.add(10);
-        assertEquals("[ 10 ]", tree.show(), "Duplicate should not be added");
+        assertEquals("[ 10 ]", tree.toString(), "Duplicate should not be added");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class BinarySearchTreeTest {
         tree.add(5);
         tree.add(15);
         tree.deleteByValue(5);
-        assertEquals("[ 10 15 ]", tree.show(), "After deleting leaf 5, tree should contain 10, 15");
+        assertEquals("[ 10 15 ]", tree.toString(), "After deleting leaf 5, tree should contain 10, 15");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class BinarySearchTreeTest {
         tree.add(5);
         tree.add(3);
         tree.deleteByValue(5);
-        assertEquals("[ 3 10 ]", tree.show(), "After deleting node 5, tree should contain 3, 10");
+        assertEquals("[ 3 10 ]", tree.toString(), "After deleting node 5, tree should contain 3, 10");
     }
 
     @Test
@@ -105,7 +105,7 @@ public class BinarySearchTreeTest {
         tree.add(12);
         tree.add(20);
         tree.deleteByValue(15);
-        assertEquals("[ 10 12 20 ]", tree.show(), "After deleting node 15, tree should contain 10, 12, 20");
+        assertEquals("[ 10 12 20 ]", tree.toString(), "After deleting node 15, tree should contain 10, 12, 20");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class BinarySearchTreeTest {
         // Пытаемся удалить значение, которого нет
         tree.add(10);
         tree.deleteByValue(20);
-        assertEquals("[ 10 ]", tree.show(), "Tree should not change when deleting a non-existent value");
+        assertEquals("[ 10 ]", tree.toString(), "Tree should not change when deleting a non-existent value");
     }
 
     // Тесты для метода show
@@ -122,7 +122,7 @@ public class BinarySearchTreeTest {
     @DisplayName("Test output of an empty tree")
     void testShowEmptyTree() {
         // Проверяем вывод для пустого дерева
-        assertEquals("[ ]", tree.show(), "Empty tree should return [ ]");
+        assertEquals("[ ]", tree.toString(), "Empty tree should return [ ]");
     }
 
     @Test
@@ -130,7 +130,7 @@ public class BinarySearchTreeTest {
     void testShowSingleNode() {
         // Проверяем вывод для дерева с одним узлом
         tree.add(10);
-        assertEquals("[ 10 ]", tree.show(), "Tree with one node should return [ 10 ]");
+        assertEquals("[ 10 ]", tree.toString(), "Tree with one node should return [ 10 ]");
     }
 
     @Test
@@ -140,7 +140,7 @@ public class BinarySearchTreeTest {
         tree.add(10);
         tree.add(5);
         tree.add(15);
-        assertEquals("[ 5 10 15 ]", tree.show(), "Tree should return nodes in order: 5, 10, 15");
+        assertEquals("[ 5 10 15 ]", tree.toString(), "Tree should return nodes in order: 5, 10, 15");
     }
 
     // Тесты для метода update
@@ -150,7 +150,7 @@ public class BinarySearchTreeTest {
         // Обновляем значение узла
         tree.add(10);
         tree.update(10, 20);
-        assertEquals("[ 20 ]", tree.show(), "Value 10 should be updated to 20");
+        assertEquals("[ 20 ]", tree.toString(), "Value 10 should be updated to 20");
     }
 
     @Test
@@ -159,7 +159,7 @@ public class BinarySearchTreeTest {
         // Пытаемся обновить несуществующее значение
         tree.add(10);
         tree.update(20, 30);
-        assertEquals("[ 10 ]", tree.show(), "Tree should not change when updating a non-existent value");
+        assertEquals("[ 10 ]", tree.toString(), "Tree should not change when updating a non-existent value");
     }
 
     @Test
