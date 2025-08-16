@@ -185,7 +185,9 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
      * Returns the number of elements in the list.
      * @return the number of elements in the list
      */
-    public int getSize(){
+
+    @Override
+    public int size() {
         return length;
     }
 
