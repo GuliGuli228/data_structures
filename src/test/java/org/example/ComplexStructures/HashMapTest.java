@@ -57,4 +57,14 @@ class HashMapTest {
         HashMap<String, Integer> map = new HashMap<>();
         assertDoesNotThrow(() -> map.remove("missing"));
     }
+
+    @Test
+    void showTest(){
+        HashMap<String, Integer> map = new HashMap<>();
+        map.add("one", 1);
+        map.add("two", 2);
+        map.add("three", 3);
+        map.add("four", 4);
+        System.out.println(map);
+    }
 }
