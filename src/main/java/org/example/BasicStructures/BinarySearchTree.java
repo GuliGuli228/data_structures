@@ -159,7 +159,17 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractTree<T, B
      */
 
     @Override
-    public String show() {
+    public void show() {
+        System.out.println(this);
+    }
+
+    /**
+     * Returns a string representation of the tree. Realize iterative in-order traversal using Stack
+     *
+     * @see Stack
+     */
+    @Override
+    public String toString() {
         StringBuilder str = new StringBuilder("[ ");
         Stack<BinaryNode> stack = new Stack<>();
         BinaryNode current = root;
