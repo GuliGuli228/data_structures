@@ -67,4 +67,22 @@ class HashMapTest {
         map.add("four", 4);
         System.out.println(map);
     }
+    @Test
+    void addingDuplicates(){
+        HashMap<String, Integer> map = new HashMap<>();
+        map.add("one", 1);
+        map.add("two", 2);
+        map.add("three", 3);
+        map.add("one", 4);
+        System.out.println(map);
+        System.out.println(map.size());
+    }
+
+    @Test
+    void stressTest(){
+        HashMap<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < 10000000; i++) {
+            map .add( ((Integer)i).toString(), i);
+        }
+    }
 }

@@ -67,4 +67,11 @@ class HashSetTest {
     void testSize() {
         assertEquals(5, set.size());
     }
+    @Test
+    void stressTest() {
+        for (int i = 0; i < 10_000_000; i++) {
+            set.add(i);
+        }
+    }
+
 }
