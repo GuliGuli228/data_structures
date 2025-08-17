@@ -179,7 +179,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             direction = value.compareTo(current.getValue());
             if(direction>0) current = current.getRight();
             if(direction <0) current = current.getLeft();
-            if(direction == 0) return;
+            if(direction == 0) update(BFS(value).getValue(), value);
         }
 
         if(direction > 0){

@@ -84,11 +84,8 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
 
     private RedBlackTree<Node> [] hashMapBuckets = new RedBlackTree[8] ;
     private int amountOfElements = 0;
-    //TODO: реализовать расширение массива при loadFactor >= 0.75
-    ;
-    /*
-    private double loadFactor = amountOfElements/ hashMapBuckets.length;
-    */
+
+
 
     /**
      * Computes bucket index for a given node.
@@ -120,9 +117,15 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
 
     @Override
     public void add(K key, V value){
-        if (this.containsKey(key)) return ;
+         double loadFactor = (double) amountOfElements / hashMapBuckets.length;
         Node nodeToAdd = new Node(key, value);
         RedBlackTree<Node> targetTree = hashMapBuckets[getBucketIndex(nodeToAdd)];
+        if (this.containsKey(key)){
+            Node dummy = new Node(key, null);
+            RedBlackTree<Node> tempTree = hashMapBuckets[getBucketIndex(dummy)];
+            tempTree.update(tempTree.BFS(dummy).getValue(),new Node(key,value));
+            return;
+        }
         if (targetTree == null) {
             hashMapBuckets[getBucketIndex(nodeToAdd)] = new RedBlackTree();
             hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
@@ -131,6 +134,12 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
         else {
             hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
             amountOfElements++;
+        }
+        if (loadFactor > 0.75){
+            autoResize(hashMapBuckets.length*2);
+        }
+        if (loadFactor < 0.25 && amountOfElements > 8){
+            autoResize(hashMapBuckets.length/2);
         }
     }
 
@@ -288,6 +297,31 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
             }
         }
         return keys;
+    }
+
+    /**
+     * Resizes hashMap array
+     * @param newSize new size of array*/
+    private void autoResize(int newSize) {
+        RedBlackTree<Node>[] newHashMapBuckets = new RedBlackTree[newSize];
+        for(int i = 0; i < hashMapBuckets.length; i++){
+            if(hashMapBuckets[i] != null){
+                Object[] node = hashMapBuckets[i].toArray();
+                for (int j = 0; j < node.length; j++) {
+
+                    if(newHashMapBuckets[getBucketIndex((Node) node[j])] == null){
+                        newHashMapBuckets[getBucketIndex((Node) node[j])] = new RedBlackTree();
+                        newHashMapBuckets[getBucketIndex((Node) node[j])].add((Node) node[j]);
+                        amountOfElements++;
+                    }
+                    else{
+                        newHashMapBuckets[getBucketIndex((Node) node[j])].add((Node) node[j]);
+                        amountOfElements++;
+                    }
+                }
+            }
+        }
+        hashMapBuckets = newHashMapBuckets;
     }
 
 }
