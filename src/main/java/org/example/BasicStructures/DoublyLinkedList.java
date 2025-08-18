@@ -237,5 +237,17 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         }
         return array;
     }
+
+    @Override
+    public int indexOf(T value) {
+        int index = 0;
+        DoublyLinkedNode current = head;
+        for (int i = 0; i < length; i++){
+            if (value.equals(current.getValue())) return index;
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
 }
 
