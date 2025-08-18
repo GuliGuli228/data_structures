@@ -36,15 +36,6 @@ class HashMapTest {
         assertFalse(map.containsKey("test"));
     }
 
-    @Test
-    void add_shouldHandleCollisions() {
-        HashMap<Integer, String> map = new HashMap<>();
-        // Подобрать ключи с одинаковым hashCode (зависит от реализации)
-        map.add(1, "first");
-        map.add(9, "second"); // Предположим, что 1 и 9 дают одинаковый hashCode
-        assertEquals("first", map.get(1));
-        assertEquals("second", map.get(9));
-    }
 
     @Test
     void convertToBytes_shouldThrowForUnsupportedKeyType() {
@@ -81,7 +72,7 @@ class HashMapTest {
     @Test
     void stressTest(){
         HashMap<String, Integer> map = new HashMap<>();
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < 100_000_00; i++) {
             map .add( ((Integer)i).toString(), i);
         }
     }

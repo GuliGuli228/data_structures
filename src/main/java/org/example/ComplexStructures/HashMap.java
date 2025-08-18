@@ -53,6 +53,10 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
         public String toString() {
             return "K: " + key + "; V: " + value;
         }
+        @Override
+        public boolean equals(Object o) {
+            return key.equals(((Node)o).key);
+        }
 
         public V getValue(){
             return value;
@@ -82,7 +86,7 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
     final int SEED = 0xDEADBEEF;
     XXHash32 factory = XXHashFactory.fastestInstance().hash32();
 
-    private RedBlackTree<Node> [] hashMapBuckets = new RedBlackTree[8] ;
+    private Object [] hashMapBuckets = new Object[8] ;
     private int amountOfElements = 0;
 
 
@@ -116,25 +120,51 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public void add(K key, V value){
-         double loadFactor = (double) amountOfElements / hashMapBuckets.length;
+        double loadFactor = (double) amountOfElements / hashMapBuckets.length;
         Node nodeToAdd = new Node(key, value);
-        RedBlackTree<Node> targetTree = hashMapBuckets[getBucketIndex(nodeToAdd)];
-        if (this.containsKey(key)){
-            Node dummy = new Node(key, null);
-            RedBlackTree<Node> tempTree = hashMapBuckets[getBucketIndex(dummy)];
-            tempTree.update(tempTree.BFS(dummy).getValue(),new Node(key,value));
+        Node dummy = new Node(key, null);
+
+
+        if (hashMapBuckets[getBucketIndex(nodeToAdd)] == null){
+            GenericLinkedList<Node> list = new GenericLinkedList<>();
+            hashMapBuckets[getBucketIndex(nodeToAdd)] = list;
+            list.add(nodeToAdd);
+            amountOfElements++;
             return;
+
         }
-        if (targetTree == null) {
-            hashMapBuckets[getBucketIndex(nodeToAdd)] = new RedBlackTree();
-            hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
-            amountOfElements++;
+        if (hashMapBuckets[getBucketIndex(nodeToAdd)] instanceof GenericLinkedList){
+            GenericLinkedList<Node> currentBucket = (GenericLinkedList<Node>) hashMapBuckets[getBucketIndex(nodeToAdd)];
+            if (this.containsKey(key)){
+                currentBucket.update(nodeToAdd, currentBucket.indexOf(nodeToAdd));
+            }
+            else {
+                if (currentBucket.size() >= 8){
+                    RedBlackTree<Node> newBucket = new RedBlackTree<>();
+                    for (int i =0; i < currentBucket.size(); i++){
+                        newBucket.add(currentBucket.getValueAt(i));
+                    }
+                }
+                else{
+                    ((GenericLinkedList<Node>)hashMapBuckets[getBucketIndex(nodeToAdd)]).add(nodeToAdd);
+                    amountOfElements++;
+                }
+            }
         }
-        else {
-            hashMapBuckets[getBucketIndex(nodeToAdd)].add(nodeToAdd);
-            amountOfElements++;
+        if (hashMapBuckets[getBucketIndex(nodeToAdd)] instanceof RedBlackTree){
+            if (this.containsKey(key)){
+                RedBlackTree<Node> tempTree = (RedBlackTree<Node>)hashMapBuckets[getBucketIndex(nodeToAdd)];
+                tempTree.update(tempTree.BFS(dummy).getValue(),new Node(key,value));
+                return;
+            }
+            else {
+                ((RedBlackTree<Node>)hashMapBuckets[getBucketIndex(nodeToAdd)]).add(nodeToAdd);
+                amountOfElements++;
+            }
         }
+
         if (loadFactor > 0.75){
             autoResize(hashMapBuckets.length*2);
         }
@@ -149,10 +179,18 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public void remove(K key){
+        if (hashMapBuckets[getBucketIndex(key)] == null || !this.containsKey(key)) return;
+
         Node dummyNode = new Node(key, null);
-        if (hashMapBuckets[getBucketIndex(key)] == null ||hashMapBuckets[getBucketIndex(key)].BFS(dummyNode)==null ) return;
-        hashMapBuckets[getBucketIndex(key)].deleteByValue(dummyNode);
+        if (hashMapBuckets[getBucketIndex(key)] instanceof GenericLinkedList){
+            GenericLinkedList<Node> currentBucket = (GenericLinkedList<Node>)hashMapBuckets[getBucketIndex(key)];
+            currentBucket.removeAt(currentBucket.indexOf(dummyNode));
+        }
+        if  (hashMapBuckets[getBucketIndex(key)] instanceof RedBlackTree){
+            ((RedBlackTree<Node>)hashMapBuckets[getBucketIndex(key)]).deleteByValue(dummyNode);
+        }
         amountOfElements--;
     }
 
@@ -163,11 +201,21 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public V get(K key){
-        RedBlackTree<Node> toSearch = hashMapBuckets[getBucketIndex(key)];
+        int number = getBucketIndex(key);
+        if (hashMapBuckets[getBucketIndex(key)] == null|| !this.containsKey(key)) return null;
+
         Node dummyNode = new Node(key, null);
-        if (toSearch == null || toSearch.BFS(dummyNode)==null ) return null;
-        return toSearch.BFS(dummyNode).getValue().getValue();
+        if (hashMapBuckets[getBucketIndex(key)] instanceof GenericLinkedList){
+            GenericLinkedList<Node> currentBucket = (GenericLinkedList<Node>)hashMapBuckets[getBucketIndex(key)];
+            return currentBucket.getValueAt(currentBucket.indexOf(dummyNode)).getValue();
+        }
+        if (hashMapBuckets[getBucketIndex(key)] instanceof RedBlackTree){
+            RedBlackTree<Node> toSearch = (RedBlackTree<Node>) hashMapBuckets[getBucketIndex(key)];
+            return toSearch.BFS(dummyNode).getValue().getValue();
+        }
+        return null;
     }
 
     /**
@@ -197,12 +245,20 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public String toString() {
+        if (this.isEmpty()) return "Map is empty";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < hashMapBuckets.length; i++) {
             if (hashMapBuckets[i] != null) {
                 sb.append("Bucket").append(i).append(": ").append("[ ");
-                Object[] nodes = hashMapBuckets[i].toArray();
+                Object[] nodes = null;
+                if (hashMapBuckets[i] instanceof GenericLinkedList) {
+                    nodes = ((GenericLinkedList<?>)hashMapBuckets[i]).toArray();
+                }
+                if (hashMapBuckets[i] instanceof RedBlackTree){
+                    nodes = ((RedBlackTree<?>)hashMapBuckets[i]).toArray();
+                }
                 for (int j = 0; j < nodes.length; j++) {
                     Node node = (Node) nodes[j];
                     sb.append("[ K: ").append(node.getKey()).append(", V: ").append(node.getValue()).append(" ]");
@@ -223,16 +279,24 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsKey (K key){
         if (amountOfElements == 0) return false;
-        try {
-            Node dummyNode = new Node(key, null);
-            if (hashMapBuckets[getBucketIndex(key)] == null) return false;
-            if (hashMapBuckets[getBucketIndex(key)].BFS(dummyNode) == null) return false;
-        } catch (EmptyBinaryTreeException e) {
-            return false;
+        if (hashMapBuckets[getBucketIndex(key)] == null) return false;
+        Node dummyNode = new Node(key, null);
+
+        if (hashMapBuckets[getBucketIndex(key)] instanceof GenericLinkedList){
+            return ((GenericLinkedList<Node>) hashMapBuckets[getBucketIndex(key)]).indexOf(dummyNode) >= 0;
         }
-        return true;
+        if (hashMapBuckets[getBucketIndex(key)] instanceof RedBlackTree<?>){
+            try {
+                if (((RedBlackTree<Node>)hashMapBuckets[getBucketIndex(key)]).BFS(dummyNode) == null) return false;
+            } catch (EmptyBinaryTreeException e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -244,11 +308,19 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
 
 
     @Override
+    @SuppressWarnings("unchecked")
+
     public boolean containsValue (V value){
         if (amountOfElements == 0) return false;
         for(int i = 0; i < hashMapBuckets.length; i++){
             if (hashMapBuckets[i] == null) continue;
-            Node[] Bucket = (Node[])hashMapBuckets[i].toArray();
+            Node[] Bucket = null;
+            if (hashMapBuckets[i] instanceof GenericLinkedList){
+                 Bucket = (Node[])((GenericLinkedList<?>)hashMapBuckets[i]).toArray();
+            }
+            if (hashMapBuckets[i] instanceof RedBlackTree<?>){
+                Bucket = (Node[])((RedBlackTree<?>)hashMapBuckets[i]).toArray();
+            }
             for (int j = 0; j < Bucket.length; j++) {
                 if (value == null){
                     if (Bucket[j].getValue() == null) return true;
@@ -285,12 +357,18 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      * @return a GenericLinkedList containing all keys in this map
      */
 
-
+    @SuppressWarnings("unchecked")
     public Object[] getKeys() {
         GenericLinkedList<K> keys = new GenericLinkedList<>();
         for(int i = 0; i < hashMapBuckets.length; i++){
             if(hashMapBuckets[i] == null) continue;
-            Object[]Bucket = hashMapBuckets[i].toArray();
+            Object[]Bucket = null;
+            if (hashMapBuckets[i] instanceof GenericLinkedList){
+                Bucket = ((GenericLinkedList<?>)hashMapBuckets[i]).toArray();
+            }
+            if (hashMapBuckets[i] instanceof RedBlackTree){
+                Bucket = ((RedBlackTree<?>)hashMapBuckets[i]).toArray();
+            }
             for (int j = 0; j < Bucket.length; j++) {
                 Node temp= (Node)Bucket[j];
                 keys.add(temp.getKey());
@@ -303,21 +381,33 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
     /**
      * Resizes hashMap array
      * @param newSize new size of array*/
+
+    @SuppressWarnings("unchecked")
     private void autoResize(int newSize) {
-        RedBlackTree<Node>[] newHashMapBuckets = new RedBlackTree[newSize];
+        Object[] newHashMapBuckets = new Object[newSize];
         for(int i = 0; i < hashMapBuckets.length; i++){
             if(hashMapBuckets[i] != null){
-                Object[] node = hashMapBuckets[i].toArray();
+                Object[] node = null;
+                if (hashMapBuckets[i] instanceof GenericLinkedList){
+                    node = ((GenericLinkedList<?>)hashMapBuckets[i]).toArray();
+                }
+                if (hashMapBuckets[i] instanceof RedBlackTree){
+                    node = ((RedBlackTree<?>)hashMapBuckets[i]).toArray();
+                }
                 for (int j = 0; j < node.length; j++) {
 
                     if(newHashMapBuckets[getBucketIndex((Node) node[j])] == null){
-                        newHashMapBuckets[getBucketIndex((Node) node[j])] = new RedBlackTree();
-                        newHashMapBuckets[getBucketIndex((Node) node[j])].add((Node) node[j]);
-                        amountOfElements++;
+                        newHashMapBuckets[getBucketIndex((Node) node[j])] = new GenericLinkedList<>();
+                        ((GenericLinkedList<Node>)newHashMapBuckets[getBucketIndex((Node) node[j])]).add((Node) node[j]);
                     }
                     else{
-                        newHashMapBuckets[getBucketIndex((Node) node[j])].add((Node) node[j]);
-                        amountOfElements++;
+                        if (newHashMapBuckets[getBucketIndex((Node) node[j])] instanceof GenericLinkedList){
+                            ((GenericLinkedList<Node>)newHashMapBuckets[getBucketIndex((Node) node[j])]).add((Node) node[j]);
+                        }
+                        if (newHashMapBuckets[getBucketIndex((Node) node[j])] instanceof RedBlackTree){
+                            ((RedBlackTree<Node>)newHashMapBuckets[getBucketIndex((Node) node[j])]).add((Node) node[j]);
+                        }
+
                     }
                 }
             }
