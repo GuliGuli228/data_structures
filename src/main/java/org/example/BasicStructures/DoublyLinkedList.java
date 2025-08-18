@@ -238,3 +238,4 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         return array;
     }
 }
+
