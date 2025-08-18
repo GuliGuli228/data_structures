@@ -19,4 +19,5 @@ public interface List<T> {
      void update(T value, int place);
      int size();
      Object[] toArray();
+     int indexOf(T value);
 }
