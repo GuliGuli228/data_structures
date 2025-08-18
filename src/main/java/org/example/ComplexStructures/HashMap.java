@@ -286,7 +286,7 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
      */
 
 
-    public GenericLinkedList<K> getKeys() {
+    public Object[] getKeys() {
         GenericLinkedList<K> keys = new GenericLinkedList<>();
         for(int i = 0; i < hashMapBuckets.length; i++){
             if(hashMapBuckets[i] == null) continue;
@@ -296,8 +296,9 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
                 keys.add(temp.getKey());
             }
         }
-        return keys;
+        return keys.toArray();
     }
+
 
     /**
      * Resizes hashMap array
@@ -323,5 +324,6 @@ public class HashMap <K extends Comparable<K>, V> implements Map<K,V> {
         }
         hashMapBuckets = newHashMapBuckets;
     }
+
 
 }
