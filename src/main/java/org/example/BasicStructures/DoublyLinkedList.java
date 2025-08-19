@@ -17,7 +17,6 @@ import org.example.Interfaces.List;
 
 public class DoublyLinkedList<T> extends AbstractList implements List<T> {
     protected class DoublyLinkedNode extends Node<T>{
-        //Experimental decision- making next and prev fields public
         public DoublyLinkedNode next;
         public DoublyLinkedNode prev;
 

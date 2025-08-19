@@ -86,26 +86,21 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         if(this.isEmpty()) throw new EmptyLinkedListException();
         if (place > length || place < 0) throw new IndexOutOfBoundsException();
         else {
-            try {
-                LinkedNode current = head;
-                if(place == 0){
-                    head = head.next;
-                    tail = head;
-                    length--;
-                    return;
-                }
-                for (int i = 0; i < place - 1; i++) {
-                    current = current.next;
-                }
-
-                LinkedNode nodeToDelete = current.next;
-                current.next = nodeToDelete != null ? nodeToDelete.next : null;
-                tail = current;
+            LinkedNode current = head;
+            if(place == 0){
+                head = head.next;
+                tail = head;
                 length--;
-            } catch (NullPointerException e) {
-                System.out.println(e.getMessage());
-                throw new NullPointerException();
+                return;
             }
+            for (int i = 0; i < place - 1; i++) {
+                current = current.next;
+            }
+
+            LinkedNode nodeToDelete = current.next;
+            current.next = nodeToDelete != null ? nodeToDelete.next : null;
+            tail = current;
+            length--;
         }
     }
 
@@ -119,16 +114,11 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
     public T getValueAt(int place){
         if (this.isEmpty()) throw new EmptyLinkedListException();
         if(place < 0 || place +1 > length) throw new IndexOutOfBoundsException();
-        try {
-            LinkedNode current = head;
-            for (int i =0; i < place; i++){
-                current = current.next;
-            }
-            return current.getValue();
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());;
+        LinkedNode current = head;
+        for (int i =0; i < place; i++){
+            current = current.next;
         }
-        return null;
+        return current.getValue();
     }
 
     /**
