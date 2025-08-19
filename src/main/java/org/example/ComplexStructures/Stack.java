@@ -73,4 +73,20 @@ public class Stack<E>{
         return list.size();
     }
 
+    /**
+     * Shows elements of stack*/
+    public void show(){
+        System.out.print("Stack: [");
+        for (int i = 0; i < list.size(); i++){
+            System.out.print(" "+list.getValueAt(i) +" ");
+            if (i != list.size()-1) System.out.print(",");
+        }
+        System.out.print("]");
+    }
+    /**
+     * Returns stack as Object array. It is safe for data structure, because it returns copy of structure, not structure itself
+     * @return array of Objects*/
+    public Object[] toArray(){
+        return list.toArray();
+    }
 }

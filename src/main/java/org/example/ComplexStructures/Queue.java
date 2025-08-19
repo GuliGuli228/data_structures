@@ -27,7 +27,7 @@ public class Queue<E> {
 
     public void enqueue(E element){
         if(element==null) throw new NullArgumentException("element");
-        list.add(element, 0);
+        list.add(element, list.size());
     }
     /**
      * Removes and returns the element from the front of the queue.
@@ -38,8 +38,8 @@ public class Queue<E> {
 
     public E dequeue(){
         if(list.isEmpty()) throw new EmptyQueueException();
-        E result = list.getValueAt(list.size()-1);
-        list.removeAt(list.size()-1);
+        E result = list.getValueAt(0);
+        list.removeAt(0);
         return result;
     }
     /**
@@ -51,7 +51,7 @@ public class Queue<E> {
 
     public E peek(){
         if(this.isEmpty()) throw new EmptyQueueException();
-        return list.getValueAt(list.size()-1);
+        return list.getValueAt(0);
     }
 
     /**
@@ -72,5 +72,21 @@ public class Queue<E> {
         return list.size();
     }
 
+    /**
+     * Shows elements of queue*/
+    public void show(){
+        System.out.print("Queue: [");
+        for (int i = 0; i < list.size(); i++){
+            System.out.print(" "+list.getValueAt(i) +" ");
+            if (i != list.size()-1) System.out.print(",");
+        }
+        System.out.print("]");
+    }
 
+    /**
+     * Returns queue as Object array. It is safe for data structure, Because it returns copy of structure, not structure itself
+     * @return array of Objects*/
+    public Object[] toArray(){
+        return list.toArray();
+    }
 }

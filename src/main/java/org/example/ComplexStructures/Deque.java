@@ -121,4 +121,22 @@ public class Deque<T>{
     public boolean isEmpty(){
         return queue.isEmpty();
     }
+
+    /**
+     * Shows elements of queue*/
+    public void show(){
+        System.out.print("Stack: [");
+        for (int i = 0; i < queue.size(); i++){
+            System.out.print(" "+queue.getValueAt(i) +" ");
+            if (i != queue.size()-1) System.out.print(",");
+        }
+        System.out.print("]");
+    }
+    /**
+     * Returns queue as Object array. It is safe for data structure, Because it returns copy of structure, not structure itself
+     * @return array of Objects*/
+    public Object[] toArray(){
+        return queue.toArray();
+    }
+
 }
