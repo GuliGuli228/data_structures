@@ -33,6 +33,7 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         protected LinkedNode(T value) {
             super(value);
         }
+
         /*---Getters & Setters Overrides---*/
         @Override
         protected T getValue(){

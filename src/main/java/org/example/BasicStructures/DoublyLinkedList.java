@@ -34,6 +34,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
             this.next = next;
             this.prev = prev;
         }
+        /*--- Getters and Setters Overrides ---*/
         @Override
         protected T getValue(){
             return super.getValue();
@@ -42,6 +43,7 @@ public class DoublyLinkedList<T> extends AbstractList implements List<T> {
         protected void setValue(T value){
             super.setValue(value);
         }
+        /*------------------------------------*/
 
     }
 
