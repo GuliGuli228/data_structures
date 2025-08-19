@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Stack Tests")
@@ -178,5 +180,16 @@ class StackTest {
             assertThrows(NullArgumentException.class, () -> stringStack.push(null),
                     "Pushing null should throw NullPointerException if GenericLinkedList does not support null");
         }
+    }
+
+    @Test
+    @DisplayName("Show method Test")
+    void showMethodTest(){
+        integerStack.push(1);
+        integerStack.push(2);
+        integerStack.push(3);
+        integerStack.push(4);
+        integerStack.show();
+        System.out.println(Arrays.toString(integerStack.toArray()));
     }
 }

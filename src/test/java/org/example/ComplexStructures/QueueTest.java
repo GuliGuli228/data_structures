@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Queue Tests")
@@ -147,5 +150,14 @@ class QueueTest {
             assertEquals(person2, personQueue.dequeue(), "Dequeue should return second person (Bob)");
             assertTrue(personQueue.isEmpty(), "Queue should be empty after dequeuing");
         }
+    }
+    @Test
+    void showTest(){
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+        queue.enqueue(4);
+        queue.show();
+        System.out.println(Arrays.toString(queue.toArray()));
     }
 }

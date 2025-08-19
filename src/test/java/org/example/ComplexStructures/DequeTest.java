@@ -4,6 +4,9 @@ import org.example.BasicStructures.GenericLinkedList;
 import org.example.Exceptions.EmptyQueueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DequeTest {
@@ -155,5 +158,16 @@ class DequeTest {
 
         deque.removeLast();
         assertEquals(0, deque.size());
+    }
+
+    @Test
+    void showTest(){
+        deque.addLast(1);
+        deque.addLast(2);
+        deque.addLast(3);
+        deque.addLast(4);
+        deque.addFirst(7);
+        deque.show();
+        System.out.println(Arrays.toString(deque.toArray()));
     }
 }
