@@ -86,13 +86,20 @@ public class GenericLinkedList<T> extends AbstractList implements List<T> {
         if(this.isEmpty()) throw new EmptyLinkedListException();
         if (place > length || place < 0) throw new IndexOutOfBoundsException();
         else {
-            LinkedNode current = head;
-            if(place == 0){
-                head = head.next;
-                tail = head;
+            if (length == 1){
+                head =null;
+                tail = null;
                 length--;
                 return;
             }
+
+            LinkedNode current = head;
+            if(place == 0){
+                head = head.next;
+                length--;
+                return;
+            }
+
             for (int i = 0; i < place - 1; i++) {
                 current = current.next;
             }
