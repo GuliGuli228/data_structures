@@ -125,7 +125,7 @@ public class Deque<T>{
     /**
      * Shows elements of queue*/
     public void show(){
-        System.out.print("Stack: [");
+        System.out.print("Deque: [");
         for (int i = 0; i < queue.size(); i++){
             System.out.print(" "+queue.getValueAt(i) +" ");
             if (i != queue.size()-1) System.out.print(",");
